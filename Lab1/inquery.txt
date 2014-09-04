@@ -3,8 +3,7 @@
 :::: What does `$*` mean inside a makefile?
 --------------------------------------------------------------------------------
 
-Answer: $* är en variabel som tar namnet från % som i sin tur här motsvarar det
-filnamn (exkl. filändelse) vi anger som argument till make.
+Answer: $* is a variable that takes the name from %, which in turn corresponds to the file name (excl. file ending) that is passed along as an argument to make.
 
 --------------------------------------------------------------------------------
 :::: What is the purpose of `-Wall` and -g, when passed as arguments to g++?
@@ -122,7 +121,7 @@ int count_if_followed_by (char const * p, int len, char a, char b) {
      especially in the case of `count_if_followed_by`?
 --------------------------------------------------------------------------------
 
-Answer: ...
+Answer: Firstly, it is easy to make errors with boundary conditions. In this specific case, the documentation also states the range [data, data+len) specifically. It is then very dangerous to not test it, since other people can use this code and trust the documentation.
 
 --------------------------------------------------------------------------------
 
