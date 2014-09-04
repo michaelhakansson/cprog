@@ -4,21 +4,24 @@
 --------------------------------------------------------------------------------
 
 Answer: $* är en variabel som tar namnet från % som i sin tur här motsvarar det
-filnamn (exkl. filändelse) vi anger.
+filnamn (exkl. filändelse) vi anger som argument till make.
 
 --------------------------------------------------------------------------------
 :::: What is the purpose of `-Wall` and -g, when passed as arguments to g++?
 --------------------------------------------------------------------------------
 
 Answer:
- 	-Wall aktiverar en uppsättning varningar som ofta ges, och som är enkla att undvika.
+ 	-Wall aktiverar en uppsättning vanliga varningar, och som är enkla att undvika.
 	-g producerar debugging information
 
 --------------------------------------------------------------------------------
 :::: What is the difference between an object file, and an executable?
 --------------------------------------------------------------------------------
 
-Answer: ...
+Answer: En executable är EN fil, typiskt innehållande maskinkod, som kan exekveras.
+Object filer innehåller också maskinkod, men är uppdelade i flera filer som generellt
+sett inte är exekverbara. Med hjälp av en länkare (linker) sätts dessa object filer
+ihop till en executable.
 
 --------------------------------------------------------------------------------
 
@@ -32,7 +35,14 @@ Answer: ...
      respectively?
 -------------------------------------------------------------------------------
 
-Answer: ...
+Answer:
+
+std::cout används för "vanliga" utskrifter, standard output stream.
+
+std::cerr används för felutskrifter.
+
+std:clog används för att göra loggutskrifter.
+
 
 -------------------------------------------------------------------------------
 
@@ -69,27 +79,28 @@ Answer: ...
 :::: Why does not `powerof` return the expected value (16), when invoked with 2 and 4?
 --------------------------------------------------------------------------------
 
-Answer: ...
+Answer: res *= x; is not a part of the for loop due to the ";" in the end of the
+for line. Thus, res is just set to x and then returned.
 
 --------------------------------------------------------------------------------
 :::: Why does not `y` compare equal to 3.1415?
 --------------------------------------------------------------------------------
 
-Answer: ...
+Answer: Because y is a float and 3.1415 is a double.
 
 --------------------------------------------------------------------------------
 :::: Is there any difference in behavior if we compare `y` to 3.1415f, if so: why?
 --------------------------------------------------------------------------------
 
-Answer: ...
+Answer: Yes, if we compare with 3.1415f, we are comparing numbers of the same type,
+and happen to get a different behavior (it answers with that it IS equal).
 
 --------------------------------------------------------------------------------
 :::: What is the recommended method to use when trying to determine if
 :::: two floating-point values are equal, and why?
 --------------------------------------------------------------------------------
 
-Answer: ...
-
+Answer: Use a small number (epsilon) that you choose as the error margin, and check if it is greater than the absolute difference of the two compared values. This must be used since floating-point values are to imprecise to be able to be compared with certainty.
 --------------------------------------------------------------------------------
 
 
