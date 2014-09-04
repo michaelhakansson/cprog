@@ -14,7 +14,7 @@ int main () {
   int const b = 4;
 
   int   x = powerof(a, b); 
-  float y = 3.1415;
+  double y = 3.1415;
 
   std::cout << a << "^" << b << " = " << x << ";\n";
 
