@@ -27,4 +27,22 @@ public:
  void runTest() { suite_MyTestSuite.test1(); }
 } testDescription_MyTestSuite_test1;
 
+static class TestDescription_MyTestSuite_test2 : public CxxTest::RealTestDescription {
+public:
+ TestDescription_MyTestSuite_test2() : CxxTest::RealTestDescription( Tests_MyTestSuite, suiteDescription_MyTestSuite, 21, "test2" ) {}
+ void runTest() { suite_MyTestSuite.test2(); }
+} testDescription_MyTestSuite_test2;
+
+static class TestDescription_MyTestSuite_test3 : public CxxTest::RealTestDescription {
+public:
+ TestDescription_MyTestSuite_test3() : CxxTest::RealTestDescription( Tests_MyTestSuite, suiteDescription_MyTestSuite, 34, "test3" ) {}
+ void runTest() { suite_MyTestSuite.test3(); }
+} testDescription_MyTestSuite_test3;
+
+static class TestDescription_MyTestSuite_test4 : public CxxTest::RealTestDescription {
+public:
+ TestDescription_MyTestSuite_test4() : CxxTest::RealTestDescription( Tests_MyTestSuite, suiteDescription_MyTestSuite, 47, "test4" ) {}
+ void runTest() { suite_MyTestSuite.test4(); }
+} testDescription_MyTestSuite_test4;
+
 #include <cxxtest/Root.cpp>
