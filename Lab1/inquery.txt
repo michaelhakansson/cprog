@@ -178,25 +178,47 @@ int main()
 :::: What different constructors are invoked, and when?
 --------------------------------------------------------------------------------
 
-Answer: ...
+TODO: UTVIDGA SVAR MED MOTIVERINGAR
+
+Answer: 
+A(char const* s) (aka the "some other constructor") is invoked when
+  A a("my name is a") is executed
+
+
+A (A const& src) (aka the "copy constructor") is invoked when
+  A b = a; is executed
+  A c(a); is executed
+  no_ref (a); is executed since the value of 'a' is copied when A is initialized.
+              no_ref is pass by value
+
+A& operator= (A const& src) (aka the "the assignment operator") is invoked when
+  d = a; is executed
+
+A () (aka the "default-constructor") is invoked when
+  A *aa = new A[5]; is executed. It is invoked for every element in the array (5 times).
+
 
 --------------------------------------------------------------------------------
 :::: Will there be any temporaries created, if so; when?
 --------------------------------------------------------------------------------
 
-Answer: ...
+Answer: When we call the no_ref function, we initianlize the object with pass by 
+value, and the initialized variable will be destructed when the function ends, because
+it is on the stack.
 
 --------------------------------------------------------------------------------
 :::: When are the objects destructed, an why?
 --------------------------------------------------------------------------------
 
-Answer: ...
+Answer: Objects are destructed when they go out of scope, or when the destructor is
+manually invoked.
 
 --------------------------------------------------------------------------------
 :::: What will happen if we try to free the dynamically allocated
 :::: memory through `delete p`, instead of `delete [] p`?
 
-Answer: ...
+Answer: We get a segmentation fault, since the behavior of invoking a "non-array-destructor"
+on an array, is undefined.
 
 --------------------------------------------------------------------------------
 
@@ -225,7 +247,7 @@ int main () {
 :::: why?
 --------------------------------------------------------------------------------
 
-Answer: ...
+Answer: 
 
 --------------------------------------------------------------------------------
 :::: If you comment out the entire if-block in foo, is there any difference in
