@@ -79,7 +79,7 @@ std:clog används för att göra loggutskrifter.
 --------------------------------------------------------------------------------
 
 Answer: res *= x; is not a part of the for loop due to the ";" in the end of the
-for line. Thus, res is just set to x and then returned.
+for line. Thus, res is just set to res*x and then returned.
 
 --------------------------------------------------------------------------------
 :::: Why does not `y` compare equal to 3.1415?
@@ -166,8 +166,8 @@ int main()
 
     d = a;
 
-      no_ref (a);     // will this copy the value of `a`?
-    with_ref (a);     // will this copy the value of `a`?
+      no_ref (a);     // will this copy the value of `a`? Yes
+    with_ref (a);     // will this copy the value of `a`? No, just reference to a.
 
     A *aa = new A[5];
     delete aa;        // what will happen?
@@ -186,13 +186,13 @@ A(char const* s) (aka the "some other constructor") is invoked when
 
 
 A (A const& src) (aka the "copy constructor") is invoked when
-  A b = a; is executed
-  A c(a); is executed
+  A b = a; is executed since a is defined usnig =. 
+  A c(a); is executed since we pass an object as an argument to a parameter of nonref type
   no_ref (a); is executed since the value of 'a' is copied when A is initialized.
               no_ref is pass by value
 
 A& operator= (A const& src) (aka the "the assignment operator") is invoked when
-  d = a; is executed
+  d = a; is executed since the already initialized object b is assigned a.
 
 A () (aka the "default-constructor") is invoked when
   A *aa = new A[5]; is executed. It is invoked for every element in the array (5 times).
@@ -218,7 +218,7 @@ manually invoked.
 :::: memory through `delete p`, instead of `delete [] p`?
 
 Answer: We get a segmentation fault, since the behavior of invoking a "non-array-destructor"
-on an array, is undefined.
+on an array is undefined.
 
 --------------------------------------------------------------------------------
 
