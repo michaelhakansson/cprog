@@ -178,7 +178,6 @@ int main()
 :::: What different constructors are invoked, and when?
 --------------------------------------------------------------------------------
 
-TODO: UTVIDGA SVAR MED MOTIVERINGAR
 
 Answer: 
 A(char const* s) (aka the "some other constructor") is invoked when
@@ -247,14 +246,21 @@ int main () {
 :::: why?
 --------------------------------------------------------------------------------
 
-Answer: 
+Answer: valgrind tells us that v[i] is unitialized, since no Data constructor
+which initializes the array is present. The if (v[i] != 0) will read undefined
+data.
+
+valgrind also states that there is a memory leak. That is due to that memory is
+allocated (with new) but never freed.
 
 --------------------------------------------------------------------------------
 :::: If you comment out the entire if-block in foo, is there any difference in
 :::: how much memory that is leaked?
 --------------------------------------------------------------------------------
 
-Answer: ...
+Answer: No, for us, there was no difference. That is because we happened to allocate
+memory for v in an area that contained 0's. If we would have allocated memory for v
+in a memory space that was not 0, the result would have been different.
 
 --------------------------------------------------------------------------------
 :::: Revert bad_plumming.cpp to its original state, and comment out
@@ -267,7 +273,9 @@ Answer: ...
 :::: delete [] p;
 --------------------------------------------------------------------------------
 
-Answer: ...
+Answer: Now, the memory that p (and v) points to is freed, but not the allocated
+memory for the elements in the vector is not freed. Hence, memory is leaking.
+
 
 --------------------------------------------------------------------------------
 
