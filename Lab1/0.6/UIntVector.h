@@ -2,12 +2,13 @@
 //#define UINTVECTOR_H
 #include <cstddef> // Needed for std::size_t
 #include <initializer_list>
+#include <array>
 
 //A container that can store any arbitrary number of positive integers
 class UIntVector{
 
 	private:
-	unsigned int[] vector;
+	std::array<unsigned int, 20> vector;
 
 	public:
 		//Default constructor
@@ -22,7 +23,8 @@ class UIntVector{
 		//s = num of zero-initialized elements to be stored
 		UIntVector(const std::size_t& size);
 
-		UIntVector(std::initializer_list<unsigned int> list);
+
+		UIntVector(const std::initializer_list<unsigned int> list);
 
 		//TODO copy-move assignment operator taking an UIntVector
 
@@ -35,7 +37,7 @@ class UIntVector{
 		void reset();
 
 		//Returns the number of elements in the container
-		std::size_t size();
+		std::size_t size() const;
 };
 
 //#endif
