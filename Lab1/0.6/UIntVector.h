@@ -8,13 +8,13 @@
 class UIntVector{
 
 	private:
-	std::array<unsigned int, 20> vector;
+	unsigned int * vector;
+	unsigned int vector_size;
 
 	public:
 		//Default constructor
 		UIntVector();
 
-		
 		//Copy constructor
 		UIntVector(const UIntVector& src);
 
@@ -23,15 +23,15 @@ class UIntVector{
 		//s = num of zero-initialized elements to be stored
 		UIntVector(const std::size_t& size);
 
-
 		UIntVector(const std::initializer_list<unsigned int> list);
 
 		//TODO copy-move assignment operator taking an UIntVector
 
 		//TODO overload operator [] to be able to access modify element at index
+		unsigned int& operator[](const unsigned int& x);
 
 		//Destructor
-		~UIntVector(){};
+		~UIntVector();
 
 		//Assign unsigned int{} to each element in container
 		void reset();
