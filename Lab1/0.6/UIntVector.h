@@ -9,7 +9,7 @@ class UIntVector{
 
 	private:
 	unsigned int * vector;
-	unsigned int vector_size;
+	size_t vector_size;
 
 	public:
 		//Default constructor

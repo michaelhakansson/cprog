@@ -6,8 +6,14 @@ UIntVector::UIntVector(){
 	std::clog << "LOG - Default constructor" << std::endl;
 }
 
-// Copy constructor
+// TODO Copy constructor
 UIntVector::UIntVector(const UIntVector& src){
+	UIntVector::vector_size = src.size();
+	UIntVector::vector = new unsigned int[UIntVector::vector_size];
+	
+	// for(unsigned int i = 0; i < UIntVector::vector_size; i++){
+	// 	UIntVector::vector[i] = src[i];
+	// }
 }
 
 
@@ -24,15 +30,14 @@ UIntVector::UIntVector(const std::size_t& size){
 	}
 }
 
+// TODO
 UIntVector::UIntVector(std::initializer_list<unsigned int>){}
 
 // TODO copy-move assignment operator taking an UIntVector
 
-// TODO overload operator [] to be able to access modify element at index
 unsigned int& UIntVector::operator[](const unsigned int& x){
-
 	if(x >= UIntVector::vector_size){
-		std::cerr << "Index out of bounds\n";
+		std::cerr << "Error: Index out of bounds" << std::endl;
 	}
 
 	return UIntVector::vector[x];
@@ -46,7 +51,7 @@ UIntVector::~UIntVector(){
 // Assign unsigned int{} to each element in container
 void UIntVector::reset(){
 
-	unsigned int size = UIntVector::size();
+	size_t size = UIntVector::size();
 
 	for(unsigned int i = 0; i < size; i++){
 		UIntVector::vector[i] = 0;
@@ -58,19 +63,20 @@ std::size_t UIntVector::size() const{
 	return UIntVector::vector_size;
 }
 
-void print_vector(UIntVector vec){
-	unsigned int size = vec.size();
+void print_vector(UIntVector* vec){
+	size_t size = vec->size();
+	std::cout << "ASD " << vec->size() << std::endl;
 
-	for(unsigned int i = 0; i < size; i++){
-		std::cout << vec[i] << " ";
+	for(size_t i = 0; i < size; i++){
+		std::cout << (*vec)[i] << " ";
 	}
 }
 
 int main(){
 	std::clog << "LOG - FIRST IN MAIN" << std::endl;
 	UIntVector a(5);
+	std::cout << "IN MAIN " << a.size() << std::endl;
 	a[2] = 2;
 	a[4] = 4;
-	print_vector(a);
+	print_vector(&a);
 }
-
