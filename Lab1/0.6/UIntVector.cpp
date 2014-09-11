@@ -22,6 +22,7 @@ UIntVector::UIntVector(std::initializer_list<unsigned int>){}
 // TODO copy-move assignment operator taking an UIntVector
 
 // TODO overload operator [] to be able to access modify element at index
+//int & UIntVector::operator[](int x){}
 
 // Destructor
 // UIntVector::~UIntVector();
