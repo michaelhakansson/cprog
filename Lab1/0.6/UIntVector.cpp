@@ -21,9 +21,6 @@ UIntVector::UIntVector(const UIntVector& src){
 
 // Constructor size = num of zero-initialized elements to be stored
 UIntVector::UIntVector(const std::size_t& size){
-	std::clog << "LOG - CONSTRUCTOR: UIntVector::UIntVector(std::size_t const& s)" << std::endl;
-	std::clog << "LOG - Initializing vector with size " << size << " and filling it with zeros." << std::endl;
-
 	UIntVector::vector = new unsigned int[size];
 	UIntVector::vector_size = size;
 	
@@ -34,7 +31,6 @@ UIntVector::UIntVector(const std::size_t& size){
 
 // Constructor: Initializer list. Add elements via UIntVector x = {...}
 UIntVector::UIntVector(const std::initializer_list<unsigned int> list){
-	std::clog << "LOG - CONSTRUCTOR: initializer_list" << std::endl;
 	unsigned int list_size = list.size();
 	UIntVector::vector_size = list_size;
 	UIntVector::vector = new unsigned int[UIntVector::vector_size];
@@ -56,7 +52,6 @@ unsigned int& UIntVector::operator[](const unsigned int x){
 
 const unsigned int& UIntVector::operator[](const unsigned int x) const{
 	if(x >= UIntVector::vector_size){
-		std::cerr << "Error: Index out of bounds" << std::endl;
 		throw std::out_of_range("Index out of bounds");
 	}
 	return UIntVector::vector[x];
@@ -94,9 +89,7 @@ void UIntVector::print() const{
 }
 
 int main(){
-	std::clog << "LOG - FIRST IN MAIN" << std::endl;
 	UIntVector a(5);
-	std::cout << "IN MAIN " << a.size() << std::endl;
 	a[2] = 2;
 	a[4] = 4;
 	UIntVector b = {1,2,3};
