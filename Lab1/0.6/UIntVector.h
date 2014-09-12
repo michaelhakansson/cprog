@@ -27,8 +27,10 @@ class UIntVector{
 
 		//TODO copy-move assignment operator taking an UIntVector
 
-		//TODO overload operator [] to be able to access modify element at index
-		unsigned int& operator[](const unsigned int& x);
+		unsigned int& operator[](const unsigned int x);
+
+		unsigned int& operator[](const unsigned int x) const;
+
 
 		//Destructor
 		~UIntVector();
@@ -38,6 +40,9 @@ class UIntVector{
 
 		//Returns the number of elements in the container
 		std::size_t size() const;
+
+		//Prints each element of the vector
+		void print() const;
 };
 
 //#endif

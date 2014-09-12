@@ -1,4 +1,5 @@
 #include <iostream>
+#include <stdexcept>
 #include "UIntVector.h"
 
 // Default constructor
@@ -11,9 +12,9 @@ UIntVector::UIntVector(const UIntVector& src){
 	UIntVector::vector_size = src.size();
 	UIntVector::vector = new unsigned int[UIntVector::vector_size];
 	
-	// for(unsigned int i = 0; i < UIntVector::vector_size; i++){
-	// 	UIntVector::vector[i] = src[i];
-	// }
+	for(unsigned int i = 0; i < UIntVector::vector_size; i++){
+		UIntVector::vector[i] = src[i];
+	}
 }
 
 
@@ -35,13 +36,22 @@ UIntVector::UIntVector(std::initializer_list<unsigned int>){}
 
 // TODO copy-move assignment operator taking an UIntVector
 
-unsigned int& UIntVector::operator[](const unsigned int& x){
+unsigned int& UIntVector::operator[](const unsigned int x){
 	if(x >= UIntVector::vector_size){
-		std::cerr << "Error: Index out of bounds" << std::endl;
+		throw std::out_of_range("Index out of bounds");
 	}
 
 	return UIntVector::vector[x];
 }
+
+unsigned int& UIntVector::operator[](const unsigned int x) const{
+	if(x >= UIntVector::vector_size){
+		std::cerr << "Error: Index out of bounds" << std::endl;
+		throw std::out_of_range("Index out of bounds");
+	}
+	return UIntVector::vector[x];
+}
+
 
 // Destructor
 UIntVector::~UIntVector(){
@@ -63,13 +73,14 @@ std::size_t UIntVector::size() const{
 	return UIntVector::vector_size;
 }
 
-void print_vector(UIntVector* vec){
-	size_t size = vec->size();
-	std::cout << "ASD " << vec->size() << std::endl;
-
-	for(size_t i = 0; i < size; i++){
-		std::cout << (*vec)[i] << " ";
+void UIntVector::print() const{
+	size_t size = UIntVector::vector_size;
+	std::cout << "[";
+	for(size_t i = 0; i < size-1; i++){
+		std::cout << UIntVector::vector[i] << ", ";
 	}
+	std::cout << UIntVector::vector[size-1];
+	std::cout << "]" <<std::endl;
 }
 
 int main(){
@@ -78,5 +89,6 @@ int main(){
 	std::cout << "IN MAIN " << a.size() << std::endl;
 	a[2] = 2;
 	a[4] = 4;
-	print_vector(&a);
+	// a[6]; //Out of bounds
+	a.print();
 }
