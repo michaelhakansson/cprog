@@ -1,5 +1,6 @@
 #include <iostream>
 #include <stdexcept>
+#include <initializer_list>
 #include "UIntVector.h"
 
 // Default constructor
@@ -12,13 +13,13 @@ UIntVector::UIntVector(const UIntVector& src){
 	UIntVector::vector_size = src.size();
 	UIntVector::vector = new unsigned int[UIntVector::vector_size];
 	
-	for(unsigned int i = 0; i < UIntVector::vector_size; i++){
+	for(unsigned int i = 0; i < UIntVector::vector_size; ++i){
 		UIntVector::vector[i] = src[i];
 	}
 }
 
 
-// size = num of zero-initialized elements to be stored
+// Constructor size = num of zero-initialized elements to be stored
 UIntVector::UIntVector(const std::size_t& size){
 	std::clog << "LOG - CONSTRUCTOR: UIntVector::UIntVector(std::size_t const& s)" << std::endl;
 	std::clog << "LOG - Initializing vector with size " << size << " and filling it with zeros." << std::endl;
@@ -26,13 +27,22 @@ UIntVector::UIntVector(const std::size_t& size){
 	UIntVector::vector = new unsigned int[size];
 	UIntVector::vector_size = size;
 	
-	for(unsigned int i = 0; i < size; i++){
+	for(unsigned int i = 0; i < size; ++i){
 		UIntVector::vector[i] = 0;
 	}
 }
 
-// TODO
-UIntVector::UIntVector(std::initializer_list<unsigned int>){}
+// Constructor: Initializer list. Add elements via UIntVector x = {...}
+UIntVector::UIntVector(const std::initializer_list<unsigned int> list){
+	std::clog << "LOG - CONSTRUCTOR: initializer_list" << std::endl;
+	unsigned int list_size = list.size();
+	UIntVector::vector_size = list_size;
+	UIntVector::vector = new unsigned int[UIntVector::vector_size];
+
+	for(int i = 0; i < list_size; ++i) {
+		UIntVector::vector[i] = list.begin()[i];
+	}
+}
 
 // TODO copy-move assignment operator taking an UIntVector
 
@@ -89,6 +99,7 @@ int main(){
 	std::cout << "IN MAIN " << a.size() << std::endl;
 	a[2] = 2;
 	a[4] = 4;
-	// a[6]; //Out of bounds
+	UIntVector b = {1,2,3};
 	a.print();
+	b.print();
 }
