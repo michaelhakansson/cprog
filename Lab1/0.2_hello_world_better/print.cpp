@@ -1,7 +1,7 @@
 #include <iostream>
 #include <cstdlib>
 
-void printStuff(int argc, char *argv[]) {
+void printStuff(int& argc, char* argv[]) {
 	switch(argc) {
 		case 1:
 			std::cout << "Hello, world!" << std::endl;

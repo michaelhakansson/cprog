@@ -1,1 +1,1 @@
-void printStuff(int argc, char *argv[]);
+void printStuff(int& argc, char *argv[]);
