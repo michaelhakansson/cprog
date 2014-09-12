@@ -44,7 +44,7 @@ unsigned int& UIntVector::operator[](const unsigned int x){
 	return UIntVector::vector[x];
 }
 
-unsigned int& UIntVector::operator[](const unsigned int x) const{
+const unsigned int& UIntVector::operator[](const unsigned int x) const{
 	if(x >= UIntVector::vector_size){
 		std::cerr << "Error: Index out of bounds" << std::endl;
 		throw std::out_of_range("Index out of bounds");

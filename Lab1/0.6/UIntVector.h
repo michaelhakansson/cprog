@@ -29,8 +29,7 @@ class UIntVector{
 
 		unsigned int& operator[](const unsigned int x);
 
-		unsigned int& operator[](const unsigned int x) const;
-
+		const unsigned int& operator[](const unsigned int x) const;
 
 		//Destructor
 		~UIntVector();
