@@ -18,18 +18,22 @@ class UIntVector{
 		//Copy constructor
 		UIntVector(const UIntVector&);
 
-		//TODO Move constructor
+		//Move constructor
+		UIntVector(UIntVector&&) noexcept;
 
 		//s = num of zero-initialized elements to be stored
 		UIntVector(const std::size_t&);
 
 		UIntVector(const std::initializer_list<unsigned int>);
 
-		//TODO copy-move assignment operator taking an UIntVector
-
 		unsigned int& operator[](const unsigned int);
 
 		const unsigned int& operator[](const unsigned int) const;
+
+		// TODO copy assignment operator taking an UIntVector
+
+		// move assignment operator taking an UIntVector		
+		UIntVector& operator=(UIntVector &&rsrc) noexcept;
 
 		//Destructor
 		~UIntVector();
