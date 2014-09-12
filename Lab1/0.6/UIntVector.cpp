@@ -18,26 +18,38 @@ UIntVector::UIntVector(const UIntVector& src){
 	}
 }
 
+// Copy assignment operator taking an UIntVector
+UIntVector& UIntVector::operator= (const UIntVector &src){
+	if (this != &src) {
+		if (UIntVector::vector_size != src.vector_size) {
+			UIntVector::free();
+			UIntVector::vector = new unsigned int[src.vector_size];
+			UIntVector::vector_size = src.vector_size;
+		}
+		size_t size = UIntVector::vector_size;
+		for(unsigned int i = 0; i < vector_size; ++i) {
+			UIntVector::vector[i] = src[i];
+		}
+	}
+	return *this;
+}
 
-// TODO: copy assignment operator taking an UIntVector
 
-
-//TODO: Move constructor
+// Move constructor
 UIntVector::UIntVector(UIntVector&& src) noexcept
-	: vector_size(src.vector_size), vector(src.vector) {
-		std::cout << "MOVE CONSTRUCTOR" << std::endl;
+	: vector_size(src.vector_size), vector(src.vector){
 		src.vector = nullptr; // Free pointer to make it safe to run destructor
-		// TODO: Need to free src.vector_size somehow?
+		src.vector_size = 0;
 	}
 
-// TODO: move assignment operator taking an UIntVector
-UIntVector& UIntVector::operator=(UIntVector &&rhs) noexcept {
-	if (this != &rhs) { // If not trying to move to itself
-		// TODO: Free (deallocate) lhs elements
-		UIntVector::vector = rhs.vector;
-		UIntVector::vector_size = rhs.vector_size;
-		rhs.vector = nullptr; // Free pointer to make it safe to run destructor
-		// TODO: Need to free rhs.vector_size somehow?
+// Move assignment operator taking an UIntVector
+UIntVector& UIntVector::operator= (UIntVector &&src) noexcept{
+	if (this != &src) { // If not trying to move to itself
+		free(); // TODO: Free (deallocate) lhs elements
+		UIntVector::vector = src.vector;
+		UIntVector::vector_size = src.vector_size;
+		src.vector = nullptr; // Free pointer to make it safe to run destructor
+		src.vector_size = 0;
 	}
 	return *this;
 }
@@ -100,6 +112,15 @@ std::size_t UIntVector::size() const{
 	return UIntVector::vector_size;
 }
 
+// Returns the number of elements in the container
+void UIntVector::free(){
+	size_t size = UIntVector::size();
+
+	if (size != 0) {
+		delete[] UIntVector::vector;
+	}
+}
+
 void UIntVector::print() const{
 	size_t size = UIntVector::vector_size;
 	std::cout << "[";
@@ -110,15 +131,19 @@ void UIntVector::print() const{
 	std::cout << "]" <<std::endl;
 }
 
-int main(){
-	UIntVector a(5); // Initialize 5 zero-elements
-	a[2] = 2;
-	a[4] = 4;
-	UIntVector b = {1,2,3}; // Initialize with initialization list
-	a.print();
-	b.print();
-	UIntVector c = b; // Use copy constructor
-	c.print();
-	UIntVector d(std::move(a));
-	d.print();
-}
+// int main(){
+// 	UIntVector a(5); // Initialize 5 zero-elements
+// 	a[2] = 2;
+// 	a[4] = 4;
+// 	UIntVector b = {1,2,3}; // Initialize with initialization list
+// 	a.print();
+// 	b.print();
+// 	UIntVector c = b; // Use copy constructor
+// 	c.print();
+// 	UIntVector d(std::move(a));
+// 	d.print();
+// 	a = std::move(b);
+// 	a.print();
+// 	c = d;
+// 	c.print();
+// }

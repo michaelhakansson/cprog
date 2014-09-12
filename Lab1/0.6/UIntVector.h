@@ -1,5 +1,5 @@
-//#ifndef UINTVECTOR_H
-//#define UINTVECTOR_H
+#ifndef UINTVECTOR_H
+#define UINTVECTOR_H
 #include <cstddef> // Needed for std::size_t
 #include <initializer_list>
 #include <array>
@@ -15,11 +15,21 @@ class UIntVector{
 		//Default constructor
 		UIntVector();
 
+		//COPY
 		//Copy constructor
 		UIntVector(const UIntVector&);
 
+		//Copy assignment operator taking an UIntVector
+		UIntVector& operator= (const UIntVector&);
+
+
+		//MOVE
 		//Move constructor
 		UIntVector(UIntVector&&) noexcept;
+
+
+		//Move assignment operator taking an UIntVector		
+		UIntVector& operator=(UIntVector &&rsrc) noexcept;
 
 		//s = num of zero-initialized elements to be stored
 		UIntVector(const std::size_t&);
@@ -30,11 +40,6 @@ class UIntVector{
 
 		const unsigned int& operator[](const unsigned int) const;
 
-		// TODO copy assignment operator taking an UIntVector
-
-		// move assignment operator taking an UIntVector		
-		UIntVector& operator=(UIntVector &&rsrc) noexcept;
-
 		//Destructor
 		~UIntVector();
 
@@ -44,8 +49,11 @@ class UIntVector{
 		//Returns the number of elements in the container
 		std::size_t size() const;
 
+		// Frees the elements in the UIntVector
+		void free();
+
 		//Prints each element of the vector
 		void print() const;
 };
 
-//#endif
+#endif
