@@ -44,7 +44,7 @@ UIntVector::UIntVector(UIntVector&& src) noexcept
 // Move assignment operator taking an UIntVector
 UIntVector& UIntVector::operator= (UIntVector &&src) noexcept{
 	if (this != &src) { // If not trying to move to itself
-		free(); // TODO: Free (deallocate) lhs elements
+		UIntVector::free();
 		UIntVector::vector = src.vector;
 		UIntVector::vector_size = src.vector_size;
 		src.vector = nullptr; // Free pointer to make it safe to run destructor
@@ -70,7 +70,7 @@ UIntVector::UIntVector(const std::initializer_list<unsigned int> list){
 	UIntVector::vector_size = list_size;
 	UIntVector::vector = new unsigned int[UIntVector::vector_size];
 
-	for(int i = 0; i < list_size; ++i) {
+	for(unsigned int i = 0; i < list_size; ++i) {
 		UIntVector::vector[i] = list.begin()[i];
 	}
 }
@@ -93,7 +93,7 @@ const unsigned int& UIntVector::operator[](const unsigned int x) const{
 
 // Destructor
 UIntVector::~UIntVector(){
-	delete UIntVector::vector;
+	delete[] UIntVector::vector;
 };
 
 // Assign unsigned int{} to each element in container
