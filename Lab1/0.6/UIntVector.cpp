@@ -26,8 +26,7 @@ UIntVector& UIntVector::operator= (const UIntVector &src){
 			UIntVector::vector = new unsigned int[src.vector_size];
 			UIntVector::vector_size = src.vector_size;
 		}
-		size_t size = UIntVector::vector_size;
-		for(unsigned int i = 0; i < vector_size; ++i) {
+		for(unsigned int i = 0; i < UIntVector::vector_size; ++i) {
 			UIntVector::vector[i] = src[i];
 		}
 	}
@@ -37,7 +36,7 @@ UIntVector& UIntVector::operator= (const UIntVector &src){
 
 // Move constructor
 UIntVector::UIntVector(UIntVector&& src) noexcept
-	: vector_size(src.vector_size), vector(src.vector){
+	: vector(src.vector), vector_size(src.vector_size){
 		src.vector = nullptr; // Free pointer to make it safe to run destructor
 		src.vector_size = 0;
 	}

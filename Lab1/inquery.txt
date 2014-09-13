@@ -287,7 +287,10 @@ memory for the elements in the vector is not freed. Hence, memory is leaking.
 :::: and why?
 --------------------------------------------------------------------------------
 
-Answer: ...
+Answer: When the operator [] is used on a non-const object, the operator not marked
+const will be used. In that case, modifying of the object is allowed. But when the
+operator [] is used on a const object, the 'operator[]' marked 'const' will be used.
+In this case, no modification is allowed.
 
 --------------------------------------------------------------------------------
 :::: The semantics of copying a UIntVector might not be trivial; why must we 
