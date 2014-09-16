@@ -2,7 +2,6 @@
 #define UINTVECTOR_H
 #include <cstddef> // Needed for std::size_t
 #include <initializer_list>
-#include <array>
 
 //A container that can store any arbitrary number of positive integers
 class UIntVector{
