@@ -183,12 +183,24 @@ TEST(size_test, size) {
 TEST(begin_function, correct_address) {
   Vector<int> a(10);
   EXPECT_EQ(a.begin(), &a[0]);
+  *a.begin() = 2;
+  EXPECT_EQ(a[0], 2);
 }
 
 // Test that begin() function returns pointer to first element in vector.
 TEST(end_function, correct_address) {
   Vector<int> b(10);
   EXPECT_EQ(b.end(), &b[9] + 1);
+}
+
+
+// Test that the find(x) function returns pointer to first element that
+// equals x. If no element matches, end() is return.
+TEST(find_function, correct_address) {
+  Vector<int> a{1,2,3,4,5,6};
+  EXPECT_EQ(a.find(1), &a[0]);
+  EXPECT_EQ(a.find(4), &a[3]);
+  EXPECT_EQ(a.find(9), &a[a.size()-1]+1);
 }
 
 

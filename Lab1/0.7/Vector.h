@@ -64,6 +64,8 @@ static_assert(std::is_move_assignable<T>::value, "This type is not move assignab
 		// element in the container
 		T* end() const;
 
+		T* find(const T&) const;
+
 	private:
 	T* vector;
 	std::size_t my_capacity;
@@ -159,7 +161,7 @@ Vector<T>::Vector(const std::size_t& size, const T& value){
 // Constructor: Initializer list. Add elements via Vector x = {...}
 template <typename T>
 Vector<T>::Vector(const std::initializer_list<T> list){
-	size_t list_size = list.capacity();
+	size_t list_size = list.size();
 	my_capacity = list_size;
 	my_size = list_size;
 	vector = new T[capacity()];
@@ -202,7 +204,7 @@ void Vector<T>::reset(){
 	}
 }
 
-// Returns the number of elements in the container
+// Returns the capacity for the container
 template <typename T>
 std::size_t Vector<T>::capacity() const{
 	return my_capacity;
@@ -248,6 +250,17 @@ T* Vector<T>::begin() const {
 template <typename T>
 T* Vector<T>::end() const {
 	return vector + size();
+}
+
+template <typename T>
+T* Vector<T>::find(const T& searched_element) const {
+	size_t size = Vector<T>::size();
+	for (size_t i = 0; i < size ; ++i) {
+		if (vector[i] == searched_element) {
+			return &vector[i];
+		}
+	}
+	return end();
 }
 
 // int main(){
