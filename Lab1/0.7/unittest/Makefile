@@ -71,11 +71,11 @@ gtest_main.a : gtest-all.o gtest_main.o
 # gtest_main.a, depending on whether it defines its own main()
 # function.
 
-Vector.o : $(USER_DIR)/Vector.cpp $(USER_DIR)/Vector.cpp $(GTEST_HEADERS)
+Vector.o : $(USER_DIR)/Vector.cpp $(USER_DIR)/Vector.h $(GTEST_HEADERS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/Vector.cpp
 
 Vector_unittest.o : $(USER_DIR)/unittest/vector_unittest.cpp \
-                     $(USER_DIR)/Vector.cpp $(GTEST_HEADERS)
+                     $(USER_DIR)/Vector.h $(GTEST_HEADERS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/unittest/vector_unittest.cpp
 
 vector_unittest : Vector.o vector_unittest.o gtest_main.a

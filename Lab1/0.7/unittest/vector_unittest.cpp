@@ -44,6 +44,7 @@
 // Don't forget gtest.h, which declares the testing framework.
 
 #include "../Vector.h"
+#include "../Vector.cpp"
 #include <gtest/gtest.h> // Use row below instead if you don't have gtest in your global include path
 //#include "../../gtest-1.7.0/include/gtest/gtest.h"
 
