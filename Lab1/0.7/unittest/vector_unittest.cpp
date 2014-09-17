@@ -76,19 +76,19 @@
 // Test default constructor
 TEST(default_constructor, size) {
 	Vector<int> a;
-	EXPECT_EQ(a.size(), 0);
+	EXPECT_EQ(a.capacity(), 0);
 }
 
 // Test size of zero initialize constructor
 TEST(zero_initialized_constructor, size) {
 	Vector<int> a(0);
-	EXPECT_EQ(a.size(), 0);
+	EXPECT_EQ(a.capacity(), 0);
 
 	Vector<int> b(3);
-	EXPECT_EQ(b.size(), 3);
+	EXPECT_EQ(b.capacity(), 3);
 
 	Vector<int> c(10);
-	EXPECT_EQ(c.size(), 10);
+	EXPECT_EQ(c.capacity(), 10);
 }
 
 // Test size of zero initialize constructor
@@ -99,7 +99,7 @@ TEST(zero_initialized_constructor, int_content) {
 // Test size of zero initialize constructor
 TEST(change_content, int_content){
   Vector<int> a(2);
-	size_t a_size = a.size();
+	size_t a_size = a.capacity();
   for (size_t i = 0; i < a_size; ++i) {
   	a[i] = 2;
   	EXPECT_EQ(a[i], 2);
@@ -122,35 +122,41 @@ TEST(dynamic_allocation, free_empty) {
 TEST(dynamic_allocation, free_array) {
   Vector<int>* a = new Vector<int>[3];
   // a[0] = Vector<int>(3);
-  // EXPECT_EQ(a[0].size(), 3);
+  // EXPECT_EQ(a[0].capacity(), 3);
 
   // a[1] = Vector<int>(0);
-  // EXPECT_EQ(a[1].size(), 0);
+  // EXPECT_EQ(a[1].capacity(), 0);
   // delete a[0];
   delete[] a;
 }
 
 TEST(num_elem_constructor_with_value, construct) {
-  Vector<int> a(10, 42);
-  size_t size = a.size();
+  Vector<int>* a = new Vector<int>(10, 42);
+  size_t size = a->capacity();
   EXPECT_EQ(size, 10);
   for (size_t i = 0; i < size; ++i){
-    EXPECT_EQ(a[i], 42);
+    EXPECT_EQ((*a)[i], 42);
   }
 
   Vector<char> b(10, 'b');
-  size = b.size();
+  size = b.capacity();
   EXPECT_EQ(size, 10);
   for (size_t i = 0; i < size; ++i){
     EXPECT_EQ(b[i], 'b');
   }
 
-  Vector<Vector<int>>c(10, a);
-  size = c.size();
+  Vector<Vector<int>>* c = new Vector<Vector<int>>(10, *a);
+  size = c->capacity();
   EXPECT_EQ(size, 10);
-  for (size_t i = 0; i < size; ++i){
-    for (size_t i = 0; i < a.size(); ++i) {
-      EXPECT_EQ(a[i], 42);
+  for (size_t i = 0; i < size; ++i) {
+    for (size_t j = 0; j < a->capacity(); ++j) {
+      EXPECT_EQ((*c)[i][j], 42);
     }
   }
+  delete a;
+  delete c;
 }
+
+
+
+// TODO: Test is_move_constructible and is_move_assignable
