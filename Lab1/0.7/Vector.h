@@ -254,8 +254,8 @@ T* Vector<T>::end() const {
 
 template <typename T>
 T* Vector<T>::find(const T& searched_element) const {
-	size_t size = Vector<T>::size();
-	for (size_t i = 0; i < size ; ++i) {
+	size_t s = size();
+	for (size_t i = 0; i < s ; ++i) {
 		if (vector[i] == searched_element) {
 			return &vector[i];
 		}

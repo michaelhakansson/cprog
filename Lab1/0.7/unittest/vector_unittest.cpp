@@ -198,8 +198,13 @@ TEST(end_function, correct_address) {
 // equals x. If no element matches, end() is return.
 TEST(find_function, correct_address) {
   Vector<int> a{1,2,3,4,5,6};
+  
+  EXPECT_EQ(a[0], 1);
   EXPECT_EQ(a.find(1), &a[0]);
+  
+  EXPECT_EQ(a[3], 4);
   EXPECT_EQ(a.find(4), &a[3]);
+
   EXPECT_EQ(a.find(9), &a[a.size()-1]+1);
 }
 
