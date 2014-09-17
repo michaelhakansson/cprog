@@ -1,6 +1,7 @@
 #include <iostream>
 #include <stdexcept>
 #include <initializer_list>
+#include "Vector.h"
 
 // Default constructor
 template <typename T>
