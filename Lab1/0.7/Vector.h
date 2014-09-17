@@ -28,6 +28,8 @@ template <typename T> class Vector {
 		//s = num of zero-initialized elements to be stored
 		Vector(const std::size_t&);
 
+		Vector(const std::size_t&, const T&);
+
 		Vector(const std::initializer_list<T>);
 
 		T& operator[](const unsigned int);

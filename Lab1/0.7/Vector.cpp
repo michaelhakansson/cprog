@@ -26,7 +26,7 @@ Vector<T>& Vector<T>::operator= (const Vector &src){
 	if (this != &src) {
 		if (Vector<T>::vector_size != src.vector_size) {
 			Vector<T>::free();
-			Vector<T>::vector = new unsigned int[src.vector_size];
+			Vector<T>::vector = new T[src.vector_size];
 			Vector<T>::vector_size = src.vector_size;
 		}
 		for(unsigned int i = 0; i < Vector<T>::vector_size; ++i) {
@@ -59,14 +59,21 @@ Vector<T>& Vector<T>::operator= (Vector &&src) noexcept{
 }
 
 
-// Constructor: size = num of zero-initialized elements to be stored
+// Constructor: size = num of uninitialized elements to be stored
 template <typename T>
 Vector<T>::Vector(const std::size_t& size){
 	Vector<T>::vector = new T[size];
 	Vector<T>::vector_size = size;
+}
+
+// Constructor: size = num of T-initialized elements with value 'value'
+template <typename T>
+Vector<T>::Vector(const std::size_t& size, const T& value){
+	Vector<T>::vector = new T[size];
+	Vector<T>::vector_size = size;
 	
 	for(size_t i = 0; i < size; ++i){
-		Vector<T>::vector[i] = 0;
+		Vector<T>::vector[i] = value;
 	}
 }
 
