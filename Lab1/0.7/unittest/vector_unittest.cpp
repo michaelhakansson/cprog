@@ -158,10 +158,37 @@ TEST(num_elem_constructor_with_value, construct) {
   delete c;
 }
 
+// Test capacity
+TEST(capacity_test, size) {
+  Vector<int> a;
+  EXPECT_EQ(a.capacity(), 0);
+
+  Vector<int> b(100);
+  EXPECT_EQ(b.capacity(), 100);
+
+}
+
+// Test size
+TEST(size_test, size) {
+  Vector<int> a;
+  EXPECT_EQ(a.size(), 0);
+
+  Vector<int> b(100);
+  EXPECT_EQ(b.size(), 100);
+
+  //TODO: FIX MORE SIZE TESTS
+}
+
 // Test that begin() function returns pointer to first element in vector.
 TEST(begin_function, correct_address) {
   Vector<int> a(10);
   EXPECT_EQ(a.begin(), &a[0]);
+}
+
+// Test that begin() function returns pointer to first element in vector.
+TEST(end_function, correct_address) {
+  Vector<int> b(10);
+  EXPECT_EQ(b.end(), &b[9] + 1);
 }
 
 

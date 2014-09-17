@@ -48,17 +48,26 @@ static_assert(std::is_move_assignable<T>::value, "This type is not move assignab
 		//Returns the number of elements in the container
 		std::size_t capacity() const;
 
+		//Returns the number of elements in the container
+		std::size_t size() const;
+
 		// Frees the elements in the Vector
 		void free();
 
 		//Prints each element of the vector
 		void print() const;
 
+		// Returns a pointer to the first element in the container
 		T* begin() const;
+
+		// Returns a pointer to the element right after the last
+		// element in the container
+		T* end() const;
 
 	private:
 	T* vector;
-	std::size_t capacity_size;
+	std::size_t my_capacity;
+	std::size_t my_size;
 };
 
 #include <iostream>
@@ -75,7 +84,8 @@ Vector<T>::Vector() : Vector<T>::Vector(0) {
 // Copy constructor
 template <typename T>
 Vector<T>::Vector(const Vector& src){
-	capacity_size = src.capacity();
+	my_capacity = src.capacity();
+	my_size = src.size();
 	vector = new T[capacity()];
 	
 	for(size_t i = 0; i < capacity(); ++i){
@@ -90,7 +100,8 @@ Vector<T>& Vector<T>::operator= (const Vector &src){
 		if (capacity() != src.capacity()) {
 			free();
 			vector = new T[src.capacity()];
-			capacity_size = src.capacity();
+			my_capacity = src.capacity();
+			my_size = src.size();
 		}
 		for(size_t i = 0; i < capacity(); ++i) {
 			vector[i] = src[i];
@@ -103,9 +114,10 @@ Vector<T>& Vector<T>::operator= (const Vector &src){
 // Move constructor
 template <typename T>
 Vector<T>::Vector(Vector&& src) noexcept
-	: vector(src.vector), capacity_size(src.capacity()){
+	: vector(src.vector), my_capacity(src.capacity()), my_size(src.size()){
 		src.vector = nullptr; // Free pointer to make it safe to run destructor
-		src.capacity_size = 0;
+		src.my_capacity = 0;
+		src.my_size = 0;
 	}
 
 // Move assignment operator taking an Vector
@@ -114,9 +126,11 @@ Vector<T>& Vector<T>::operator= (Vector &&src) noexcept{
 	if (this != &src) { // If not trying to move to itself
 		free();
 		vector = src.vector;
-		capacity_size = src.capacity();
+		my_capacity = src.capacity();
+		my_size = src.size();
 		src.vector = nullptr; // Free pointer to make it safe to run destructor
-		src.capacity_size = 0;
+		src.my_capacity = 0;
+		src.my_size = 0;
 	}
 	return *this;
 }
@@ -126,14 +140,16 @@ Vector<T>& Vector<T>::operator= (Vector &&src) noexcept{
 template <typename T>
 Vector<T>::Vector(const std::size_t& size){
 	vector = new T[size];
-	capacity_size = size;
+	my_capacity = size;
+	my_size = size;
 }
 
 // Constructor: size = num of T-initialized elements with value 'value'
 template <typename T>
 Vector<T>::Vector(const std::size_t& size, const T& value){
 	vector = new T[size];
-	capacity_size = size;
+	my_capacity = size;
+	my_size = size;
 
 	for(size_t i = 0; i < size; ++i){
 		vector[i] = value;
@@ -144,7 +160,8 @@ Vector<T>::Vector(const std::size_t& size, const T& value){
 template <typename T>
 Vector<T>::Vector(const std::initializer_list<T> list){
 	size_t list_size = list.capacity();
-	capacity_size = list_size;
+	my_capacity = list_size;
+	my_size = list_size;
 	vector = new T[capacity()];
 
 	for(size_t i = 0; i < list_size; ++i) {
@@ -188,7 +205,13 @@ void Vector<T>::reset(){
 // Returns the number of elements in the container
 template <typename T>
 std::size_t Vector<T>::capacity() const{
-	return capacity_size;
+	return my_capacity;
+}
+
+// Returns the number of elements in the container
+template <typename T>
+std::size_t Vector<T>::size() const{
+	return my_size;
 }
 
 // TODO: size() function. Returns the number of contained elements
@@ -216,9 +239,15 @@ void Vector<T>::print() const{
 	}
 }
 
+
 template <typename T>
 T* Vector<T>::begin() const {
 	return vector;
+}
+
+template <typename T>
+T* Vector<T>::end() const {
+	return vector + size();
 }
 
 // int main(){
