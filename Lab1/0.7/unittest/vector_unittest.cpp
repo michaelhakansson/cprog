@@ -121,12 +121,12 @@ TEST(dynamic_allocation, free_empty) {
 
 TEST(dynamic_allocation, free_array) {
   Vector<int>* a = new Vector<int>[3];
-  // a[0] = Vector<int>(3);
-  // EXPECT_EQ(a[0].capacity(), 3);
+  a[0] = Vector<int>(3); // TODO: LEAKS 1 BYTE IN 1 BLOCK
+  EXPECT_EQ(a[0].capacity(), 3);
 
-  // a[1] = Vector<int>(0);
-  // EXPECT_EQ(a[1].capacity(), 0);
-  // delete a[0];
+  a[1] = Vector<int>(0); // TODO: LEAKS 1 BYTE IN 1 BLOCK
+  EXPECT_EQ(a[1].capacity(), 0);
+
   delete[] a;
 }
 
@@ -145,6 +145,7 @@ TEST(num_elem_constructor_with_value, construct) {
     EXPECT_EQ(b[i], 'b');
   }
 
+  // TODO: LEAKS 10 BYTES IN 10 BLOCKS
   Vector<Vector<int>>* c = new Vector<Vector<int>>(10, *a);
   size = c->capacity();
   EXPECT_EQ(size, 10);
@@ -157,6 +158,13 @@ TEST(num_elem_constructor_with_value, construct) {
   delete c;
 }
 
+// Test that begin() function returns pointer to first element in vector.
+TEST(begin_function, correct_address) {
+  Vector<int> a(10);
+  EXPECT_EQ(a.begin(), &a[0]);
+}
+
 
 
 // TODO: Test is_move_constructible and is_move_assignable
+

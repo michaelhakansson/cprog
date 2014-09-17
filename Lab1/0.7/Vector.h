@@ -54,6 +54,8 @@ static_assert(std::is_move_assignable<T>::value, "This type is not move assignab
 		//Prints each element of the vector
 		void print() const;
 
+		T* begin() const;
+
 	private:
 	T* vector;
 	std::size_t capacity_size;
@@ -189,6 +191,9 @@ std::size_t Vector<T>::capacity() const{
 	return capacity_size;
 }
 
+// TODO: size() function. Returns the number of contained elements
+// by calculating end()-begin().
+
 // Returns the number of elements in the container
 template <typename T>
 void Vector<T>::free(){
@@ -209,6 +214,11 @@ void Vector<T>::print() const{
 		std::cout << vector[size-1];
 		std::cout << "]" <<std::endl;
 	}
+}
+
+template <typename T>
+T* Vector<T>::begin() const {
+	return vector;
 }
 
 // int main(){
