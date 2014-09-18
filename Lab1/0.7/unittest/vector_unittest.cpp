@@ -193,7 +193,6 @@ TEST(end_function, correct_address) {
   EXPECT_EQ(b.end(), &b[9] + 1);
 }
 
-
 // Test that the find(x) function returns pointer to first element that
 // equals x. If no element matches, end() is return.
 TEST(find_function, correct_address) {

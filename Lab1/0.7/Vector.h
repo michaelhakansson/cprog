@@ -80,12 +80,14 @@ static_assert(std::is_move_assignable<T>::value, "This type is not move assignab
 // Default constructor
 template <typename T>
 Vector<T>::Vector() : Vector<T>::Vector(0) {
+	// std::cout << "DEFAULT CONSTRUCTOR" << std::endl; // LOGPRINT
 	//Delegating constructor to Vector(0)
 }
 
 // Copy constructor
 template <typename T>
 Vector<T>::Vector(const Vector& src){
+	// std::cout << "COPY CONSTRUCTOR" << std::endl; // LOGPRINT
 	my_capacity = src.capacity();
 	my_size = src.size();
 	vector = new T[capacity()];
@@ -98,6 +100,7 @@ Vector<T>::Vector(const Vector& src){
 // Copy assignment operator taking an Vector
 template <typename T>
 Vector<T>& Vector<T>::operator= (const Vector &src){
+	// std::cout << "COPY ASSIGNMENT CONSTRUCTOR" << std::endl; // LOGPRINT
 	if (this != &src) {
 		if (capacity() != src.capacity()) {
 			free();
@@ -117,14 +120,16 @@ Vector<T>& Vector<T>::operator= (const Vector &src){
 template <typename T>
 Vector<T>::Vector(Vector&& src) noexcept
 	: vector(src.vector), my_capacity(src.capacity()), my_size(src.size()){
+		// std::cout << "MOVE CONSTRUCTOR" << std::endl; // LOGPRINT
 		src.vector = nullptr; // Free pointer to make it safe to run destructor
 		src.my_capacity = 0;
 		src.my_size = 0;
 	}
 
-// Move assignment operator taking an Vector
+// Move assignment operator taking a Vector
 template <typename T>
 Vector<T>& Vector<T>::operator= (Vector &&src) noexcept{
+	// std::cout << "MOVE ASSIGNMENT CONSTRUCTOR" << std::endl; // LOGPRINT
 	if (this != &src) { // If not trying to move to itself
 		free();
 		vector = src.vector;
@@ -141,6 +146,7 @@ Vector<T>& Vector<T>::operator= (Vector &&src) noexcept{
 // Constructor: size = num of uninitialized elements to be stored
 template <typename T>
 Vector<T>::Vector(const std::size_t& size){
+	// std::cout << "SIZE_T CONSTRUCTOR" << std::endl; // LOGPRINT
 	vector = new T[size];
 	my_capacity = size;
 	my_size = size;
@@ -149,6 +155,7 @@ Vector<T>::Vector(const std::size_t& size){
 // Constructor: size = num of T-initialized elements with value 'value'
 template <typename T>
 Vector<T>::Vector(const std::size_t& size, const T& value){
+	// std::cout << "SIZE_T + VALUE CONSTRUCTOR" << std::endl; // LOGPRINT
 	vector = new T[size];
 	my_capacity = size;
 	my_size = size;
@@ -161,6 +168,7 @@ Vector<T>::Vector(const std::size_t& size, const T& value){
 // Constructor: Initializer list. Add elements via Vector x = {...}
 template <typename T>
 Vector<T>::Vector(const std::initializer_list<T> list){
+	// std::cout << "INITIALIZER LIST CONSTRUCTOR" << std::endl; // LOGPRINT
 	size_t list_size = list.size();
 	my_capacity = list_size;
 	my_size = list_size;
@@ -192,6 +200,7 @@ const T& Vector<T>::operator[](const unsigned int x) const{
 // Destructor
 template <typename T>
 Vector<T>::~Vector(){
+	// std::cout << "DESTRUCTOR" << std::endl; // LOGPRINT
 	delete[] vector;
 };
 
@@ -222,10 +231,12 @@ std::size_t Vector<T>::size() const{
 // Returns the number of elements in the container
 template <typename T>
 void Vector<T>::free(){
-	size_t size = capacity();
-	if (size != 0) {
+	// std::cout << "FREE FUNCTION" << std::endl; // LOGPRINT
+	// size_t size = capacity();
+	// if (size != 0) { // TODO: This was our memory leak. Should probably
+						// be fixed in UIntVector as well.
 		delete[] vector;
-	}
+	// }
 }
 
 template <typename T>
