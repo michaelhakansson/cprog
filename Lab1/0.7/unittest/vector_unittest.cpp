@@ -44,9 +44,7 @@
 // Don't forget gtest.h, which declares the testing framework.
 
 #include "../Vector.h"
-#include "../Vector.cpp"
-#include <gtest/gtest.h> // Use row below instead if you don't have gtest in your global include path
-//#include "../../gtest-1.7.0/include/gtest/gtest.h"
+#include "../../gtest-1.7.0/include/gtest/gtest.h"
 
 // Step 2. Use the TEST macro to define your tests.
 //
@@ -121,10 +119,10 @@ TEST(dynamic_allocation, free_empty) {
 
 TEST(dynamic_allocation, free_array) {
   Vector<int>* a = new Vector<int>[3];
-  a[0] = Vector<int>(3); // TODO: LEAKS 1 BYTE IN 1 BLOCK
+  a[0] = Vector<int>(3);
   EXPECT_EQ(a[0].capacity(), 3);
 
-  a[1] = Vector<int>(0); // TODO: LEAKS 1 BYTE IN 1 BLOCK
+  a[1] = Vector<int>(0);
   EXPECT_EQ(a[1].capacity(), 0);
 
   delete[] a;
@@ -145,7 +143,6 @@ TEST(num_elem_constructor_with_value, construct) {
     EXPECT_EQ(b[i], 'b');
   }
 
-  // TODO: LEAKS 10 BYTES IN 10 BLOCKS
   Vector<Vector<int>>* c = new Vector<Vector<int>>(10, *a);
   size = c->capacity();
   EXPECT_EQ(size, 10);

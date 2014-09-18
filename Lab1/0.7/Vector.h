@@ -223,9 +223,6 @@ std::size_t Vector<T>::size() const{
 	return my_size;
 }
 
-// TODO: size() function. Returns the number of contained elements
-// by calculating end()-begin().
-
 // Returns the number of elements in the container
 template <typename T>
 void Vector<T>::free(){
