@@ -207,7 +207,59 @@ TEST(find_function, correct_address) {
   EXPECT_EQ(a.find(9), &a[a.size()-1]+1);
 }
 
+// Test that push back functions correctly
+// Counts with expand_factor = 2
+TEST(push_back, correct_size) {
+  Vector<int> a({1,2,3,4,5,6});
+  EXPECT_EQ(a.size(), 6);
+  a.push_back(7);
+  EXPECT_EQ(a.size(), 7);
+  a.push_back(8);
+  EXPECT_EQ(a.size(), 8);
+}
 
+// Test that push back functions correctly
+// Counts with expand_factor = 2
+TEST(push_back, correct_capacity) {
+  Vector<int> a({1,2});
+  EXPECT_EQ(a.size(), 2);
+  EXPECT_EQ(a.capacity(), 2);
+  a.push_back(3);
+  EXPECT_EQ(a.size(), 3);
+  EXPECT_EQ(a.capacity(), 6);
+  a.push_back(4);
+  EXPECT_EQ(a.size(), 4);
+  EXPECT_EQ(a.capacity(), 6);
+  a.push_back(5);
+  EXPECT_EQ(a.size(), 5);
+  EXPECT_EQ(a.capacity(), 6);
+}
+
+// Test that expanding from 0-size container works properly
+// Counts with expand_factor = 2
+TEST(push_back, expand_from_0_container) {
+  Vector<int> a;
+  EXPECT_EQ(a.size(), 0);
+  EXPECT_EQ(a.capacity(), 0);
+  a.push_back(1);
+  EXPECT_EQ(a.size(), 1);
+  EXPECT_EQ(a.capacity(), 2);
+}
+
+
+// Test that the content when pushed is correct
+TEST(push_back, content) {
+  Vector<int> a;
+  a.push_back(1);
+  EXPECT_EQ(a[0], 1);
+  a.push_back(2);
+  EXPECT_EQ(a[0], 1);
+  EXPECT_EQ(a[1], 2);
+  a.push_back(3);
+  EXPECT_EQ(a[0], 1);
+  EXPECT_EQ(a[1], 2);
+  EXPECT_EQ(a[2], 3);
+}
 
 // TODO: Test is_move_constructible and is_move_assignable
 

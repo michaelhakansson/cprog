@@ -12,18 +12,14 @@ static_assert(std::is_move_assignable<T>::value, "This type is not move assignab
 		//Default constructor
 		Vector();
 
-		//COPY
 		//Copy constructor
 		Vector(const Vector&);
 
 		//Copy assignment operator taking an Vector
 		Vector& operator= (const Vector&);
 
-
-		//MOVE
 		//Move constructor
 		Vector(Vector&&) noexcept;
-
 
 		//Move assignment operator taking an Vector		
 		Vector& operator=(Vector &&rsrc) noexcept;
@@ -65,6 +61,8 @@ static_assert(std::is_move_assignable<T>::value, "This type is not move assignab
 		T* end() const;
 
 		T* find(const T&) const;
+
+		void push_back(const T&);
 
 	private:
 	T* vector;
@@ -181,7 +179,7 @@ Vector<T>::Vector(const std::initializer_list<T> list){
 
 template <typename T>
 T& Vector<T>::operator[](const unsigned int x){
-	if(x >= capacity()){
+	if(x >= size()){
 		throw std::out_of_range("Index out of bounds");
 	}
 
@@ -190,7 +188,7 @@ T& Vector<T>::operator[](const unsigned int x){
 
 template <typename T>
 const T& Vector<T>::operator[](const unsigned int x) const{
-	if(x >= capacity()){
+	if(x >= size()){
 		throw std::out_of_range("Index out of bounds");
 	}
 	return vector[x];
@@ -241,13 +239,13 @@ void Vector<T>::free(){
 
 template <typename T>
 void Vector<T>::print() const{
-	size_t size = capacity();
-	if(size > 0) {
+	size_t sz = size();
+	if(sz > 0) {
 		std::cout << "[";
-		for(size_t i = 0; i < size-1; ++i){
+		for(size_t i = 0; i < sz-1; ++i){
 			std::cout << vector[i] << ", ";
 		}
-		std::cout << vector[size-1];
+		std::cout << vector[sz-1];
 		std::cout << "]" <<std::endl;
 	}
 }
@@ -272,6 +270,24 @@ T* Vector<T>::find(const T& searched_element) const {
 		}
 	}
 	return end();
+}
+
+template <typename T>
+void Vector<T>::push_back(const T& elem_to_push) {
+	if (capacity() <= size()) { //Must expand container
+		size_t expand_factor = 2; //Factor for full container expansion
+		// Create new vector with 'expand_factor' as much capacity
+		size_t new_capacity = expand_factor * (capacity()+1); //+1 to cover 0-size container case
+		T* new_vector = new T[new_capacity];
+		for (size_t i = 0; i < size(); ++i) { //Copy all old elements to new
+			new_vector[i] = vector[i];
+		}
+		free(); //Free memory for old array
+		vector = new_vector; //Repoint 'vector' pointer to new array
+		my_capacity = new_capacity; //Update capacity variable
+	}	
+	*end() = elem_to_push;
+	++my_size; //Increment size variable
 }
 
 // int main(){
