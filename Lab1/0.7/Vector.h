@@ -1,8 +1,10 @@
-#ifndef Vector_HEJ
-#define Vector_HEJ
+#ifndef Vector_H_OWN
+#define Vector_H_OWN
 #include <cstddef> // Needed for std::size_t
 #include <initializer_list>
 #include <type_traits>
+
+// TODO: MAKE APPROPRIATE CONSTRUCTORS 'explicit'
 
 //A container that can store any arbitrary number of positive integers
 template <typename T> class Vector {
@@ -63,6 +65,12 @@ static_assert(std::is_move_assignable<T>::value, "This type is not move assignab
 		T* find(const T&) const;
 
 		void push_back(const T&);
+
+		void insert(std::size_t, T);
+
+		void clear();
+
+		void erase(std::size_t);
 
 	private:
 	T* vector;
@@ -269,6 +277,8 @@ T* Vector<T>::find(const T& searched_element) const {
 	return end();
 }
 
+
+//TODO: Refactor to have a expand container function
 template <typename T>
 void Vector<T>::push_back(const T& elem_to_push) {
 	if (capacity() <= size()) { //Must expand container
@@ -287,22 +297,22 @@ void Vector<T>::push_back(const T& elem_to_push) {
 	++my_size; //Increment size variable
 }
 
-// int main(){
-// 	Vector a(5); // Initialize 5 zero-elements
-// 	a[2] = 2;
-// 	a[4] = 4;
-// 	Vector b = {1,2,3}; // Initialize with initialization list
-// 	a.print();
-// 	b.print();
-// 	Vector c = b; // Use copy constructor
-// 	c.print();
-// 	Vector d(std::move(a));
-// 	d.print();
-// 	a = std::move(b);
-// 	a.print();
-// 	c = d;
-// 	c.print();
-// }
+template <typename T>
+void Vector<T>::insert(std::size_t index, T elem) {
+	//TODO
+}
 
+template <typename T>
+void Vector<T>::clear() {
+	free();
+	vector = new T[0];
+	my_size = 0;
+	my_capacity = 0;
+}
+
+template <typename T>
+void Vector<T>::erase(std::size_t index_to_remove) {
+	//TODO
+}
 
 #endif
