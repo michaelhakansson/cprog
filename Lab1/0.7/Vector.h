@@ -301,7 +301,7 @@ void Vector<T>::push_back(const T& elem_to_push) {
 }
 
 template <typename T>
-void Vector<T>::insert(std::size_t index, T elem) {
+void Vector<T>::insert(const std::size_t index, const T elem) {
 	if (size()+1 <= capacity()) { // No reallocation needed
 
 		// Move all elements from index and forward one step towards the end.
@@ -351,7 +351,7 @@ void Vector<T>::clear() {
 }
 
 template <typename T>
-void Vector<T>::erase(std::size_t index_to_remove) {
+void Vector<T>::erase(const std::size_t index_to_remove) {
 	if (index_to_remove < size()) {
 		if (size() > 1) {
 			// Move all elements 1 step backwards, from index_to_remove and forward
