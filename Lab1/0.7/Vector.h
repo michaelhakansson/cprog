@@ -282,7 +282,12 @@ void Vector<T>::push_back(const T& elem_to_push) {
 	if (capacity() <= size()) { //Must expand container
 		std::size_t expand_factor = 2; //Factor for full container expansion
 		// Create new vector with 'expand_factor' as much capacity
-		std::size_t new_capacity = expand_factor * (capacity()+1); //+1 to cover 0-size container case
+		std::size_t new_capacity;
+		if (size() == 0) {
+			new_capacity = 1;
+		} else {
+			new_capacity = capacity() * expand_factor;
+		}
 		T* new_vector = new T[new_capacity];
 		for (std::size_t i = 0; i < size(); ++i) { //Copy all old elements to new
 			new_vector[i] = vector[i];
@@ -310,7 +315,12 @@ void Vector<T>::insert(std::size_t index, T elem) {
 
 	} else { // Reallocation needed
 		std::size_t expand_factor = 2; //Factor for full container expansion
-		std::size_t new_capacity = expand_factor * (capacity()+1); //+1 to cover 0-size container case
+		std::size_t new_capacity;
+		if (size() == 0) {
+			new_capacity = 1;
+		} else {
+			new_capacity = capacity() * expand_factor;
+		}
 		T* new_vector = new T[new_capacity];
 
 		// Copy each element from old vector up until where the new element will be

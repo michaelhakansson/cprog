@@ -162,13 +162,13 @@ TEST(push_back, correct_capacity) {
   EXPECT_EQ(a.capacity(), 2);
   a.push_back(3);
   EXPECT_EQ(a.size(), 3);
-  EXPECT_EQ(a.capacity(), 6);
+  EXPECT_EQ(a.capacity(), 4);
   a.push_back(4);
   EXPECT_EQ(a.size(), 4);
-  EXPECT_EQ(a.capacity(), 6);
+  EXPECT_EQ(a.capacity(), 4);
   a.push_back(5);
   EXPECT_EQ(a.size(), 5);
-  EXPECT_EQ(a.capacity(), 6);
+  EXPECT_EQ(a.capacity(), 8);
 }
 
 // Test that expanding from 0-size container works properly
@@ -179,7 +179,7 @@ TEST(push_back, expand_from_0_container) {
   EXPECT_EQ(a.capacity(), 0);
   a.push_back(1);
   EXPECT_EQ(a.size(), 1);
-  EXPECT_EQ(a.capacity(), 2);
+  EXPECT_EQ(a.capacity(), 1);
 }
 
 
@@ -204,8 +204,6 @@ TEST(clear, will_clear_vector) {
   EXPECT_EQ(a.size(), 0);
   EXPECT_EQ(a.capacity(), 0);
   EXPECT_EQ(a.begin(), a.end());
-  a.push_back(1);
-  EXPECT_EQ(a[0], 1);
 }
 
 TEST(erase, erase_first) {
@@ -263,7 +261,7 @@ TEST(insert, size_capacity) {
   EXPECT_EQ(a.capacity(), 0);
   a.insert(0, 123);
   EXPECT_EQ(a.size(), 1);
-  EXPECT_EQ(a.capacity(), 2);
+  EXPECT_EQ(a.capacity(), 1);
   a.insert(1, 321);
   EXPECT_EQ(a.size(), 2);
   EXPECT_EQ(a.capacity(), 2);
