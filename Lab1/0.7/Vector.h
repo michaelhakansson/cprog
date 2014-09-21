@@ -98,7 +98,7 @@ Vector<T>::Vector(const Vector& src){
 	my_size = src.size();
 	vector = new T[capacity()];
 	
-	for(size_t i = 0; i < capacity(); ++i){
+	for(std::size_t i = 0; i < capacity(); ++i){
 		vector[i] = src[i];
 	}
 }
@@ -114,7 +114,7 @@ Vector<T>& Vector<T>::operator= (const Vector &src){
 			my_capacity = src.capacity();
 			my_size = src.size();
 		}
-		for(size_t i = 0; i < capacity(); ++i) {
+		for(std::size_t i = 0; i < capacity(); ++i) {
 			vector[i] = src[i];
 		}
 	}
@@ -166,7 +166,7 @@ Vector<T>::Vector(const std::size_t& size, const T& value){
 	my_capacity = size;
 	my_size = size;
 
-	for(size_t i = 0; i < size; ++i){
+	for(std::size_t i = 0; i < size; ++i){
 		vector[i] = value;
 	}
 }
@@ -175,12 +175,12 @@ Vector<T>::Vector(const std::size_t& size, const T& value){
 template <typename T>
 Vector<T>::Vector(const std::initializer_list<T> list){
 	// std::cout << "INITIALIZER LIST CONSTRUCTOR" << std::endl; // LOGPRINT
-	size_t list_size = list.size();
+	std::size_t list_size = list.size();
 	my_capacity = list_size;
 	my_size = list_size;
 	vector = new T[capacity()];
 
-	for(size_t i = 0; i < list_size; ++i) {
+	for(std::size_t i = 0; i < list_size; ++i) {
 		vector[i] = list.begin()[i];
 	}
 }
@@ -213,8 +213,8 @@ Vector<T>::~Vector(){
 // Assign unsigned int{} to each element in container
 template <typename T>
 void Vector<T>::reset(){
-	size_t size = capacity();
-	for(size_t i = 0; i < size; i++){
+	std::size_t size = capacity();
+	for(std::size_t i = 0; i < size; i++){
 		vector[i] = 0;
 	}
 }
@@ -244,10 +244,10 @@ void Vector<T>::free(){
 
 template <typename T>
 void Vector<T>::print() const{
-	size_t sz = size();
+	std::size_t sz = size();
 	if(sz > 0) {
 		std::cout << "[";
-		for(size_t i = 0; i < sz-1; ++i){
+		for(std::size_t i = 0; i < sz-1; ++i){
 			std::cout << vector[i] << ", ";
 		}
 		std::cout << vector[sz-1];
@@ -268,8 +268,8 @@ T* Vector<T>::end() const {
 
 template <typename T>
 T* Vector<T>::find(const T& searched_element) const {
-	size_t s = size();
-	for (size_t i = 0; i < s ; ++i) {
+	std::size_t s = size();
+	for (std::size_t i = 0; i < s ; ++i) {
 		if (vector[i] == searched_element) {
 			return &vector[i];
 		}
@@ -277,29 +277,59 @@ T* Vector<T>::find(const T& searched_element) const {
 	return end();
 }
 
-
-//TODO: Refactor to have a expand container function
 template <typename T>
 void Vector<T>::push_back(const T& elem_to_push) {
 	if (capacity() <= size()) { //Must expand container
-		size_t expand_factor = 2; //Factor for full container expansion
+		std::size_t expand_factor = 2; //Factor for full container expansion
 		// Create new vector with 'expand_factor' as much capacity
-		size_t new_capacity = expand_factor * (capacity()+1); //+1 to cover 0-size container case
+		std::size_t new_capacity = expand_factor * (capacity()+1); //+1 to cover 0-size container case
 		T* new_vector = new T[new_capacity];
-		for (size_t i = 0; i < size(); ++i) { //Copy all old elements to new
+		for (std::size_t i = 0; i < size(); ++i) { //Copy all old elements to new
 			new_vector[i] = vector[i];
 		}
 		free(); //Free memory for old array
 		vector = new_vector; //Repoint 'vector' pointer to new array
 		my_capacity = new_capacity; //Update capacity variable
-	}	
+	}
 	*end() = elem_to_push;
 	++my_size; //Increment size variable
 }
 
 template <typename T>
 void Vector<T>::insert(std::size_t index, T elem) {
-	//TODO
+	if (size()+1 <= capacity()) { // No reallocation needed
+
+		// Move all elements from index and forward one step towards the end.
+		// This makes room for the new element.
+		for (size_t i = size(); i > index; --i) { // Iterate backwards
+			vector[i] = vector[i-1];
+		}
+
+		// Insert the new element
+		vector[index] = elem;
+
+	} else { // Reallocation needed
+		std::size_t expand_factor = 2; //Factor for full container expansion
+		std::size_t new_capacity = expand_factor * (capacity()+1); //+1 to cover 0-size container case
+		T* new_vector = new T[new_capacity];
+
+		// Copy each element from old vector up until where the new element will be
+		for (std::size_t i = 0; i < index; ++i) {
+			new_vector[i] = vector[i];
+		}
+		
+		new_vector[index] = elem; // Insert new element
+		
+		// Copy the rest of the elements
+		for (std::size_t i = index; i < size(); ++i) {
+			new_vector[i+1] = vector[i];
+		}
+		
+		free(); // Free old vector
+		vector = new_vector; // Repoint vector pointer to new array
+		my_capacity = new_capacity;
+	}
+	++my_size;
 }
 
 template <typename T>
@@ -312,7 +342,15 @@ void Vector<T>::clear() {
 
 template <typename T>
 void Vector<T>::erase(std::size_t index_to_remove) {
-	//TODO
+	if (index_to_remove < size()) {
+		if (size() > 1) {
+			// Move all elements 1 step backwards, from index_to_remove and forward
+			for (std::size_t i = index_to_remove; i < size()-1; ++i) {
+				vector[i] = vector[i+1];
+			}
+		}
+		--my_size;
+	}
 }
 
 #endif

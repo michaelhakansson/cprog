@@ -208,5 +208,122 @@ TEST(clear, will_clear_vector) {
   EXPECT_EQ(a[0], 1);
 }
 
+TEST(erase, erase_first) {
+  Vector<int> a{1,2,3,4,5};
+  EXPECT_EQ(a.size(), 5);
+  EXPECT_EQ(a.capacity(), 5);
+  a.erase(0);
+  EXPECT_EQ(a.size(), 4);
+  EXPECT_EQ(a.capacity(), 5);
+  EXPECT_EQ(a[0], 2);
+  EXPECT_EQ(a[1], 3);
+  EXPECT_EQ(a[2], 4);
+  EXPECT_EQ(a[3], 5);
+}
+
+TEST(erase, erase_last) {
+  Vector<int> a{1,2,3,4,5};
+  EXPECT_EQ(a.size(), 5);
+  EXPECT_EQ(a.capacity(), 5);
+  a.erase(4);
+  EXPECT_EQ(a.size(), 4);
+  EXPECT_EQ(a.capacity(), 5);
+  EXPECT_EQ(a[0], 1);
+  EXPECT_EQ(a[1], 2);
+  EXPECT_EQ(a[2], 3);
+  EXPECT_EQ(a[3], 4);
+}
+
+TEST(erase, erase_and_collapse) {
+  Vector<int> a{1,2,3,4,5};
+  EXPECT_EQ(a.size(), 5);
+  EXPECT_EQ(a.capacity(), 5);
+  a.erase(3);
+  EXPECT_EQ(a.size(), 4);
+  EXPECT_EQ(a.capacity(), 5);
+  EXPECT_EQ(a[0], 1);
+  EXPECT_EQ(a[1], 2);
+  EXPECT_EQ(a[2], 3);
+  EXPECT_EQ(a[3], 5);
+}
+
+TEST(erase, erase_only_element) {
+  Vector<int> a{1};
+  EXPECT_EQ(a.size(), 1);
+  EXPECT_EQ(a.capacity(), 1);
+  a.erase(0);
+  EXPECT_EQ(a.size(), 0);
+  EXPECT_EQ(a.capacity(), 1);
+  EXPECT_EQ(a.begin(), a.end());
+}
+
+TEST(insert, size_capacity) {
+  Vector<int> a;
+  EXPECT_EQ(a.size(), 0);
+  EXPECT_EQ(a.capacity(), 0);
+  a.insert(0, 123);
+  EXPECT_EQ(a.size(), 1);
+  EXPECT_EQ(a.capacity(), 2);
+  a.insert(1, 321);
+  EXPECT_EQ(a.size(), 2);
+  EXPECT_EQ(a.capacity(), 2);
+}
+
+TEST(insert, empty_vector) {
+  Vector<int> a;
+  a.insert(0, 123);
+  EXPECT_EQ(a[0], 123);
+}
+
+TEST(insert, element_first) {
+  Vector<int> a{1};
+  a.insert(0, 123);
+  EXPECT_EQ(a[0], 123);
+  EXPECT_EQ(a[1], 1);
+}
+
+TEST(insert, element_middle) {
+  Vector<int> a{1,2};
+  a.insert(1, 123);
+  EXPECT_EQ(a[0], 1);
+  EXPECT_EQ(a[1], 123);
+  EXPECT_EQ(a[2], 2);
+  a.insert(1, 345);
+  EXPECT_EQ(a[0], 1);
+  EXPECT_EQ(a[1], 345);
+  EXPECT_EQ(a[2], 123);
+  EXPECT_EQ(a[3], 2);
+}
+
+TEST(insert, element_last) {
+  Vector<int> a{1};
+  a.insert(1, 123);
+  a.insert(2, 234);
+  EXPECT_EQ(a[0], 1);
+  EXPECT_EQ(a[1], 123);
+  EXPECT_EQ(a[2], 234);
+}
+
+TEST(insert, element_last_multiple_times) {
+  Vector<int> a;
+  a.insert(0, 123);
+  a.insert(1, 456);
+  a.insert(2, 789);
+  EXPECT_EQ(a[0], 123);
+  EXPECT_EQ(a[1], 456);
+  EXPECT_EQ(a[2], 789);
+}
+
+TEST(insert, element_first_multiple_times) {
+  Vector<int> a;
+  a.insert(0, 123);
+  a.insert(0, 456);
+  a.insert(0, 789);
+  EXPECT_EQ(a[0], 789);
+  EXPECT_EQ(a[1], 456);
+  EXPECT_EQ(a[2], 123);
+}
+
+
 // TODO: Test is_move_constructible and is_move_assignable
 
