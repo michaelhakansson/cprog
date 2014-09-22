@@ -3,7 +3,8 @@
 :::: What does `$*` mean inside a makefile?
 --------------------------------------------------------------------------------
 
-Answer: $* is a variable that takes the name from %, which in turn corresponds to the file name (excl. file ending) that is passed along as an argument to make.
+Answer: $* is a variable that takes the name from %, which in turn corresponds 
+to the file name (excl. file ending) that is passed along as an argument to make.
 
 --------------------------------------------------------------------------------
 :::: What is the purpose of `-Wall` and -g, when passed as arguments to g++?
@@ -99,7 +100,10 @@ and happen to get a different behavior (it answers with that it IS equal).
 :::: two floating-point values are equal, and why?
 --------------------------------------------------------------------------------
 
-Answer: Use a small number (epsilon) that you choose as the error margin, and check if it is greater than the absolute difference of the two compared values. This must be used since floating-point values are to imprecise to be able to be compared with certainty.
+Answer: Use a small number (epsilon) that you choose as the error margin, and 
+check if it is greater than the absolute difference of the two compared values. 
+This must be used since floating-point values are to imprecise to be able to be 
+compared with certainty.
 --------------------------------------------------------------------------------
 
 
@@ -121,7 +125,10 @@ int count_if_followed_by (char const * p, int len, char a, char b) {
      especially in the case of `count_if_followed_by`?
 --------------------------------------------------------------------------------
 
-Answer: Firstly, it is easy to make errors with boundary conditions. In this specific case, the documentation also states the range [data, data+len) specifically. It is then very dangerous to not test it, since other people can use this code and trust the documentation.
+Answer: Firstly, it is easy to make errors with boundary conditions. In this 
+specific case, the documentation also states the range [data, data+len) 
+specifically. It is then very dangerous to not test it, since other people 
+can use this code and trust the documentation.
 
 --------------------------------------------------------------------------------
 
@@ -202,7 +209,7 @@ A () (aka the "default-constructor") is invoked when
 --------------------------------------------------------------------------------
 
 Answer: When we call the no_ref function, we initianlize the object with pass by 
-value, and the initialized variable will be destructed when the function ends, because
+value, and the initialized variable will be destructed when the function ends, because 
 it is on the stack.
 
 --------------------------------------------------------------------------------
@@ -298,7 +305,8 @@ In this case, no modification is allowed.
 :::: it for us?
 --------------------------------------------------------------------------------
 
-Answer: ...
+Answer: The compiler doesn't know the structure of the UintVector, and the constructor
+"automatically" created by the compiler can not know for sure how and what to copy.
 
 --------------------------------------------------------------------------------
 
@@ -310,14 +318,17 @@ Answer: ...
 :::: but the type of `source` must meet certain requirements; what are they?
 --------------------------------------------------------------------------------
 
-Answer: ...
+Answer: 'Source' must represent a sequence like initializer list, an array, or 
+an object that has begin and end functions, that return iterators to beginning 
+and end of the range.
 
 --------------------------------------------------------------------------------
 :::: The C++ Standard sometimes state that a type in the Standard Library is
 :::: "unspecified"; why do you think that is?
 --------------------------------------------------------------------------------
 
-Answer: ...
+Answer: It means that the type can not be deduced before compiling the code. 
+The type depends on the implementation.
 
 --------------------------------------------------------------------------------
 
