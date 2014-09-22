@@ -234,12 +234,7 @@ std::size_t Vector<T>::size() const{
 // Returns the number of elements in the container_
 template <typename T>
 void Vector<T>::free(){
-	// std::cout << "FREE FUNCTION" << std::endl; // LOGPRINT
-	// size_t size = capacity();
-	// if (size != 0) { // TODO: This was our memory leak. Should probably
-						// be fixed in UIntVector as well.
-		delete[] container_;
-	// }
+	delete[] container_;
 }
 
 template <typename T>
