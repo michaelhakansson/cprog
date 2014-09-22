@@ -4,9 +4,7 @@
 #include <initializer_list>
 #include <type_traits>
 
-// TODO: MAKE APPROPRIATE CONSTRUCTORS 'explicit'
-
-//A container that can store any arbitrary number of positive integers
+//A container_ that can store any arbitrary number of positive integers
 template <typename T> class Vector {
 static_assert(std::is_move_constructible<T>::value, "This type is not move constructible");
 static_assert(std::is_move_assignable<T>::value, "This type is not move assignable");
@@ -15,13 +13,13 @@ static_assert(std::is_move_assignable<T>::value, "This type is not move assignab
 		Vector();
 
 		//Copy constructor
-		Vector(const Vector&);
+		explicit Vector(const Vector&);
 
 		//Copy assignment operator taking an Vector
 		Vector& operator= (const Vector&);
 
 		//Move constructor
-		Vector(Vector&&) noexcept;
+		explicit Vector(Vector&&) noexcept;
 
 		//Move assignment operator taking an Vector		
 		Vector& operator=(Vector &&rsrc) noexcept;
@@ -31,7 +29,7 @@ static_assert(std::is_move_assignable<T>::value, "This type is not move assignab
 
 		Vector(const std::size_t&, const T&);
 
-		Vector(const std::initializer_list<T>);
+		explicit Vector(const std::initializer_list<T>);
 
 		T& operator[](const unsigned int);
 
@@ -40,26 +38,26 @@ static_assert(std::is_move_assignable<T>::value, "This type is not move assignab
 		//Destructor
 		virtual ~Vector();
 
-		//Assign unsigned int{} to each element in container
+		//Assign unsigned int{} to each element in container_
 		void reset();
 
-		//Returns the number of elements in the container
+		//Returns the number of elements in the container_
 		std::size_t capacity() const;
 
-		//Returns the number of elements in the container
+		//Returns the number of elements in the container_
 		std::size_t size() const;
 
 		// Frees the elements in the Vector
 		void free();
 
-		//Prints each element of the vector
+		//Prints each element of the container_
 		void print() const;
 
-		// Returns a pointer to the first element in the container
+		// Returns a pointer to the first element in the container_
 		T* begin() const;
 
 		// Returns a pointer to the element right after the last
-		// element in the container
+		// element in the container_
 		T* end() const;
 
 		T* find(const T&) const;
@@ -68,14 +66,16 @@ static_assert(std::is_move_assignable<T>::value, "This type is not move assignab
 
 		void insert(std::size_t, T);
 
+		void expand();
+
 		void clear();
 
 		void erase(std::size_t);
 
 	private:
-	T* vector;
-	std::size_t my_capacity;
-	std::size_t my_size;
+	T* container_;
+	std::size_t capacity_;
+	std::size_t size_;
 };
 
 #include <iostream>
@@ -94,12 +94,12 @@ Vector<T>::Vector() : Vector<T>::Vector(0) {
 template <typename T>
 Vector<T>::Vector(const Vector& src){
 	// std::cout << "COPY CONSTRUCTOR" << std::endl; // LOGPRINT
-	my_capacity = src.capacity();
-	my_size = src.size();
-	vector = new T[capacity()];
+	capacity_ = src.capacity();
+	size_ = src.size();
+	container_ = new T[capacity()];
 	
 	for(std::size_t i = 0; i < capacity(); ++i){
-		vector[i] = src[i];
+		container_[i] = src[i];
 	}
 }
 
@@ -110,12 +110,12 @@ Vector<T>& Vector<T>::operator= (const Vector &src){
 	if (this != &src) {
 		if (capacity() != src.capacity()) {
 			free();
-			vector = new T[src.capacity()];
-			my_capacity = src.capacity();
-			my_size = src.size();
+			container_ = new T[src.capacity()];
+			capacity_ = src.capacity();
+			size_ = src.size();
 		}
 		for(std::size_t i = 0; i < capacity(); ++i) {
-			vector[i] = src[i];
+			container_[i] = src[i];
 		}
 	}
 	return *this;
@@ -125,11 +125,11 @@ Vector<T>& Vector<T>::operator= (const Vector &src){
 // Move constructor
 template <typename T>
 Vector<T>::Vector(Vector&& src) noexcept
-	: vector(src.vector), my_capacity(src.capacity()), my_size(src.size()){
+	: container_(src.container_), capacity_(src.capacity()), size_(src.size()){
 		// std::cout << "MOVE CONSTRUCTOR" << std::endl; // LOGPRINT
-		src.vector = nullptr; // Free pointer to make it safe to run destructor
-		src.my_capacity = 0;
-		src.my_size = 0;
+		src.container_ = nullptr; // Free pointer to make it safe to run destructor
+		src.capacity_ = 0;
+		src.size_ = 0;
 	}
 
 // Move assignment operator taking a Vector
@@ -138,12 +138,12 @@ Vector<T>& Vector<T>::operator= (Vector &&src) noexcept{
 	// std::cout << "MOVE ASSIGNMENT CONSTRUCTOR" << std::endl; // LOGPRINT
 	if (this != &src) { // If not trying to move to itself
 		free();
-		vector = src.vector;
-		my_capacity = src.capacity();
-		my_size = src.size();
-		src.vector = nullptr; // Free pointer to make it safe to run destructor
-		src.my_capacity = 0;
-		src.my_size = 0;
+		container_ = src.container_;
+		capacity_ = src.capacity();
+		size_ = src.size();
+		src.container_ = nullptr; // Free pointer to make it safe to run destructor
+		src.capacity_ = 0;
+		src.size_ = 0;
 	}
 	return *this;
 }
@@ -153,21 +153,21 @@ Vector<T>& Vector<T>::operator= (Vector &&src) noexcept{
 template <typename T>
 Vector<T>::Vector(const std::size_t& size){
 	// std::cout << "SIZE_T CONSTRUCTOR" << std::endl; // LOGPRINT
-	vector = new T[size];
-	my_capacity = size;
-	my_size = size;
+	container_ = new T[size];
+	capacity_ = size;
+	size_ = size;
 }
 
 // Constructor: size = num of T-initialized elements with value 'value'
 template <typename T>
 Vector<T>::Vector(const std::size_t& size, const T& value){
 	// std::cout << "SIZE_T + VALUE CONSTRUCTOR" << std::endl; // LOGPRINT
-	vector = new T[size];
-	my_capacity = size;
-	my_size = size;
+	container_ = new T[size];
+	capacity_ = size;
+	size_ = size;
 
 	for(std::size_t i = 0; i < size; ++i){
-		vector[i] = value;
+		container_[i] = value;
 	}
 }
 
@@ -176,12 +176,12 @@ template <typename T>
 Vector<T>::Vector(const std::initializer_list<T> list){
 	// std::cout << "INITIALIZER LIST CONSTRUCTOR" << std::endl; // LOGPRINT
 	std::size_t list_size = list.size();
-	my_capacity = list_size;
-	my_size = list_size;
-	vector = new T[capacity()];
+	capacity_ = list_size;
+	size_ = list_size;
+	container_ = new T[capacity()];
 
 	for(std::size_t i = 0; i < list_size; ++i) {
-		vector[i] = list.begin()[i];
+		container_[i] = list.begin()[i];
 	}
 }
 
@@ -191,7 +191,7 @@ T& Vector<T>::operator[](const unsigned int x){
 		throw std::out_of_range("Index out of bounds");
 	}
 
-	return vector[x];
+	return container_[x];
 }
 
 template <typename T>
@@ -199,7 +199,7 @@ const T& Vector<T>::operator[](const unsigned int x) const{
 	if(x >= size()){
 		throw std::out_of_range("Index out of bounds");
 	}
-	return vector[x];
+	return container_[x];
 }
 
 
@@ -207,38 +207,38 @@ const T& Vector<T>::operator[](const unsigned int x) const{
 template <typename T>
 Vector<T>::~Vector(){
 	// std::cout << "DESTRUCTOR" << std::endl; // LOGPRINT
-	delete[] vector;
+	delete[] container_;
 };
 
-// Assign unsigned int{} to each element in container
+// Assign unsigned int{} to each element in container_
 template <typename T>
 void Vector<T>::reset(){
 	std::size_t size = capacity();
 	for(std::size_t i = 0; i < size; i++){
-		vector[i] = 0;
+		container_[i] = 0;
 	}
 }
 
-// Returns the capacity for the container
+// Returns the capacity for the container_
 template <typename T>
 std::size_t Vector<T>::capacity() const{
-	return my_capacity;
+	return capacity_;
 }
 
-// Returns the number of elements in the container
+// Returns the number of elements in the container_
 template <typename T>
 std::size_t Vector<T>::size() const{
-	return my_size;
+	return size_;
 }
 
-// Returns the number of elements in the container
+// Returns the number of elements in the container_
 template <typename T>
 void Vector<T>::free(){
 	// std::cout << "FREE FUNCTION" << std::endl; // LOGPRINT
 	// size_t size = capacity();
 	// if (size != 0) { // TODO: This was our memory leak. Should probably
 						// be fixed in UIntVector as well.
-		delete[] vector;
+		delete[] container_;
 	// }
 }
 
@@ -248,9 +248,9 @@ void Vector<T>::print() const{
 	if(sz > 0) {
 		std::cout << "[";
 		for(std::size_t i = 0; i < sz-1; ++i){
-			std::cout << vector[i] << ", ";
+			std::cout << container_[i] << ", ";
 		}
-		std::cout << vector[sz-1];
+		std::cout << container_[sz-1];
 		std::cout << "]" <<std::endl;
 	}
 }
@@ -258,20 +258,20 @@ void Vector<T>::print() const{
 
 template <typename T>
 T* Vector<T>::begin() const {
-	return vector;
+	return container_;
 }
 
 template <typename T>
 T* Vector<T>::end() const {
-	return vector + size();
+	return container_ + size();
 }
 
 template <typename T>
 T* Vector<T>::find(const T& searched_element) const {
 	std::size_t s = size();
 	for (std::size_t i = 0; i < s ; ++i) {
-		if (vector[i] == searched_element) {
-			return &vector[i];
+		if (container_[i] == searched_element) {
+			return &container_[i];
 		}
 	}
 	return end();
@@ -279,75 +279,56 @@ T* Vector<T>::find(const T& searched_element) const {
 
 template <typename T>
 void Vector<T>::push_back(const T& elem_to_push) {
-	if (capacity() <= size()) { //Must expand container
-		std::size_t expand_factor = 2; //Factor for full container expansion
-		// Create new vector with 'expand_factor' as much capacity
-		std::size_t new_capacity;
-		if (size() == 0) {
-			new_capacity = 1;
-		} else {
-			new_capacity = capacity() * expand_factor;
-		}
-		T* new_vector = new T[new_capacity];
-		for (std::size_t i = 0; i < size(); ++i) { //Copy all old elements to new
-			new_vector[i] = vector[i];
-		}
-		free(); //Free memory for old array
-		vector = new_vector; //Repoint 'vector' pointer to new array
-		my_capacity = new_capacity; //Update capacity variable
+	if (capacity() <= size()) { // Must expand container_
+		expand();
 	}
 	*end() = elem_to_push;
-	++my_size; //Increment size variable
+	++size_; //Increment size variable
 }
 
 template <typename T>
 void Vector<T>::insert(const std::size_t index, const T elem) {
-	if (size()+1 <= capacity()) { // No reallocation needed
-
-		// Move all elements from index and forward one step towards the end.
-		// This makes room for the new element.
-		for (size_t i = size(); i > index; --i) { // Iterate backwards
-			vector[i] = vector[i-1];
-		}
-
-		// Insert the new element
-		vector[index] = elem;
-
-	} else { // Reallocation needed
-		std::size_t expand_factor = 2; //Factor for full container expansion
-		std::size_t new_capacity;
-		if (size() == 0) {
-			new_capacity = 1;
-		} else {
-			new_capacity = capacity() * expand_factor;
-		}
-		T* new_vector = new T[new_capacity];
-
-		// Copy each element from old vector up until where the new element will be
-		for (std::size_t i = 0; i < index; ++i) {
-			new_vector[i] = vector[i];
-		}
-		
-		new_vector[index] = elem; // Insert new element
-		
-		// Copy the rest of the elements
-		for (std::size_t i = index; i < size(); ++i) {
-			new_vector[i+1] = vector[i];
-		}
-		
-		free(); // Free old vector
-		vector = new_vector; // Repoint vector pointer to new array
-		my_capacity = new_capacity;
+	if (capacity() <= size()) { // Must expand container_
+		expand();
 	}
-	++my_size;
+
+	// Move all elements from index and forward one step towards the end.
+	// This makes room for the new element.
+	for (size_t i = size(); i > index; --i) { // Iterate backwards
+		container_[i] = container_[i-1];
+	}
+
+	// Insert the new element
+	container_[index] = elem;
+	++size_;
+}
+
+template <typename T>
+void Vector<T>::expand() {
+	const std::size_t expand_factor = 2; //Factor for full container_ expansion
+	std::size_t new_capacity;
+	if (size() == 0) {
+		new_capacity = 1;
+	} else {
+		new_capacity = capacity() * expand_factor;
+	}
+	T* new_container = new T[new_capacity];
+
+	//Copy all elements from the old container to the new container
+	for (std::size_t i = 0; i < size(); ++i) {
+		new_container[i] = container_[i];
+	}
+	free(); //Free memory for old array
+	container_ = new_container; //Repoint 'container_' pointer to new array
+	capacity_ = new_capacity; //Update capacity variable
 }
 
 template <typename T>
 void Vector<T>::clear() {
 	free();
-	vector = new T[0];
-	my_size = 0;
-	my_capacity = 0;
+	container_ = new T[0];
+	size_ = 0;
+	capacity_ = 0;
 }
 
 template <typename T>
@@ -356,10 +337,10 @@ void Vector<T>::erase(const std::size_t index_to_remove) {
 		if (size() > 1) {
 			// Move all elements 1 step backwards, from index_to_remove and forward
 			for (std::size_t i = index_to_remove; i < size()-1; ++i) {
-				vector[i] = vector[i+1];
+				container_[i] = container_[i+1];
 			}
 		}
-		--my_size;
+		--size_;
 	}
 }
 
