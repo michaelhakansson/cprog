@@ -1,5 +1,6 @@
 #include "../Vector.h"
 #include "../../gtest-1.7.0/include/gtest/gtest.h"
+#include <string>
 
 // Test default constructor
 TEST(default_constructor, size) {
@@ -140,6 +141,7 @@ TEST(find_function, correct_address) {
   EXPECT_EQ(a[3], 4);
   EXPECT_EQ(a.find(4), &a[3]);
 
+  // Does not exist
   EXPECT_EQ(a.find(9), &a[a.size()-1]+1);
 }
 
@@ -202,7 +204,7 @@ TEST(clear, will_clear_vector) {
   EXPECT_EQ(a.size(), 3);
   a.clear();
   EXPECT_EQ(a.size(), 0);
-  EXPECT_EQ(a.capacity(), 0);
+  EXPECT_EQ(a.capacity(), 3);
   EXPECT_EQ(a.begin(), a.end());
 }
 
@@ -320,6 +322,66 @@ TEST(insert, element_first_multiple_times) {
   EXPECT_EQ(a[0], 789);
   EXPECT_EQ(a[1], 456);
   EXPECT_EQ(a[2], 123);
+}
+
+TEST(insert, string) {
+  Vector<std::string> a;
+  a.insert(0, "ghi");
+  a.insert(0, "def");
+  a.insert(0, "abc");
+  EXPECT_EQ(a[0], "abc");
+  EXPECT_EQ(a[1], "def");
+  EXPECT_EQ(a[2], "ghi");
+}
+
+// KATTIS VILLE ATT ERASE SKULLE KASTA EXCEPTION
+TEST(kattis, test8) {
+  Vector<int> vec(1000, 1024);
+  vec.push_back(2048);
+  EXPECT_GE(vec.capacity(), 1001);
+  vec.insert(0, 123);
+  vec.insert(2, 1337);
+  vec.insert(5, 123);
+  EXPECT_EQ(*(vec.end()-1), 2048);
+  EXPECT_EQ(*(vec.begin()), 123);
+  vec.clear();
+  EXPECT_EQ(vec.size(), 0);
+  // EXPECT_EQ(*(vec.begin()), 123);
+  // Non existing element searched ==> Return end pointer
+  EXPECT_EQ(vec.end(), vec.find(1337));
+  // vec.erase(2);
+}
+
+TEST(kattis, test11) {
+  Vector<int> A{1,2,3};
+  Vector<int> B(10);
+  EXPECT_EQ(A.size(), 3);
+  Vector<int> C(0);
+    EXPECT_EQ(B.size(), 10);
+    EXPECT_EQ(C.size(), 0);
+  C = A;
+  A = B;
+  Vector<int> D(C); // 6: SKA VARA C = D?
+  EXPECT_EQ(A.size(), 10);
+  EXPECT_EQ(B.size(), 10);
+  EXPECT_EQ(C.size(), 3);
+  EXPECT_EQ(C.size(), 3);
+  A[1] = 10;
+  B[2] = 11;
+  B.erase(0);
+  EXPECT_THROW(C[3] = 12, std::out_of_range);
+  C.erase(1);
+  EXPECT_EQ(A[1], 10);
+  EXPECT_EQ(B[2], 0);
+  EXPECT_THROW(C[3], std::out_of_range);
+  A.clear(); // 18: RESET $A?
+  EXPECT_EQ(A.size(), 0);
+  C = std::move(A);
+  A.clear();
+  EXPECT_THROW(C[3], std::out_of_range);
+  EXPECT_THROW(C[3] = 25, std::out_of_range);
+  A = std::move(C);
+  A = B;
 }
 
 

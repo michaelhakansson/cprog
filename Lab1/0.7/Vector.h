@@ -6,8 +6,8 @@
 
 //A container_ that can store any arbitrary number of positive integers
 template <typename T> class Vector {
-static_assert(std::is_move_constructible<T>::value, "This type is not move constructible");
-static_assert(std::is_move_assignable<T>::value, "This type is not move assignable");
+static_assert(std::is_move_constructible<T>::value, "Vector requires move constructible type");
+static_assert(std::is_move_assignable<T>::value, "Vector requires move assignable type");
 	public:
 		//Default constructor
 		Vector();
@@ -24,12 +24,12 @@ static_assert(std::is_move_assignable<T>::value, "This type is not move assignab
 		//Move assignment operator taking an Vector		
 		Vector& operator=(Vector &&rsrc) noexcept;
 
-		//s = num of zero-initialized elements to be stored
-		Vector(const std::size_t&);
+		//num of zero-initialized elements to be stored
+		explicit Vector(const std::size_t&);
 
 		Vector(const std::size_t&, const T&);
 
-		explicit Vector(const std::initializer_list<T>);
+		Vector(const std::initializer_list<T>);
 
 		T& operator[](const unsigned int);
 
@@ -81,7 +81,6 @@ static_assert(std::is_move_assignable<T>::value, "This type is not move assignab
 #include <iostream>
 #include <stdexcept>
 #include <initializer_list>
-#include "Vector.h"
 
 // Default constructor
 template <typename T>
@@ -92,29 +91,30 @@ Vector<T>::Vector() : Vector<T>::Vector(0) {
 
 // Copy constructor
 template <typename T>
-Vector<T>::Vector(const Vector& src){
-	// std::cout << "COPY CONSTRUCTOR" << std::endl; // LOGPRINT
-	capacity_ = src.capacity();
-	size_ = src.size();
-	container_ = new T[capacity()];
+Vector<T>::Vector(const Vector<T>& src)
+	: 	capacity_(src.capacity()), 
+		size_(src.size()),
+		container_(new T[src.capacity()]) {
 	
-	for(std::size_t i = 0; i < capacity(); ++i){
+	for(std::size_t i = 0; i < size_; ++i) {
 		container_[i] = src[i];
 	}
 }
 
-// Copy assignment operator taking an Vector
+// Copy assignment operator taking a Vector
 template <typename T>
-Vector<T>& Vector<T>::operator= (const Vector &src){
+Vector<T>& Vector<T>::operator= (const Vector<T>& src) {
 	// std::cout << "COPY ASSIGNMENT CONSTRUCTOR" << std::endl; // LOGPRINT
 	if (this != &src) {
-		if (capacity() != src.capacity()) {
-			free();
-			container_ = new T[src.capacity()];
-			capacity_ = src.capacity();
-			size_ = src.size();
-		}
-		for(std::size_t i = 0; i < capacity(); ++i) {
+		// KATTIS ERROR: STUPID OF US TO ASSUME THAT WE WOULDN'T HAVE TO
+		// REALLOCATE JUST BECAUSE THE CAP WAS THE SAME.
+		// if (capacity() != src.capacity()) {
+		free();
+		container_ = new T[src.capacity()];
+		capacity_ = src.capacity();
+		size_ = src.size();
+		// }
+		for(std::size_t i = 0; i < size_; ++i) {
 			container_[i] = src[i];
 		}
 	}
@@ -124,8 +124,10 @@ Vector<T>& Vector<T>::operator= (const Vector &src){
 
 // Move constructor
 template <typename T>
-Vector<T>::Vector(Vector&& src) noexcept
-	: container_(src.container_), capacity_(src.capacity()), size_(src.size()){
+Vector<T>::Vector(Vector<T>&& src) noexcept
+	: 	container_(src.container_), 
+		capacity_(src.capacity()),
+		size_(src.size()) {
 		// std::cout << "MOVE CONSTRUCTOR" << std::endl; // LOGPRINT
 		src.container_ = nullptr; // Free pointer to make it safe to run destructor
 		src.capacity_ = 0;
@@ -134,7 +136,7 @@ Vector<T>::Vector(Vector&& src) noexcept
 
 // Move assignment operator taking a Vector
 template <typename T>
-Vector<T>& Vector<T>::operator= (Vector &&src) noexcept{
+Vector<T>& Vector<T>::operator= (Vector<T> &&src) noexcept {
 	// std::cout << "MOVE ASSIGNMENT CONSTRUCTOR" << std::endl; // LOGPRINT
 	if (this != &src) { // If not trying to move to itself
 		free();
@@ -151,29 +153,34 @@ Vector<T>& Vector<T>::operator= (Vector &&src) noexcept{
 
 // Constructor: size = num of uninitialized elements to be stored
 template <typename T>
-Vector<T>::Vector(const std::size_t& size){
+Vector<T>::Vector(const std::size_t& size)
+	:	container_(new T[size]),
+		capacity_(size),
+		size_(size) {
+
+	// TODO: CHECK IF NEEDED
+	for(std::size_t i = 0; i < size; ++i) {
+		container_[i] = T();
+	}
 	// std::cout << "SIZE_T CONSTRUCTOR" << std::endl; // LOGPRINT
-	container_ = new T[size];
-	capacity_ = size;
-	size_ = size;
 }
 
 // Constructor: size = num of T-initialized elements with value 'value'
 template <typename T>
-Vector<T>::Vector(const std::size_t& size, const T& value){
+Vector<T>::Vector(const std::size_t& size, const T& value)
+	:	container_(new T[size]),
+		capacity_(size),
+		size_(size) {
 	// std::cout << "SIZE_T + VALUE CONSTRUCTOR" << std::endl; // LOGPRINT
-	container_ = new T[size];
-	capacity_ = size;
-	size_ = size;
 
-	for(std::size_t i = 0; i < size; ++i){
+	for(std::size_t i = 0; i < size; ++i) {
 		container_[i] = value;
 	}
 }
 
 // Constructor: Initializer list. Add elements via Vector x = {...}
 template <typename T>
-Vector<T>::Vector(const std::initializer_list<T> list){
+Vector<T>::Vector(const std::initializer_list<T> list) {
 	// std::cout << "INITIALIZER LIST CONSTRUCTOR" << std::endl; // LOGPRINT
 	std::size_t list_size = list.size();
 	capacity_ = list_size;
@@ -186,17 +193,16 @@ Vector<T>::Vector(const std::initializer_list<T> list){
 }
 
 template <typename T>
-T& Vector<T>::operator[](const unsigned int x){
-	if(x >= size()){
+T& Vector<T>::operator[](const unsigned int x) {
+	if(x >= size()) {
 		throw std::out_of_range("Index out of bounds");
 	}
-
 	return container_[x];
 }
 
 template <typename T>
 const T& Vector<T>::operator[](const unsigned int x) const{
-	if(x >= size()){
+	if(x >= size()) {
 		throw std::out_of_range("Index out of bounds");
 	}
 	return container_[x];
@@ -205,17 +211,17 @@ const T& Vector<T>::operator[](const unsigned int x) const{
 
 // Destructor
 template <typename T>
-Vector<T>::~Vector(){
+Vector<T>::~Vector() {
 	// std::cout << "DESTRUCTOR" << std::endl; // LOGPRINT
 	delete[] container_;
 };
 
 // Assign unsigned int{} to each element in container_
 template <typename T>
-void Vector<T>::reset(){
+void Vector<T>::reset() {
 	std::size_t size = capacity();
-	for(std::size_t i = 0; i < size; i++){
-		container_[i] = 0;
+	for(std::size_t i = 0; i < size; i++) {
+		container_[i] = T();
 	}
 }
 
@@ -233,16 +239,18 @@ std::size_t Vector<T>::size() const{
 
 // Returns the number of elements in the container_
 template <typename T>
-void Vector<T>::free(){
+void Vector<T>::free() {
 	delete[] container_;
 }
 
+// Prints all elements in the vector. In order for this function
+// to work, the elements must be printable via std::cout.
 template <typename T>
 void Vector<T>::print() const{
 	std::size_t sz = size();
 	if(sz > 0) {
 		std::cout << "[";
-		for(std::size_t i = 0; i < sz-1; ++i){
+		for(std::size_t i = 0; i < sz-1; ++i) {
 			std::cout << container_[i] << ", ";
 		}
 		std::cout << container_[sz-1];
@@ -250,17 +258,21 @@ void Vector<T>::print() const{
 	}
 }
 
-
+// Returns a pointer to the first element in the vector.
 template <typename T>
 T* Vector<T>::begin() const {
 	return container_;
 }
 
+// Returns a pointer to the element right after the last element of the vector.
 template <typename T>
 T* Vector<T>::end() const {
 	return container_ + size();
 }
 
+
+// Returns a reference to the first occurance of 'searched_element'.
+// If no element is found, end() is returned.
 template <typename T>
 T* Vector<T>::find(const T& searched_element) const {
 	std::size_t s = size();
@@ -272,6 +284,8 @@ T* Vector<T>::find(const T& searched_element) const {
 	return end();
 }
 
+// Adds element 'elem_to_push' to the end of the vector.
+// If the vector is currently full, the container is expanded.
 template <typename T>
 void Vector<T>::push_back(const T& elem_to_push) {
 	if (capacity() <= size()) { // Must expand container_
@@ -281,6 +295,8 @@ void Vector<T>::push_back(const T& elem_to_push) {
 	++size_; //Increment size variable
 }
 
+// Inserts element 'elem' at index 'index'.
+// If the vector is currently full, the container is expanded.
 template <typename T>
 void Vector<T>::insert(const std::size_t index, const T elem) {
 	if (capacity() <= size()) { // Must expand container_
@@ -298,6 +314,8 @@ void Vector<T>::insert(const std::size_t index, const T elem) {
 	++size_;
 }
 
+// Expands the vector, doubling it's size, by reallocation.
+// If the size of the vector being expanded was 0, the expanded size becomes 1.
 template <typename T>
 void Vector<T>::expand() {
 	const std::size_t expand_factor = 2; //Factor for full container_ expansion
@@ -318,17 +336,23 @@ void Vector<T>::expand() {
 	capacity_ = new_capacity; //Update capacity variable
 }
 
+// Completely clears the vector, making its size == 0
+// Does not affect the capacity of the vector.
 template <typename T>
 void Vector<T>::clear() {
 	free();
-	container_ = new T[0];
+	container_ = new T[capacity_];
 	size_ = 0;
-	capacity_ = 0;
 }
 
+// Removes the element on index 'index_to_remove'.
+// Reduces the size of the vector by 1, but does not affect the capacity.
 template <typename T>
 void Vector<T>::erase(const std::size_t index_to_remove) {
-	if (index_to_remove < size()) {
+	if (index_to_remove >= size()) {
+		// KATTIS ERROR: KATTIS WANTED THIS TO THROW
+		throw std::out_of_range("Index out of bounds");
+	} else {
 		if (size() > 1) {
 			// Move all elements 1 step backwards, from index_to_remove and forward
 			for (std::size_t i = index_to_remove; i < size()-1; ++i) {
