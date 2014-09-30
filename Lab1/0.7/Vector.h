@@ -92,9 +92,9 @@ Vector<T>::Vector() : Vector<T>::Vector(0) {
 // Copy constructor
 template <typename T>
 Vector<T>::Vector(const Vector<T>& src)
-	: 	capacity_(src.capacity()), 
-		size_(src.size()),
-		container_(new T[src.capacity()]) {
+	: 	container_(new T[src.capacity()]),
+		capacity_(src.capacity()),
+		size_(src.size()) {
 	
 	for(std::size_t i = 0; i < size_; ++i) {
 		container_[i] = src[i];
