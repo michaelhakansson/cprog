@@ -144,7 +144,32 @@ const Matrix::matrix_row& Matrix::operator[]( index i ) const {
 }
 
 
-std::istream& operator>> ( std::istream&, Matrix& );
+std::istream& operator>> ( std::istream& input, Matrix& matrix ) {
+    Matrix::matrix_row current_row;
+
+    while (input) {
+        char ch = input.peek();
+        if (ch == ']') {
+            matrix.m_vectors->push_back(current_row);
+            break;
+        } else if (ch == '[' || ch == ' ') {
+            input.ignore(1);
+        } else if (ch == ';') {
+            input.ignore(1);
+            matrix.m_vectors->push_back(current_row);
+            current_row.clear();
+        } else {
+            int i;
+            input >> i;
+            current_row.push_back(i);
+        }
+    }
+
+    matrix.m_rows = matrix.m_vectors[0].size();
+    matrix.m_cols = matrix[0].size();
+
+    return input;
+}
 
 std::ostream& operator<< ( std::ostream& output, Matrix& matrix) {
     output << "[ ";

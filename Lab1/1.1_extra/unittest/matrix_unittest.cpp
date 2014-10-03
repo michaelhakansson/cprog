@@ -90,10 +90,34 @@ TEST(identity, out_of_range_check) {
 	EXPECT_THROW(a[0][3], std::out_of_range);
 }
 
-TEST(output, test) {
-	Matrix a(3);
-	std::cout << a << std::endl;
+TEST(input, test) {
+	Matrix a;
+	std::stringstream ss("  [ 1 3 5 ; 0 2 0 ]");
+	ss >> a;
+	EXPECT_EQ(a[0][0], 1);
+	EXPECT_EQ(a[0][1], 3);
+	EXPECT_EQ(a[0][2], 5);
+	EXPECT_EQ(a[1][0], 0);
+	EXPECT_EQ(a[1][1], 2);
+	EXPECT_EQ(a[1][2], 0);
 }
+
+TEST(input_output, test) {
+	Matrix a(3);
+	std::stringstream ss;
+	ss << a;
+	ss >> a;
+	EXPECT_EQ(a[0][0], 1);
+	EXPECT_EQ(a[0][1], 0);
+	EXPECT_EQ(a[0][2], 0);
+	EXPECT_EQ(a[1][0], 0);
+	EXPECT_EQ(a[1][1], 1);
+	EXPECT_EQ(a[1][2], 0);
+	EXPECT_EQ(a[2][0], 0);
+	EXPECT_EQ(a[2][1], 0);
+	EXPECT_EQ(a[2][2], 1);
+}
+
 
 // TEST(index_operator, index_out_of_bounds_check) {
 // 	Matrix a;
