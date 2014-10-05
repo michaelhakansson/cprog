@@ -145,6 +145,11 @@ const Matrix::matrix_row& Matrix::operator[]( index i ) const {
 
 
 std::istream& operator>> ( std::istream& input, Matrix& matrix ) {
+    
+    if (matrix.m_rows) {
+        matrix.m_vectors->clear();
+    }
+
     Matrix::matrix_row current_row;
 
     while (input) {
@@ -152,7 +157,7 @@ std::istream& operator>> ( std::istream& input, Matrix& matrix ) {
         if (ch == ']') {
             matrix.m_vectors->push_back(current_row);
             break;
-        } else if (ch == '[' || ch == ' ') {
+        } else if (ch == '[' || ch == ' ' || ch == '\n') {
             input.ignore(1);
         } else if (ch == ';') {
             input.ignore(1);

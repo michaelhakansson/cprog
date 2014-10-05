@@ -90,7 +90,7 @@ TEST(identity, out_of_range_check) {
 	EXPECT_THROW(a[0][3], std::out_of_range);
 }
 
-TEST(input, test) {
+TEST(input, to_empty_matrix) {
 	Matrix a;
 	std::stringstream ss("  [ 1 3 5 ; 0 2 0 ]");
 	ss >> a;
@@ -102,20 +102,49 @@ TEST(input, test) {
 	EXPECT_EQ(a[1][2], 0);
 }
 
-TEST(input_output, test) {
-	Matrix a(3);
-	std::stringstream ss;
-	ss << a;
+TEST(input, to_larger_matrix) {
+	Matrix a(4,4);
+	std::stringstream ss("  [ 1 3 5 ; 0 2 0 ]");
 	ss >> a;
 	EXPECT_EQ(a[0][0], 1);
-	EXPECT_EQ(a[0][1], 0);
-	EXPECT_EQ(a[0][2], 0);
+	EXPECT_EQ(a[0][1], 3);
+	EXPECT_EQ(a[0][2], 5);
 	EXPECT_EQ(a[1][0], 0);
-	EXPECT_EQ(a[1][1], 1);
+	EXPECT_EQ(a[1][1], 2);
 	EXPECT_EQ(a[1][2], 0);
-	EXPECT_EQ(a[2][0], 0);
-	EXPECT_EQ(a[2][1], 0);
-	EXPECT_EQ(a[2][2], 1);
+	EXPECT_THROW(a[3][0], std::out_of_range);
+	EXPECT_THROW(a[0][3], std::out_of_range);
+}
+
+TEST(input, to_smaller_matrix) {
+	Matrix a(2,2);
+	std::stringstream ss("  [ 1 3 5 ; 0 2 0 ]");
+	ss >> a;
+	EXPECT_EQ(a[0][0], 1);
+	EXPECT_EQ(a[0][1], 3);
+	EXPECT_EQ(a[0][2], 5);
+	EXPECT_EQ(a[1][0], 0);
+	EXPECT_EQ(a[1][1], 2);
+	EXPECT_EQ(a[1][2], 0);
+	EXPECT_THROW(a[3][0], std::out_of_range);
+	EXPECT_THROW(a[0][3], std::out_of_range);
+}
+
+TEST(output, test) {
+	Matrix a(3);
+	Matrix b;
+	std::stringstream ss;
+	ss << a;
+	ss >> b;
+	EXPECT_EQ(b[0][0], a[0][0]);
+	EXPECT_EQ(b[0][1], a[0][1]);
+	EXPECT_EQ(b[0][2], a[0][2]);
+	EXPECT_EQ(b[1][0], a[1][0]);
+	EXPECT_EQ(b[1][1], a[1][1]);
+	EXPECT_EQ(b[1][2], a[1][2]);
+	EXPECT_EQ(b[2][0], a[2][0]);
+	EXPECT_EQ(b[2][1], a[2][1]);
+	EXPECT_EQ(b[2][2], a[2][2]);
 }
 
 
