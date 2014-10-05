@@ -156,6 +156,10 @@ Matrix Matrix::operator- ( const Matrix& rhs) const {
     return ( Add_or_subtract( *this, rhs, [](int a, int b) {return a - b;} ) );
 }
 
+Matrix Matrix::operator-( ) const {
+    return (*this) * (-1);
+}
+
 Matrix Matrix::operator* ( const Matrix& rhs) const {
     if ( rows() != rhs.cols() || cols() != rhs.rows() ) {
         throw std::invalid_argument("Dimensions of matrices not compatible"); 

@@ -403,6 +403,21 @@ TEST(matrix_subtraction, non_compatible_sizes) {
 	EXPECT_THROW(c-b, std::invalid_argument);
 }
 
+TEST(matrix_negation, test) {
+	Matrix a;
+	std::stringstream("[1 2 -1 ; 0 -33 7]") >> a;
+	Matrix b;
+	b = -a;
+
+	EXPECT_EQ(b[0][0], -1);
+	EXPECT_EQ(b[0][1], -2);
+	EXPECT_EQ(b[0][2], 1);
+	EXPECT_EQ(b[1][0], 0);
+	EXPECT_EQ(b[1][1], 33);
+	EXPECT_EQ(b[1][2], -7);
+
+}
+
 TEST(index_operator, index_out_of_bounds_check) {
 	// TODO
 }
