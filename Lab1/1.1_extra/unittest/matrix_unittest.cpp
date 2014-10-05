@@ -283,6 +283,127 @@ TEST(scalar_mult, multiply_self) {
 	EXPECT_EQ(a[1][2], 15);
 }
 
-TEST(index_operator, index_out_of_bounds_check) {
-	Matrix a;
+TEST(matrix_mult, test) {
+	Matrix a(2,3);
+	a[0][0] = 0;
+	a[0][1] = 1;
+	a[0][2] = 2;
+	a[1][0] = 3;
+	a[1][1] = 4;
+	a[1][2] = 5;
+
+	Matrix b(3,2);
+	b[0][0] = 0;
+	b[0][1] = 1;
+	b[1][0] = 2;
+	b[1][1] = 3;
+	b[2][0] = 4;
+	b[2][1] = 5;
+
+	Matrix test1;
+	test1 = a * b;
+	EXPECT_EQ(test1[0][0], 10);
+	EXPECT_EQ(test1[0][1], 13);
+	EXPECT_EQ(test1[1][0], 28);
+	EXPECT_EQ(test1[1][1], 40);
+	EXPECT_THROW(test1[0][2], std::out_of_range);
+	EXPECT_THROW(test1[2][0], std::out_of_range);
+
+
+	Matrix test2;
+	test2 = b * a;
+	EXPECT_EQ(test2[0][0], 3);
+	EXPECT_EQ(test2[0][1], 4);
+	EXPECT_EQ(test2[0][2], 5);
+	EXPECT_EQ(test2[1][0], 9);
+	EXPECT_EQ(test2[1][1], 14);
+	EXPECT_EQ(test2[1][2], 19);
+	EXPECT_EQ(test2[2][0], 15);
+	EXPECT_EQ(test2[2][1], 24);
+	EXPECT_EQ(test2[2][2], 33);
+	EXPECT_THROW(test2[0][3], std::out_of_range);
+	EXPECT_THROW(test2[3][0], std::out_of_range);
 }
+
+TEST(matrix_mult, non_compatible_sizes) {
+	Matrix a(3,3);
+	Matrix b(3,2);
+	Matrix c(2,3);
+
+	EXPECT_THROW(a*b, std::invalid_argument);
+	EXPECT_THROW(b*a, std::invalid_argument);
+
+	EXPECT_THROW(a*c, std::invalid_argument);
+	EXPECT_THROW(c*a, std::invalid_argument);
+}
+
+TEST(matrix_addition, test) {
+	Matrix a;
+	Matrix b;
+
+	std::stringstream("[1 2 0 ; 9 8 7]") >> a;
+	std::stringstream("[3 4 1 ; 9 1 7]") >> b;
+
+	Matrix c;
+	c = a + b;
+
+	EXPECT_EQ(c[0][0], 4);
+	EXPECT_EQ(c[0][1], 6);
+	EXPECT_EQ(c[0][2], 1);
+	EXPECT_EQ(c[1][0], 18);
+	EXPECT_EQ(c[1][1], 9);
+	EXPECT_EQ(c[1][2], 14);
+}
+
+TEST(matrix_addition, non_compatible_sizes) {
+	Matrix a(3,3);
+	Matrix b(3,2);
+	Matrix c(2,3);
+
+	EXPECT_THROW(a+b, std::invalid_argument);
+	EXPECT_THROW(b+a, std::invalid_argument);
+
+	EXPECT_THROW(a+c, std::invalid_argument);
+	EXPECT_THROW(c+a, std::invalid_argument);
+
+	EXPECT_THROW(b+c, std::invalid_argument);
+	EXPECT_THROW(c+b, std::invalid_argument);
+}
+
+TEST(matrix_subtraction, test) {
+	Matrix a;
+	Matrix b;
+
+	std::stringstream("[1 2 0 ; 9 8 7]") >> a;
+	std::stringstream("[3 4 1 ; 9 1 7]") >> b;
+
+	Matrix c;
+	c = a - b;
+
+	EXPECT_EQ(c[0][0], -2);
+	EXPECT_EQ(c[0][1], -2);
+	EXPECT_EQ(c[0][2], -1);
+	EXPECT_EQ(c[1][0], 0);
+	EXPECT_EQ(c[1][1], 7);
+	EXPECT_EQ(c[1][2], 0);
+}
+
+TEST(matrix_subtraction, non_compatible_sizes) {
+	Matrix a(3,3);
+	Matrix b(3,2);
+	Matrix c(2,3);
+
+	EXPECT_THROW(a-b, std::invalid_argument);
+	EXPECT_THROW(b-a, std::invalid_argument);
+
+	EXPECT_THROW(a-c, std::invalid_argument);
+	EXPECT_THROW(c-a, std::invalid_argument);
+
+	EXPECT_THROW(b-c, std::invalid_argument);
+	EXPECT_THROW(c-b, std::invalid_argument);
+}
+
+TEST(index_operator, index_out_of_bounds_check) {
+	// TODO
+}
+

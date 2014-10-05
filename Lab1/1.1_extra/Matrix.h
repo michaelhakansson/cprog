@@ -41,7 +41,7 @@ class Matrix
     Matrix& operator= ( const Matrix& );
     Matrix operator+ ( const Matrix& ) const;
     Matrix operator* ( const Matrix& ) const;
-    Matrix operator* ( int ) const;
+    Matrix operator* ( const int ) const;
     Matrix operator-( const Matrix& ) const;
     Matrix operator-( ) const;
     
@@ -62,6 +62,8 @@ class Matrix
     void add_row( );            // Non mandatory help function
     friend std::istream& operator>> ( std::istream&, Matrix& );
 };
+
+Matrix Add_or_subtract ( const Matrix&, const Matrix&, int (*operation)(int, int) );
 
 
 Matrix::Matrix( ) : Matrix::Matrix(0) {
@@ -129,8 +131,56 @@ Matrix& Matrix::operator= ( const Matrix& src ) {
     return *this;
 }
 
+Matrix Add_or_subtract ( const Matrix& a, const Matrix& b, int (*operation)(int, int) ) {
+    if ( a.rows() != b.rows() || a.cols() != b.cols() ) {
+        throw std::invalid_argument("Dimensions of matrices not compatible"); 
+    }
 
-Matrix Matrix::operator* ( int scalar ) const {
+    std::size_t num_rows = a.rows();
+    std::size_t num_columns = b.cols();
+    Matrix res_matrix( num_rows, num_columns );
+
+    for ( std::size_t i = 0; i < num_rows; ++i ) {
+        for ( std::size_t j = 0; j < num_columns; ++j ) {
+            res_matrix[i][j] = operation(a[i][j], b[i][j]);
+        }
+    }
+    return res_matrix;
+}
+
+Matrix Matrix::operator+ ( const Matrix& rhs) const {
+    return ( Add_or_subtract( *this, rhs, [](int a, int b) {return a + b;} ) );
+}
+
+Matrix Matrix::operator- ( const Matrix& rhs) const {
+    return ( Add_or_subtract( *this, rhs, [](int a, int b) {return a - b;} ) );
+}
+
+Matrix Matrix::operator* ( const Matrix& rhs) const {
+    if ( rows() != rhs.cols() || cols() != rhs.rows() ) {
+        throw std::invalid_argument("Dimensions of matrices not compatible"); 
+    }
+
+    std::size_t num_rows = rows();
+    std::size_t num_columns = rhs.cols();
+    Matrix res_matrix( num_rows, num_columns );
+
+    for ( std::size_t i = 0; i < num_rows; ++i ) {
+        for ( std::size_t j = 0; j < num_columns; ++j ) {
+            res_matrix[i][j] = [this, &rhs, i, j] () -> int {
+                int res = 0;
+                for ( size_t x = 0; x < (*this).cols(); ++x ) {
+                    res += (*this)[i][x] * rhs[x][j];
+                }
+                return res;               
+            }();
+        }
+    }
+    return res_matrix;
+}
+
+
+Matrix Matrix::operator* ( const int scalar ) const {
     size_t num_rows = rows();
     size_t num_columns = cols();
     Matrix res_matrix(num_rows, num_columns);
@@ -204,7 +254,7 @@ std::ostream& operator<< ( std::ostream& output, Matrix& matrix) {
 
 // This is needed to be able to write scalar*matrix. This since 
 // member overloads always get the object on the left hand side.
-Matrix operator* ( int scalar, const Matrix& matrix ) {
+Matrix operator* ( const int scalar, const Matrix& matrix ) {
     return matrix * scalar;
 }
 
