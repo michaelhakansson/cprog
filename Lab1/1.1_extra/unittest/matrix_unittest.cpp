@@ -147,7 +147,142 @@ TEST(output, test) {
 	EXPECT_EQ(b[2][2], a[2][2]);
 }
 
+TEST(scalar_mult, positive_scalar) {
+	Matrix a(3,2);
+	a[0][0] = 0;
+	a[0][1] = 1;
+	a[1][0] = 2;
+	a[1][1] = 3;
+	a[2][0] = 4;
+	a[2][1] = 5;
 
-// TEST(index_operator, index_out_of_bounds_check) {
-// 	Matrix a;
-// }
+	int scalar = 3;
+	Matrix b;
+	b = a * scalar;
+
+	EXPECT_EQ(b[0][0], 0);
+	EXPECT_EQ(b[0][1], 3);
+	EXPECT_EQ(b[1][0], 6);
+	EXPECT_EQ(b[1][1], 9);
+	EXPECT_EQ(b[2][0], 12);
+	EXPECT_EQ(b[2][1], 15);
+
+	EXPECT_EQ(a[0][0], 0);
+	EXPECT_EQ(a[0][1], 1);
+	EXPECT_EQ(a[1][0], 2);
+	EXPECT_EQ(a[1][1], 3);
+	EXPECT_EQ(a[2][0], 4);
+	EXPECT_EQ(a[2][1], 5);
+
+
+	Matrix c;
+	c = scalar * a;
+	EXPECT_EQ(c[0][0], 0);
+	EXPECT_EQ(c[0][1], 3);
+	EXPECT_EQ(c[1][0], 6);
+	EXPECT_EQ(c[1][1], 9);
+	EXPECT_EQ(c[2][0], 12);
+	EXPECT_EQ(c[2][1], 15);
+
+	EXPECT_EQ(a[0][0], 0);
+	EXPECT_EQ(a[0][1], 1);
+	EXPECT_EQ(a[1][0], 2);
+	EXPECT_EQ(a[1][1], 3);
+	EXPECT_EQ(a[2][0], 4);
+	EXPECT_EQ(a[2][1], 5);
+}
+
+TEST(scalar_mult, negative_scalar) {
+	Matrix a(2,3);
+	a[0][0] = 0;
+	a[0][1] = 1;
+	a[0][2] = 2;
+	a[1][0] = 3;
+	a[1][1] = 4;
+	a[1][2] = 5;
+
+	int scalar = -3;
+	Matrix b;
+	b = scalar * a;
+	EXPECT_EQ(b[0][0], 0);
+	EXPECT_EQ(b[0][1], -3);
+	EXPECT_EQ(b[0][2], -6);
+	EXPECT_EQ(b[1][0], -9);
+	EXPECT_EQ(b[1][1], -12);
+	EXPECT_EQ(b[1][2], -15);
+
+	Matrix c;
+	c = a * scalar;
+	EXPECT_EQ(c[0][0], 0);
+	EXPECT_EQ(c[0][1], -3);
+	EXPECT_EQ(c[0][2], -6);
+	EXPECT_EQ(c[1][0], -9);
+	EXPECT_EQ(c[1][1], -12);
+	EXPECT_EQ(c[1][2], -15);
+
+	EXPECT_EQ(a[0][0], 0);
+	EXPECT_EQ(a[0][1], 1);
+	EXPECT_EQ(a[0][2], 2);
+	EXPECT_EQ(a[1][0], 3);
+	EXPECT_EQ(a[1][1], 4);
+	EXPECT_EQ(a[1][2], 5);
+}
+
+TEST(scalar_mult, zero_scalar) {
+	Matrix a(2,3);
+	a[0][0] = 0;
+	a[0][1] = 1;
+	a[0][2] = 2;
+	a[1][0] = 3;
+	a[1][1] = 4;
+	a[1][2] = 5;
+
+	int scalar = 0;
+	Matrix b;
+	b = scalar * a;
+	EXPECT_EQ(b[0][0], 0);
+	EXPECT_EQ(b[0][1], 0);
+	EXPECT_EQ(b[0][2], 0);
+	EXPECT_EQ(b[1][0], 0);
+	EXPECT_EQ(b[1][1], 0);
+	EXPECT_EQ(b[1][2], 0);
+
+	Matrix c;
+	c = a * scalar;
+	EXPECT_EQ(c[0][0], 0);
+	EXPECT_EQ(c[0][1], 0);
+	EXPECT_EQ(c[0][2], 0);
+	EXPECT_EQ(c[1][0], 0);
+	EXPECT_EQ(c[1][1], 0);
+	EXPECT_EQ(c[1][2], 0);
+
+	EXPECT_EQ(a[0][0], 0);
+	EXPECT_EQ(a[0][1], 1);
+	EXPECT_EQ(a[0][2], 2);
+	EXPECT_EQ(a[1][0], 3);
+	EXPECT_EQ(a[1][1], 4);
+	EXPECT_EQ(a[1][2], 5);
+}
+
+TEST(scalar_mult, multiply_self) {
+	Matrix a(2,3);
+	a[0][0] = 0;
+	a[0][1] = 1;
+	a[0][2] = 2;
+	a[1][0] = 3;
+	a[1][1] = 4;
+	a[1][2] = 5;
+
+	int scalar = 3;
+	a = a * scalar;
+	EXPECT_EQ(a[0][0], 0);
+	EXPECT_EQ(a[0][1], 3);
+	EXPECT_EQ(a[0][2], 6);
+	EXPECT_EQ(a[1][0], 9);
+	EXPECT_EQ(a[1][1], 12);
+	EXPECT_EQ(a[1][2], 15);
+}
+
+TEST(index_operator, index_out_of_bounds_check) {
+	Matrix a;
+}

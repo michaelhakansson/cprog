@@ -129,6 +129,20 @@ Matrix& Matrix::operator= ( const Matrix& src ) {
     return *this;
 }
 
+
+Matrix Matrix::operator* ( int scalar ) const {
+    size_t num_rows = rows();
+    size_t num_columns = cols();
+    Matrix res_matrix(num_rows, num_columns);
+
+    for ( std::size_t i = 0; i < num_rows; ++i ) {
+        for ( std::size_t j = 0; j < num_columns; ++j ) {
+            (*(res_matrix.m_vectors))[i][j] = (*m_vectors)[i][j] * scalar;
+        }
+    }
+    return res_matrix;
+}
+
 Matrix::matrix_row& Matrix::operator[]( index i ) {
     if(i >= m_rows) {
         throw std::out_of_range("Index out of bounds");
@@ -188,7 +202,11 @@ std::ostream& operator<< ( std::ostream& output, Matrix& matrix) {
     return output;
 }
 
-Matrix operator* ( int, const Matrix& );
+// This is needed to be able to write scalar*matrix. This since 
+// member overloads always get the object on the left hand side.
+Matrix operator* ( int scalar, const Matrix& matrix ) {
+    return matrix * scalar;
+}
 
 std::size_t Matrix::rows() const {
     return m_rows;
