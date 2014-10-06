@@ -283,6 +283,22 @@ TEST(scalar_mult, multiply_self) {
 	EXPECT_EQ(a[1][2], 15);
 }
 
+// TODO: CHECK IF THIS IS THE EXPECTED BEHAVIOUR
+TEST(scalar_mult, size_zero) {
+	Matrix a(0);
+	int scalar = 3;
+	a = a * scalar;
+	EXPECT_THROW(a[0][0], std::out_of_range);
+}
+
+TEST(scalar_mult, size_one) {
+	Matrix a(1);
+
+	int scalar = 3;
+	a = a * scalar;
+	EXPECT_EQ(a[0][0], 3);
+}
+
 TEST(matrix_mult, test) {
 	Matrix a(2,3);
 	a[0][0] = 0;
@@ -335,6 +351,26 @@ TEST(matrix_mult, non_compatible_sizes) {
 
 	EXPECT_THROW(a*c, std::invalid_argument);
 	EXPECT_THROW(c*a, std::invalid_argument);
+}
+
+// TODO: CHECK IF THIS IS THE EXPECTED BEHAVIOUR
+TEST(matrix_mult, size_zero) {
+	Matrix a(0);
+	Matrix b(0);
+	a = a * b;
+	EXPECT_THROW(a[0][0], std::out_of_range);
+}
+
+TEST(matrix_mult, size_one) {
+	Matrix a(1,1);
+	Matrix b(1,1);
+	a[0][0] = 2;
+	b[0][0] = 4;
+
+	a = a * b;
+	EXPECT_EQ(a[0][0], 8);
+	EXPECT_EQ(b[0][0], 4);
+
 }
 
 TEST(matrix_addition, test) {
