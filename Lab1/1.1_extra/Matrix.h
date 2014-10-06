@@ -45,7 +45,7 @@ class Matrix
     Matrix operator-( const Matrix& ) const;
     Matrix operator-( ) const;
     
-    Matrix transpose( );
+    Matrix transpose( ) const;
     
     matrix_row& operator[]( index i );
     const matrix_row& operator[]( index i ) const;
@@ -198,7 +198,7 @@ Matrix Matrix::operator* ( const int scalar ) const {
     return res_matrix;
 }
 
-Matrix Matrix::transpose() {
+Matrix Matrix::transpose() const {
     Matrix res_matrix(cols(), rows()); // Matrix of transponate size
     for (size_t i = 0; i < rows(); ++i) {
         for (size_t j = 0; j < cols(); ++j) {
