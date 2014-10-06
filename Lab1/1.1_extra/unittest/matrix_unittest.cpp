@@ -416,6 +416,37 @@ TEST(matrix_negation, test) {
 	EXPECT_EQ(b[1][1], 33);
 	EXPECT_EQ(b[1][2], -7);
 
+	EXPECT_EQ(a[0][0], 1);
+	EXPECT_EQ(a[0][1], 2);
+	EXPECT_EQ(a[0][2], -1);
+	EXPECT_EQ(a[1][0], 0);
+	EXPECT_EQ(a[1][1], -33);
+	EXPECT_EQ(a[1][2], 7);
+
+}
+
+TEST(matrix_transpose, test) {
+	Matrix a;
+	std::stringstream("[1 2 3 ; 4 5 6]") >> a;
+	Matrix b;
+	b = a.transpose();
+
+	// a unchanged
+	EXPECT_EQ(a[0][0], 1);
+	EXPECT_EQ(a[0][1], 2);
+	EXPECT_EQ(a[0][2], 3);
+	EXPECT_EQ(a[1][0], 4);
+	EXPECT_EQ(a[1][1], 5);
+	EXPECT_EQ(a[1][2], 6);
+
+
+	// b == transpose(a)
+	EXPECT_EQ(b[0][0], 1);
+	EXPECT_EQ(b[0][1], 4);
+	EXPECT_EQ(b[1][0], 2);
+	EXPECT_EQ(b[1][1], 5);
+	EXPECT_EQ(b[2][0], 3);
+	EXPECT_EQ(b[2][1], 6);
 }
 
 TEST(index_operator, index_out_of_bounds_check) {

@@ -45,7 +45,7 @@ class Matrix
     Matrix operator-( const Matrix& ) const;
     Matrix operator-( ) const;
     
-    Matrix& transpose( );
+    Matrix transpose( );
     
     matrix_row& operator[]( index i );
     const matrix_row& operator[]( index i ) const;
@@ -63,7 +63,7 @@ class Matrix
     friend std::istream& operator>> ( std::istream&, Matrix& );
 };
 
-Matrix Add_or_subtract ( const Matrix&, const Matrix&, int (*operation)(int, int) );
+Matrix add_or_subtract ( const Matrix&, const Matrix&, int (*operation)(int, int) );
 
 
 Matrix::Matrix( ) : Matrix::Matrix(0) {
@@ -131,7 +131,7 @@ Matrix& Matrix::operator= ( const Matrix& src ) {
     return *this;
 }
 
-Matrix Add_or_subtract ( const Matrix& a, const Matrix& b, int (*operation)(int, int) ) {
+Matrix add_or_subtract ( const Matrix& a, const Matrix& b, int (*operation)(int, int) ) {
     if ( a.rows() != b.rows() || a.cols() != b.cols() ) {
         throw std::invalid_argument("Dimensions of matrices not compatible"); 
     }
@@ -149,13 +149,14 @@ Matrix Add_or_subtract ( const Matrix& a, const Matrix& b, int (*operation)(int,
 }
 
 Matrix Matrix::operator+ ( const Matrix& rhs) const {
-    return ( Add_or_subtract( *this, rhs, [](int a, int b) {return a + b;} ) );
+    return ( add_or_subtract( *this, rhs, [](int a, int b) {return a + b;} ) );
 }
 
 Matrix Matrix::operator- ( const Matrix& rhs) const {
-    return ( Add_or_subtract( *this, rhs, [](int a, int b) {return a - b;} ) );
+    return ( add_or_subtract( *this, rhs, [](int a, int b) {return a - b;} ) );
 }
 
+// Negation
 Matrix Matrix::operator-( ) const {
     return (*this) * (-1);
 }
@@ -196,6 +197,17 @@ Matrix Matrix::operator* ( const int scalar ) const {
     }
     return res_matrix;
 }
+
+Matrix Matrix::transpose() {
+    Matrix res_matrix(cols(), rows()); // Matrix of transponate size
+    for (size_t i = 0; i < rows(); ++i) {
+        for (size_t j = 0; j < cols(); ++j) {
+            res_matrix[j][i] = (*this)[i][j];
+        }
+    }
+    return res_matrix;
+}
+
 
 Matrix::matrix_row& Matrix::operator[]( index i ) {
     if(i >= m_rows) {
