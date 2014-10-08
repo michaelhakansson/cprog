@@ -45,6 +45,7 @@ class Matrix
     Matrix operator-( const Matrix& ) const;
     Matrix operator-( ) const;
     
+    // TODO: FIX - Should transpose original matrix and return reference to it.
     Matrix transpose( ) const;
     
     matrix_row& operator[]( index i );
@@ -113,6 +114,8 @@ Matrix::Matrix(std::size_t size)
 // Destructor
 Matrix::~Matrix( ) {
     delete m_vectors;
+    m_rows = 0;
+    m_cols = 0;
 }
 
 // Copy assignment operator
@@ -161,6 +164,8 @@ Matrix Matrix::operator-( ) const {
     return (*this) * (-1);
 }
 
+
+// TODO: Fix implementation. Throws on wrong dimensions
 Matrix Matrix::operator* ( const Matrix& rhs) const {
     if ( rows() != rhs.cols() || cols() != rhs.rows() ) {
         throw std::invalid_argument("Dimensions of matrices not compatible"); 
@@ -226,6 +231,7 @@ const Matrix::matrix_row& Matrix::operator[]( index i ) const {
 }
 
 
+// TODO: FIX - SHOULD NOT CHANGE MATRIX SIZE
 std::istream& operator>> ( std::istream& input, Matrix& matrix ) {
     
     if (matrix.m_rows) {

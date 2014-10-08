@@ -1,7 +1,7 @@
 #ifndef MATRIX_TEST_H_INCLUDED
 #define MATRIX_TEST_H_INCLUDED
 
-#include "Matrix.h"
+#include "Matrix_not_our.h"
 #include "/info/cprog09/cxxtest/cxxtest/TestSuite.h"
 #include <fstream>
 #include <sstream>
@@ -43,7 +43,7 @@ public:
 
     // HERE COMES OUR TESTS
 
-    void row_col_init_init_values () {
+    void testrow_col_init_init_values () {
         Matrix a(2,3);
         TS_ASSERT_EQUALS(a[0][0], 0);
         TS_ASSERT_EQUALS(a[0][1], 0);
@@ -53,7 +53,7 @@ public:
         TS_ASSERT_EQUALS(a[1][2], 0);
     }
 
-    void row_col_init_out_of_range_check () {
+    void testrow_col_init_out_of_range_check () {
         Matrix a(2,3);
         TS_ASSERT_THROWS_NOTHING(a[0][0]);
         TS_ASSERT_THROWS_NOTHING(a[0][1]);
@@ -66,7 +66,7 @@ public:
     }
 
 
-    void assignment_correct_values () {
+    void testassignment_correct_values () {
         Matrix a(2,2);
         a[0][0] = 1;
         a[0][1] = 2;
@@ -78,7 +78,7 @@ public:
         TS_ASSERT_EQUALS(a[1][1], 4);
     }
 
-    void identity_initiation () {
+    void testidentity_initiation () {
         Matrix a(1);
         TS_ASSERT_EQUALS(a[0][0], 1);
         
@@ -117,7 +117,7 @@ public:
     }
 
 
-    void index_operator_index_out_of_bounds_check () {
+    void testindex_operator_index_out_of_bounds_check () {
         Matrix a(3);
         TS_ASSERT_THROWS_NOTHING(a[0][0]);
         TS_ASSERT_THROWS_NOTHING(a[0][1]);
@@ -132,7 +132,7 @@ public:
         TS_ASSERT_THROWS(a[0][3], std::out_of_range);
     }
 
-    void input_to_empty_matrix () {
+    void testinput_to_empty_matrix () {
         Matrix a;
         std::stringstream ss("  [ 1 3 5 ; 0 2 0 ]");
         ss >> a;
@@ -144,7 +144,7 @@ public:
         TS_ASSERT_EQUALS(a[1][2], 0);
     }
 
-    void input_to_larger_matrix () {
+    void testinput_to_larger_matrix () {
         Matrix a(4,4);
         std::stringstream ss("  [ 1 3 5 ; 0 2 0 ]");
         ss >> a;
@@ -158,7 +158,7 @@ public:
         TS_ASSERT_THROWS(a[0][3], std::out_of_range);
     }
 
-    void input_to_smaller_matrix () {
+    void testinput_to_smaller_matrix () {
         Matrix a(2,2);
         std::stringstream ss("  [ 1 3 5 ; 0 2 0 ]");
         ss >> a;
@@ -172,7 +172,7 @@ public:
         TS_ASSERT_THROWS(a[0][3], std::out_of_range);
     }
 
-    void outputtest () {
+    void testoutputtest () {
         Matrix a(3);
         Matrix b;
         std::stringstream ss;
@@ -189,7 +189,7 @@ public:
         TS_ASSERT_EQUALS(b[2][2], a[2][2]);
     }
 
-    void scalar_mult_positive_scalar () {
+    void testscalar_mult_positive_scalar () {
         Matrix a(3,2);
         a[0][0] = 0;
         a[0][1] = 1;
@@ -234,7 +234,7 @@ public:
         TS_ASSERT_EQUALS(a[2][1], 5);
     }
 
-    void scalar_mult_negative_scalar () {
+    void testscalar_mult_negative_scalar () {
         Matrix a(2,3);
         a[0][0] = 0;
         a[0][1] = 1;
@@ -270,7 +270,7 @@ public:
         TS_ASSERT_EQUALS(a[1][2], 5);
     }
 
-    void scalar_mult_zero_scalar () {
+    void testscalar_mult_zero_scalar () {
         Matrix a(2,3);
         a[0][0] = 0;
         a[0][1] = 1;
@@ -306,7 +306,7 @@ public:
         TS_ASSERT_EQUALS(a[1][2], 5);
     }
 
-    void scalar_mult_multiply_self () {
+    void testscalar_mult_multiply_self () {
         Matrix a(2,3);
         a[0][0] = 0;
         a[0][1] = 1;
@@ -326,14 +326,14 @@ public:
     }
 
     // TODO: CHECK IF THIS IS THE EXPECTED BEHAVIOUR
-    void scalar_mult_size_zero () {
+    void testscalar_mult_size_zero () {
         Matrix a(0);
         int scalar = 3;
         a = a * scalar;
         TS_ASSERT_THROWS(a[0][0], std::out_of_range);
     }
 
-    void scalar_mult_size_one () {
+    void testscalar_mult_size_one () {
         Matrix a(1);
 
         int scalar = 3;
@@ -341,7 +341,7 @@ public:
         TS_ASSERT_EQUALS(a[0][0], 3);
     }
 
-    void matrix_mult_test () {
+    void testmatrix_mult_test () {
         Matrix a(2,3);
         a[0][0] = 0;
         a[0][1] = 1;
@@ -383,27 +383,27 @@ public:
         TS_ASSERT_THROWS(test2[3][0], std::out_of_range);
     }
 
-    void matrix_mult_non_compatible_sizes () {
+    void testmatrix_mult_non_compatible_sizes () {
         Matrix a(3,3);
         Matrix b(3,2);
         Matrix c(2,3);
 
-        TS_ASSERT_THROWS(a*b, std::invalid_argument);
-        TS_ASSERT_THROWS(b*a, std::invalid_argument);
+        TS_ASSERT_THROWS_NOTHING(a*b);
+        TS_ASSERT_THROWS_ANYTHING(b*a);
 
-        TS_ASSERT_THROWS(a*c, std::invalid_argument);
-        TS_ASSERT_THROWS(c*a, std::invalid_argument);
+        TS_ASSERT_THROWS_ANYTHING(a*c);
+        TS_ASSERT_THROWS_NOTHING(c*a);
     }
 
     // TODO: CHECK IF THIS IS THE EXPECTED BEHAVIOUR
-    void matrix_mult_size_zero () {
+    void testmatrix_mult_size_zero () {
         Matrix a(0);
         Matrix b(0);
         a = a * b;
         TS_ASSERT_THROWS(a[0][0], std::out_of_range);
     }
 
-    void matrix_mult_size_one () {
+    void testmatrix_mult_size_one () {
         Matrix a(1,1);
         Matrix b(1,1);
         a[0][0] = 2;
@@ -415,7 +415,7 @@ public:
 
     }
 
-    void matrix_addition_test () {
+    void testmatrix_addition_test () {
         Matrix a;
         Matrix b;
 
@@ -433,22 +433,22 @@ public:
         TS_ASSERT_EQUALS(c[1][2], 14);
     }
 
-    void matrix_addition_non_compatible_sizes () {
+    void testmatrix_addition_non_compatible_sizes () {
         Matrix a(3,3);
         Matrix b(3,2);
         Matrix c(2,3);
 
-        TS_ASSERT_THROWS(a+b, std::invalid_argument);
-        TS_ASSERT_THROWS(b+a, std::invalid_argument);
+        TS_ASSERT_THROWS_ANYTHING(a+b);
+        TS_ASSERT_THROWS_ANYTHING(b+a);
 
-        TS_ASSERT_THROWS(a+c, std::invalid_argument);
-        TS_ASSERT_THROWS(c+a, std::invalid_argument);
+        TS_ASSERT_THROWS_ANYTHING(a+c);
+        TS_ASSERT_THROWS_ANYTHING(c+a);
 
-        TS_ASSERT_THROWS(b+c, std::invalid_argument);
-        TS_ASSERT_THROWS(c+b, std::invalid_argument);
+        TS_ASSERT_THROWS_ANYTHING(b+c);
+        TS_ASSERT_THROWS_ANYTHING(c+b);
     }
 
-    void matrix_subtraction_test () {
+    void testmatrix_subtraction_test () {
         Matrix a;
         Matrix b;
 
@@ -466,22 +466,22 @@ public:
         TS_ASSERT_EQUALS(c[1][2], 0);
     }
 
-    void matrix_subtraction_non_compatible_sizes () {
+    void testmatrix_subtraction_non_compatible_sizes () {
         Matrix a(3,3);
         Matrix b(3,2);
         Matrix c(2,3);
 
-        TS_ASSERT_THROWS(a-b, std::invalid_argument);
-        TS_ASSERT_THROWS(b-a, std::invalid_argument);
+        TS_ASSERT_THROWS_ANYTHING(a-b);
+        TS_ASSERT_THROWS_ANYTHING(b-a);
 
-        TS_ASSERT_THROWS(a-c, std::invalid_argument);
-        TS_ASSERT_THROWS(c-a, std::invalid_argument);
+        TS_ASSERT_THROWS_ANYTHING(a-c);
+        TS_ASSERT_THROWS_ANYTHING(c-a);
 
-        TS_ASSERT_THROWS(b-c, std::invalid_argument);
-        TS_ASSERT_THROWS(c-b, std::invalid_argument);
+        TS_ASSERT_THROWS_ANYTHING(b-c);
+        TS_ASSERT_THROWS_ANYTHING(c-b);
     }
 
-    void matrix_negation_test () {
+    void testmatrix_negation_test () {
         Matrix a;
         std::stringstream("[1 2 -1 ; 0 -33 7]") >> a;
         Matrix b;
@@ -503,7 +503,7 @@ public:
 
     }
 
-    void matrix_transpose_test () {
+    void testmatrix_transpose_test () {
         Matrix a;
         std::stringstream("[1 2 3 ; 4 5 6]") >> a;
         Matrix b;
