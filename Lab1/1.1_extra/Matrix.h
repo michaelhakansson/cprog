@@ -130,7 +130,7 @@ Matrix& Matrix::operator= ( const Matrix& src ) {
     }
     return *this;
 }
-
+                                                           // Function poitner
 Matrix add_or_subtract ( const Matrix& a, const Matrix& b, int (*operation)(int, int) ) {
     if ( a.rows() != b.rows() || a.cols() != b.cols() ) {
         throw std::invalid_argument("Dimensions of matrices not compatible"); 
@@ -172,6 +172,8 @@ Matrix Matrix::operator* ( const Matrix& rhs) const {
 
     for ( std::size_t i = 0; i < num_rows; ++i ) {
         for ( std::size_t j = 0; j < num_columns; ++j ) {
+            // Lambda function that multiplies rows and columns.
+            // This is instead of declaring a own function for it.
             res_matrix[i][j] = [this, &rhs, i, j] () -> int {
                 int res = 0;
                 for ( size_t x = 0; x < (*this).cols(); ++x ) {
