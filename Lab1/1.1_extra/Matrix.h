@@ -167,7 +167,7 @@ Matrix Matrix::operator-( ) const {
 
 // TODO: Fix implementation. Throws on wrong dimensions
 Matrix Matrix::operator* ( const Matrix& rhs) const {
-    if ( rows() != rhs.cols() || cols() != rhs.rows() ) {
+    if ( cols() != rhs.rows() ) {
         throw std::invalid_argument("Dimensions of matrices not compatible"); 
     }
 
