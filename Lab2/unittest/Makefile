@@ -14,7 +14,7 @@
 
 # Points to the root of Google Test, relative to where this file is.
 # Remember to tweak this if you move this file.
-GTEST_DIR = ../../../gtest-1.7.0
+GTEST_DIR = ../../gtest-1.7.0
 
 # Where to find user code.
 USER_DIR = ../
@@ -71,12 +71,12 @@ gtest_main.a : gtest-all.o gtest_main.o
 # gtest_main.a, depending on whether it defines its own main()
 # function.
 
-Gregorian.o : $(USER_DIR)/Gregorian.cpp $(USER_DIR)/Gregorian.h $(GTEST_HEADERS)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/Gregorian.cpp
+gregorian.o : $(USER_DIR)/gregorian.cpp $(USER_DIR)/gregorian.h $(GTEST_HEADERS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/gregorian.cpp
 
-Gregorian_unittest.o : $(USER_DIR)/unittest/gregorian_unittest.cpp \
-                     $(USER_DIR)/Gregorian.h $(GTEST_HEADERS)
+gregorian_unittest.o : $(USER_DIR)/unittest/gregorian_unittest.cpp \
+                     $(USER_DIR)/gregorian.h $(GTEST_HEADERS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/unittest/gregorian_unittest.cpp
 
-gregorian_unittest : Gregorian.o gregorian_unittest.o gtest_main.a
+gregorian_unittest : gregorian.o gregorian_unittest.o gtest_main.a
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@

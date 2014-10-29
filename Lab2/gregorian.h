@@ -1,8 +1,8 @@
 #ifndef GREGORIAN_H
 #define GREGORIAN_H
 
-#include "../2.1/Date.h"
-#include "../from_coursepage/kattistime.cpp"
+#include "date.h"
+#include "kattistime.cpp"
 
 #include <iostream>
 
