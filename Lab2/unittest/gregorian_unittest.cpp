@@ -32,6 +32,7 @@ TEST(Gregorian, explicit_constructor) {
 TEST(Gregorian, output_test) {
 	Gregorian g1(1,1,2000);
 	Gregorian g2(22,11,1921);
+	Gregorian g3(22,11,8);
 	
 	std::stringstream ss1;
 	ss1 << g1;
@@ -43,20 +44,26 @@ TEST(Gregorian, output_test) {
 	ss2 << g2;
 	wanted = "1921-11-22";
 	output = ss2.str();
-
+	EXPECT_EQ(wanted, output);
+	
+	std::stringstream ss3;
+	ss3 << g3;
+	wanted = "8-11-22";
+	output = ss3.str();
 	EXPECT_EQ(wanted, output);
 }
 
-TEST(Gregorian, leap_years) {
-	Gregorian g1(22,1,2000);
-	EXPECT_EQ(g1.leap_year(), true);
+// Commented away since leap year function is now declared private
+// TEST(Gregorian, leap_years) {
+// 	Gregorian g1(22,1,2000);
+// 	EXPECT_EQ(g1.leap_year(), true);
 
-	Gregorian g2(22,1,1900);
-	EXPECT_EQ(g2.leap_year(), false);
+// 	Gregorian g2(22,1,1900);
+// 	EXPECT_EQ(g2.leap_year(), false);
 
-	Gregorian g3(22,1,2001);
-	EXPECT_EQ(g3.leap_year(), false);
-}
+// 	Gregorian g3(22,1,2001);
+// 	EXPECT_EQ(g3.leap_year(), false);
+// }
 
 TEST(Gregorian, days_this_month) {
 	Gregorian g1(22,1,1921);

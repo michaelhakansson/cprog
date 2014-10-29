@@ -13,6 +13,8 @@ namespace lab2 {
 		int days_per_month [13] = {0,31,28,31,30,31,30,31,31,30,31,30,31};
 		int days_per_week_ = 7;
 		int months_per_year_ = 12;
+		bool leap_year(int year) const;
+		bool leap_year() const;
 
 	public:
 		virtual ~Gregorian();
@@ -22,14 +24,14 @@ namespace lab2 {
 		virtual int days_per_week() const;
 		virtual int months_per_year() const;
 		virtual int days_this_month() const;
+		virtual std::string week_day_name() const; // TODO
+		virtual std::string month_name() const; // TODO
 
-		virtual Date& operator++ ();
-		virtual Date& operator-- ();
-		virtual Date& operator+= (Date const&);
-		virtual Date& operator-= (Date const&);
+		virtual Date& operator++ (); // TODO
+		virtual Date& operator-- (); // TODO
+		virtual Date& operator+= (Date const&); // TODO
+		virtual Date& operator-= (Date const&); // TODO
 
-		bool leap_year(int year) const;
-		bool leap_year() const;
 	};
 
 	// TODO
@@ -68,6 +70,9 @@ namespace lab2 {
 			}
 		}
 	}
+
+	std::string Gregorian::week_day_name() const {}
+	std::string Gregorian::month_name() const {}
 
 	// Calculate leap year http://support.microsoft.com/kb/214019
 	bool Gregorian::leap_year(int year) const {

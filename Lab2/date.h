@@ -29,33 +29,29 @@ namespace lab2 {
 			int year() const;
 			int day() const;
 			int month() const;
-			int week_day() const;
+			int week_day() const; // TODO
 			virtual int days_per_week() const = 0;
 			virtual int months_per_year() const = 0;
 			virtual int days_this_month() const = 0;
-			/* TODO
-			virtual int week_day_name() const = 0;
-			virtual int month_name() const = 0;
-			*/
-			std::string week_day_name() const;
-			std::string month_name() const;
+			virtual std::string week_day_name() const = 0;
+			virtual std::string month_name() const = 0;
 
 			// Returntype void since only setter
 			void add_year(const int);
 			void add_month(const int);
 
 			// Operator overloads
-			virtual Date& operator++ () =  0; // Should increase day
-			virtual Date& operator-- () = 0; // Should decrease day
+			virtual Date& operator++ () =  0;
+			virtual Date& operator-- () = 0;
 			virtual Date& operator+= (Date const&) = 0;
 			virtual Date& operator-= (Date const&) = 0;
-			bool  operator== (Date const&) const;
-			bool  operator!= (Date const&) const;
-			bool  operator<  (Date const&) const;
-			bool  operator<= (Date const&) const;
-			bool  operator>  (Date const&) const;
-			bool  operator>= (Date const&) const;
-			int   operator-  (Date const&) const;
+			bool  operator== (Date const&) const; // TODO
+			bool  operator!= (Date const&) const; // TODO
+			bool  operator<  (Date const&) const; // TODO
+			bool  operator<= (Date const&) const; // TODO
+			bool  operator>  (Date const&) const; // TODO
+			bool  operator>= (Date const&) const; // TODO
+			int   operator-  (Date const&) const; // TODO
 			friend std::ostream& operator<< (std::ostream&, Date const&);
 
 			virtual int mod_julian_day(Date const&) const;
