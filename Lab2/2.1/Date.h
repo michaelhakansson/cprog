@@ -7,10 +7,10 @@ namespace lab2 {
 
 	class Date {
 		private:
-			int year;
-			int month;
-			int day;
-			int days_per_week();
+			int year_;
+			int month_;
+			int day_;
+			int days_per_week_;
 
 		public:
 			// Default constructor - should initiate to todays date
@@ -20,13 +20,13 @@ namespace lab2 {
 			Date(const int day, const int month, const int year);
 
 			// Copy constructor
-			Date(const Date&);
+			Date(Date const&);
 
 			// Destructor
 			~Date();
 
 			// Copy assignment
-			Date& operator= (const Date&);
+			Date& operator= (Date const&);
 
 			int year() const;
 			int day() const;
@@ -44,19 +44,18 @@ namespace lab2 {
 			// Operator overloads
 			virtual Date& operator++ () = 0; // Should increase day
 			virtual Date& operator-- () = 0; // Should decrease day
-			virtual Date& operator+= () = 0;
-			virtual Date& operator-= () = 0;
-			bool  operator== (const Date&) const;
-			bool  operator!= (const Date&) const;
-			bool  operator<  (const Date&) const;
-			bool  operator<= (const Date&) const;
-			bool  operator>  (const Date&) const;
-			bool  operator>= (const Date&) const;
-			int   operator-  (const Date&) const;
+			virtual Date& operator+= (Date const&) = 0;
+			virtual Date& operator-= (Date const&) = 0;
+			bool  operator== (Date const&) const;
+			bool  operator!= (Date const&) const;
+			bool  operator<  (Date const&) const;
+			bool  operator<= (Date const&) const;
+			bool  operator>  (Date const&) const;
+			bool  operator>= (Date const&) const;
+			int   operator-  (Date const&) const;
+			friend std::ostream& operator<< (std::ostream&, Date const&);
 
-			virtual int mod_julian_day(const &Date) const;
-
-			ostream &operator<< (ostream&, const Date&) const;
+			virtual int mod_julian_day(Date const&) const;
 
 	};
 
