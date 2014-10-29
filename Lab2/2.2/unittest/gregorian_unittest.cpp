@@ -37,6 +37,7 @@ TEST(Gregorian, output_test) {
 	ss1 << g1;
 	std::string wanted = "2000-01-01";
 	std::string output = ss1.str();
+	EXPECT_EQ(wanted, output);
 
 	std::stringstream ss2;
 	ss2 << g2;
