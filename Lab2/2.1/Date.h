@@ -4,7 +4,6 @@
 #include <ostream>
 
 namespace lab2 {
-
 	class Date {
 		protected:
 			int day_;
@@ -33,6 +32,11 @@ namespace lab2 {
 			int week_day() const;
 			virtual int days_per_week() const = 0;
 			virtual int months_per_year() const = 0;
+			virtual int days_this_month() const = 0;
+			/* TODO
+			virtual int week_day_name() const = 0;
+			virtual int month_name() const = 0;
+			*/
 			std::string week_day_name() const;
 			std::string month_name() const;
 
