@@ -34,3 +34,6 @@ result is 64-bit (file Matrix02.o)
 
 for 32-bit files look in 32bit subdir
 
+
+
+make clean && make testcode.cpp

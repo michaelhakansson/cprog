@@ -146,6 +146,8 @@ public:
 
     void testinput_to_larger_matrix () {
         Matrix a(4,4);
+        a[3][0] = 987;
+        a[0][3] = 654;
         std::stringstream ss("  [ 1 3 5 ; 0 2 0 ]");
         ss >> a;
         TS_ASSERT_EQUALS(a[0][0], 1);
@@ -156,8 +158,13 @@ public:
         TS_ASSERT_EQUALS(a[1][2], 0);
         TS_ASSERT_THROWS(a[3][0], std::out_of_range);
         TS_ASSERT_THROWS(a[0][3], std::out_of_range);
+        // TS_ASSERT_EQUALS(a[3][0], 987);
+        // TS_ASSERT_EQUALS(a[0][3], 654);
+        // TS_ASSERT_THROWS(a[0][4], std::out_of_range);
+        // TS_ASSERT_THROWS(a[4][0], std::out_of_range);
     }
 
+    // THIS TEST DOESN'T WORK, SO WE THINK IT SHOULDN'T BE POSSIBLE TO EXPAND
     void testinput_to_smaller_matrix () {
         Matrix a(2,2);
         std::stringstream ss("  [ 1 3 5 ; 0 2 0 ]");
@@ -509,13 +516,13 @@ public:
         Matrix b;
         b = a.transpose();
 
-        // a unchanged
+        // a changed
         TS_ASSERT_EQUALS(a[0][0], 1);
-        TS_ASSERT_EQUALS(a[0][1], 2);
-        TS_ASSERT_EQUALS(a[0][2], 3);
-        TS_ASSERT_EQUALS(a[1][0], 4);
+        TS_ASSERT_EQUALS(a[0][1], 4);
+        TS_ASSERT_EQUALS(a[1][0], 2);
         TS_ASSERT_EQUALS(a[1][1], 5);
-        TS_ASSERT_EQUALS(a[1][2], 6);
+        TS_ASSERT_EQUALS(a[2][0], 3);
+        TS_ASSERT_EQUALS(a[2][1], 6);
 
 
         // b == transpose(a)

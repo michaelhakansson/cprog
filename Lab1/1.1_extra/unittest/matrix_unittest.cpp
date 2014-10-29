@@ -13,7 +13,7 @@ TEST(row_col_init, init_values) {
 	EXPECT_EQ(a[1][2], 0);
 }
 
-TEST(row_col_init, out_of_range_check) {
+TEST(index_operator, index_out_of_bounds_check) {
 	Matrix a(2,3);
 	EXPECT_NO_THROW(a[0][0]);
 	EXPECT_NO_THROW(a[0][1]);
@@ -104,6 +104,8 @@ TEST(input, to_empty_matrix) {
 
 TEST(input, to_larger_matrix) {
 	Matrix a(4,4);
+	a[3][0] = 987;
+    a[0][3] = 654;
 	std::stringstream ss("  [ 1 3 5 ; 0 2 0 ]");
 	ss >> a;
 	EXPECT_EQ(a[0][0], 1);
@@ -114,8 +116,13 @@ TEST(input, to_larger_matrix) {
 	EXPECT_EQ(a[1][2], 0);
 	EXPECT_THROW(a[3][0], std::out_of_range);
 	EXPECT_THROW(a[0][3], std::out_of_range);
+	// EXPECT_EQ(a[3][0], 987);
+	// EXPECT_EQ(a[0][3], 654);
+	// EXPECT_THROW(a[4][0], std::out_of_range);
+	// EXPECT_THROW(a[0][4], std::out_of_range);
 }
 
+// TODO: Shouldn't work
 TEST(input, to_smaller_matrix) {
 	Matrix a(2,2);
 	std::stringstream ss("  [ 1 3 5 ; 0 2 0 ]");
@@ -466,7 +473,7 @@ TEST(matrix_transpose, test) {
 	std::stringstream("[1 2 3 ; 4 5 6]") >> a;
 	Matrix b;
 	b = a.transpose();
-
+	
 	// a changed
 	EXPECT_EQ(a[0][0], 1);
 	EXPECT_EQ(a[0][1], 4);
@@ -474,7 +481,6 @@ TEST(matrix_transpose, test) {
 	EXPECT_EQ(a[1][1], 5);
 	EXPECT_EQ(a[2][0], 3);
 	EXPECT_EQ(a[2][1], 6);
-
 
 	// b == transpose(a)
 	EXPECT_EQ(b[0][0], 1);
@@ -485,7 +491,4 @@ TEST(matrix_transpose, test) {
 	EXPECT_EQ(b[2][1], 6);
 }
 
-TEST(index_operator, index_out_of_bounds_check) {
-	// TODO
-}
 

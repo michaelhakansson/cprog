@@ -46,7 +46,7 @@ class Matrix
     Matrix operator-( ) const;
     
     // TODO: FIX - Should transpose original matrix and return reference to it.
-    Matrix transpose( ) const;
+    Matrix& transpose( );
     
     matrix_row& operator[]( index i );
     const matrix_row& operator[]( index i ) const;
@@ -59,7 +59,7 @@ class Matrix
     Vector< matrix_row >        *m_vectors;
     std::size_t                 m_rows;
     std::size_t                 m_cols;
-    
+
     void add_row( );            // Non mandatory help function
     friend std::istream& operator>> ( std::istream&, Matrix& );
 };
@@ -164,8 +164,6 @@ Matrix Matrix::operator-( ) const {
     return (*this) * (-1);
 }
 
-
-// TODO: Fix implementation. Throws on wrong dimensions
 Matrix Matrix::operator* ( const Matrix& rhs) const {
     if ( cols() != rhs.rows() ) {
         throw std::invalid_argument("Dimensions of matrices not compatible"); 
@@ -205,14 +203,20 @@ Matrix Matrix::operator* ( const int scalar ) const {
     return res_matrix;
 }
 
-Matrix Matrix::transpose() const {
-    Matrix res_matrix(cols(), rows()); // Matrix of transponate size
+Matrix& Matrix::transpose() {
+    size_t new_row_size = cols();
+    size_t new_cols_size = rows();
+    Vector< matrix_row >* res = new Vector< matrix_row >(new_row_size, new_cols_size); // Matrix of transponate size
     for (size_t i = 0; i < rows(); ++i) {
         for (size_t j = 0; j < cols(); ++j) {
-            res_matrix[j][i] = (*this)[i][j];
+            (*res)[j][i] = (*this)[i][j];
         }
     }
-    return res_matrix;
+    delete m_vectors;
+    m_vectors = res;
+    m_rows = new_row_size;
+    m_cols = new_cols_size;
+    return *this;
 }
 
 
@@ -232,8 +236,7 @@ const Matrix::matrix_row& Matrix::operator[]( index i ) const {
 
 
 // TODO: FIX - SHOULD NOT CHANGE MATRIX SIZE
-std::istream& operator>> ( std::istream& input, Matrix& matrix ) {
-    
+std::istream& operator>> ( std::istream& input, Matrix& matrix ) {  
     if (matrix.m_rows) {
         matrix.m_vectors->clear();
     }
@@ -263,6 +266,35 @@ std::istream& operator>> ( std::istream& input, Matrix& matrix ) {
 
     return input;
 }
+
+// // TODO: FIX - SHOULD NOT CHANGE MATRIX SIZE UNLESS MATRIX IS EMPTY
+// std::istream& operator>> ( std::istream& input, Matrix& matrix ) {  
+//     if( matrix.rows() == 0 || matrix.cols() == 0 ) {
+
+//     }
+
+//     size_t i = 0;   // Row count
+//     size_t j = 0;   // Column count
+
+//     while (input) {
+//         char ch = input.peek();
+//         if (ch == ']') {
+//             break;
+//         } else if (ch == '[' || ch == ' ' || ch == '\n') {
+//             input.ignore(1);
+//         } else if (ch == ';') {
+//             input.ignore(1);
+//             ++i;    // Go to next row
+//             j = 0;  // Set column to the first column
+//         } else {
+//             int value;
+//             input >> value;
+//             matrix[i][j] = value;
+//             ++j;    // Go to next column;
+//         }
+//     }
+//     return input;
+// }
 
 std::ostream& operator<< ( std::ostream& output, Matrix& matrix) {
     output << "[ ";
