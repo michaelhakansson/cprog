@@ -1,16 +1,17 @@
 #ifndef DATE_H
 #define DATE_H
 
-#include <ostream>
+#include <iostream>
 
 namespace lab2 {
 
 	class Date {
 		private:
-			int year_;
-			int month_;
 			int day_;
-			int days_per_week_;
+			int month_;
+			int year_;
+			// int days_per_week_;
+			// int months_per_year_;
 
 		public:
 			// Default constructor - should initiate to todays date
@@ -23,7 +24,7 @@ namespace lab2 {
 			Date(Date const&);
 
 			// Destructor
-			~Date();
+			virtual ~Date();
 
 			// Copy assignment
 			Date& operator= (Date const&);
@@ -32,8 +33,8 @@ namespace lab2 {
 			int day() const;
 			int month() const;
 			int week_day() const;
-			int days_per_week() const;
-			int months_per_year() const;
+			virtual int days_per_week() const = 0;
+			virtual int months_per_year() const = 0;
 			std::string week_day_name() const;
 			std::string month_name() const;
 
@@ -42,7 +43,7 @@ namespace lab2 {
 			void add_month(const int);
 
 			// Operator overloads
-			virtual Date& operator++ () = 0; // Should increase day
+			virtual Date& operator++ () =  0; // Should increase day
 			virtual Date& operator-- () = 0; // Should decrease day
 			virtual Date& operator+= (Date const&) = 0;
 			virtual Date& operator-= (Date const&) = 0;
@@ -56,9 +57,38 @@ namespace lab2 {
 			friend std::ostream& operator<< (std::ostream&, Date const&);
 
 			virtual int mod_julian_day(Date const&) const;
-
 	};
 
+	// TODO
+	Date::~Date() {}
+
+	Date::Date(const int day, const int month, const int year)
+		: day_(day), month_(month), year_(year) {}
+
+	int Date::month() const {
+		return month_;
+	}
+
+	int Date::day() const {
+		return day_;
+	}
+
+	int Date::year() const {
+		return year_;
+	}
+
+	// int Date::days_per_week() const {
+	// 	return days_per_week_;
+	// }
+
+	// int Date::months_per_year() const {
+	// 	return months_per_year_;
+	// }
+
+	// TODO
+	int Date::mod_julian_day(Date const&) const {
+		return 1;
+	}
 }
 
 #endif // DATE_H
