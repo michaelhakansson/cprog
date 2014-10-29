@@ -1,17 +1,15 @@
 #ifndef DATE_H
 #define DATE_H
 
-#include <iostream>
+#include <ostream>
 
 namespace lab2 {
 
 	class Date {
-		private:
+		protected:
 			int day_;
 			int month_;
 			int year_;
-			// int days_per_week_;
-			// int months_per_year_;
 
 		public:
 			// Default constructor - should initiate to todays date
@@ -62,6 +60,8 @@ namespace lab2 {
 	// TODO
 	Date::~Date() {}
 
+	Date::Date() {}
+
 	Date::Date(const int day, const int month, const int year)
 		: day_(day), month_(month), year_(year) {}
 
@@ -77,17 +77,16 @@ namespace lab2 {
 		return year_;
 	}
 
-	// int Date::days_per_week() const {
-	// 	return days_per_week_;
-	// }
-
-	// int Date::months_per_year() const {
-	// 	return months_per_year_;
-	// }
-
 	// TODO
 	int Date::mod_julian_day(Date const&) const {
 		return 1;
+	}
+
+	std::ostream& operator<< (std::ostream& output, Date const& date) {
+		output << date.year() << "-" <<
+				 (date.month() < 10 ? "0" : "") << date.month() << "-" << 
+				 (date.day() < 10 ? "0" : "") << date.day();
+		return output;
 	}
 }
 
