@@ -19,6 +19,7 @@ namespace lab2 {
 		int months_per_year_ = 12;
 		bool leap_year(int year) const;
 		bool leap_year() const;
+		void inv_mod_julian_day(long jdn, int *yy, int *mm, int *dd);
 
 	public:
 		virtual ~Gregorian(); // TODO
@@ -30,10 +31,7 @@ namespace lab2 {
 		virtual int months_per_year() const;
 		virtual int days_this_month() const;
 		virtual std::string week_day_name() const;
-		virtual std::string month_name() const; // TODO
-
-		virtual Date& operator+= (Date const&); // TODO
-		virtual Date& operator-= (Date const&); // TODO
+		virtual std::string month_name() const;
 		virtual long mod_julian_day() const;
 
 	};
@@ -105,12 +103,13 @@ namespace lab2 {
 		return leap_year(year_);
 	}
 
-	Date& Gregorian::operator+= (Date const& rhs) {}
-	Date& Gregorian::operator-= (Date const& rhs) {}
-
 	long Gregorian::mod_julian_day() const {
 		long jdn = ymd_to_jdn(this->year(), this->month(), this->day(), 0); // Last flag '0' is for Gregorian
 		return jdn - MOD_JULIAN_DATE; // Need to adjust according to 17 nov 1858
+	}
+
+	void Gregorian::inv_mod_julian_day(long jdn, int* yy, int* mm, int* dd) {
+		jdn_to_ymd(jdn + MOD_JULIAN_DATE, yy, mm, dd, 0); // 0 as last argument for Gregorian
 	}
 
 }

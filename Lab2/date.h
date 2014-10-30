@@ -10,6 +10,7 @@ namespace lab2 {
 			int month_;
 			int year_;
 			static const long MOD_JULIAN_DATE = 2400001;
+			virtual void inv_mod_julian_day(long jdn, int *yy, int *mm, int *dd) = 0;
 
 		public:
 			// Default constructor - should initiate to todays date
@@ -44,8 +45,8 @@ namespace lab2 {
 			// Operator overloads
 			Date& operator++ ();
 			Date& operator-- ();
-			virtual Date& operator+= (Date const&) = 0;
-			virtual Date& operator-= (Date const&) = 0;
+			//virtual Date& operator+= (Date const&); = 0; // TODO
+			Date& operator-= (Date const&); // TODO
 			bool  operator== (Date const&) const; // TODO
 			bool  operator!= (Date const&) const; // TODO
 			bool  operator<  (Date const&) const; // TODO
@@ -86,37 +87,19 @@ namespace lab2 {
 	}
 
 	Date& Date::operator++ () {
-		if ( this->days_this_month() > this->day() ) { // OK to add day this month
-			++day_;
-		} else {
-			if ( this->months_per_year() > this->month() ) { // OK to add month this year
-				++month_; // Increment month
-				day_ = 1; // Set day to first of the year
-			} else { // Must add a year
-				++year_;
-				month_ = 1;
-				day_  = 1;
-			}
-		}
+		long j = this->mod_julian_day();
+		++j;
+		this->inv_mod_julian_day(j, &year_, &month_, &day_);
 		return *this;
 	}
 
 	Date& Date::operator-- () {
-		if ( this->day() > 1 ) { // OK to decrement day
-			--day_;
-		} else {
-			if ( this->month() > 1 ) { // OK to decrement month
-				--month_; // Increment month
-				// Set day to the last day of the month
-				day_ = this->days_this_month();
-			} else { // Must decrement the year
-				--year_;
-				month_ = this->months_per_year();
-				day_  = this->days_this_month();
-			}
-		}
+		long j = this->mod_julian_day();
+		--j;
+		this->inv_mod_julian_day(j, &year_, &month_, &day_);
 		return *this;
 	}
+
 }
 
 #endif // DATE_H
