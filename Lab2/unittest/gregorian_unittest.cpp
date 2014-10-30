@@ -265,7 +265,6 @@ TEST(Gregorian, minus_equals) {
 	EXPECT_EQ(g1.day(), 31);
 	EXPECT_EQ(g1.month(), 12);
 	EXPECT_EQ(g1.year(), 2013);
-
 }
 
 TEST(Gregorian, plus_equals) {
@@ -279,5 +278,66 @@ TEST(Gregorian, plus_equals) {
 	EXPECT_EQ(g1.day(), 1);
 	EXPECT_EQ(g1.month(), 3);
 	EXPECT_EQ(g1.year(), 2014);
+}
 
+TEST(Gregorian, equals) {
+	Gregorian g1(30,1,2014);
+	Gregorian g2(30,1,2014);
+	Gregorian g3(31,1,2014);
+
+	EXPECT_TRUE(g1 == g2);
+	EXPECT_FALSE(g1 == g3);
+}
+
+TEST(Gregorian, not_equals) {
+	Gregorian g1(30,1,2014);
+	Gregorian g2(30,1,2014);
+	Gregorian g3(31,1,2014);
+
+	EXPECT_FALSE(g1 != g2);
+	EXPECT_TRUE(g1 != g3);
+}
+
+TEST(Gregorian, less) {
+	Gregorian g1(29,1,2014);
+	Gregorian g2(30,1,2014);
+
+	EXPECT_FALSE(g2 < g1);
+	EXPECT_TRUE(g1 < g2);
+}
+
+TEST(Gregorian, less_equals) {
+	Gregorian g1(29,1,2014);
+	Gregorian g2(30,1,2014);
+
+	EXPECT_FALSE(g2 <= g1);
+	EXPECT_TRUE(g1 <= g2);
+	EXPECT_TRUE(g2 <= g2);
+}
+
+TEST(Gregorian, greater) {
+	Gregorian g1(29,1,2014);
+	Gregorian g2(30,1,2014);
+
+	EXPECT_FALSE(g1 > g2);
+	EXPECT_TRUE(g2 > g1);
+}
+
+TEST(Gregorian, greater_equals) {
+	Gregorian g1(29,1,2014);
+	Gregorian g2(30,1,2014);
+
+	EXPECT_FALSE(g1 >= g2);
+	EXPECT_TRUE(g2 >= g1);
+	EXPECT_TRUE(g2 >= g2);
+}
+
+TEST(Gregorian, minus) {
+	Gregorian g1(1,1,2014);
+	Gregorian g2(30,1,2014);
+
+	EXPECT_EQ(g1-g1, 0);
+	EXPECT_EQ(g2-g2, 0);
+	EXPECT_EQ(g1-g2, -29);
+	EXPECT_EQ(g2-g1, 29);
 }

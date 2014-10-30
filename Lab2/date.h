@@ -45,15 +45,15 @@ namespace lab2 {
 			// Operator overloads
 			Date& operator++ ();
 			Date& operator-- ();
-			Date& operator-= (int); // TODO
-			Date& operator+= (int); // TODO
-			bool  operator== (Date const&) const; // TODO
-			bool  operator!= (Date const&) const; // TODO
-			bool  operator<  (Date const&) const; // TODO
-			bool  operator<= (Date const&) const; // TODO
-			bool  operator>  (Date const&) const; // TODO
-			bool  operator>= (Date const&) const; // TODO
-			int   operator-  (Date const&) const; // TODO
+			Date& operator-= (int);
+			Date& operator+= (int);
+			bool  operator== (Date const&) const;
+			bool  operator!= (Date const&) const;
+			bool  operator<  (Date const&) const;
+			bool  operator<= (Date const&) const;
+			bool  operator>  (Date const&) const;
+			bool  operator>= (Date const&) const;
+			int   operator-  (Date const&) const;
 			friend std::ostream& operator<< (std::ostream&, Date const&);
 
 			virtual long mod_julian_day() const = 0;
@@ -114,6 +114,45 @@ namespace lab2 {
 		return *this;
 	}
 
+	bool Date::operator== (Date const& rhs) const {
+		long d1 = this->mod_julian_day();
+		long d2 = rhs.mod_julian_day();
+		return d1 == d2;
+	}
+
+	bool Date::operator!= (Date const& rhs) const {
+		return !(this->operator==(rhs));
+	}
+
+	bool Date::operator< (Date const& rhs) const {
+		long d1 = this->mod_julian_day();
+		long d2 = rhs.mod_julian_day();
+		return d1 < d2;
+	}
+
+	bool Date::operator<= (Date const& rhs) const {
+		long d1 = this->mod_julian_day();
+		long d2 = rhs.mod_julian_day();
+		return d1 <= d2;
+	}
+
+	bool Date::operator> (Date const& rhs) const {
+		long d1 = this->mod_julian_day();
+		long d2 = rhs.mod_julian_day();
+		return d1 > d2;
+	}
+
+	bool Date::operator>= (Date const& rhs) const {
+		long d1 = this->mod_julian_day();
+		long d2 = rhs.mod_julian_day();
+		return d1 >= d2;
+	}
+	
+	int Date::operator- (Date const& rhs) const {
+		long d1 = this->mod_julian_day();
+		long d2 = rhs.mod_julian_day();
+		return d1 - d2;
+	}
 }
 
 #endif // DATE_H
