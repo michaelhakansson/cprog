@@ -111,7 +111,24 @@ TEST(Gregorian, week_day_number) {
 	Gregorian g1(30,10,2014);
 	Gregorian g2(31,10,2014);
 	Gregorian g3(31,10,2006);
+	Gregorian g4(29,10,2006);
+	Gregorian g5(30,10,2006);
 	EXPECT_EQ(g1.week_day(), 4);
 	EXPECT_EQ(g2.week_day(), 5);
 	EXPECT_EQ(g3.week_day(), 2);
+	EXPECT_EQ(g4.week_day(), 7);
+	EXPECT_EQ(g5.week_day(), 1);
+}
+
+TEST(Gregorian, week_day_name) {
+	Gregorian g1(30,10,2014);
+	Gregorian g2(31,10,2014);
+	Gregorian g3(31,10,2006);
+	Gregorian g4(29,10,2006);
+	Gregorian g5(30,10,2006);
+	EXPECT_EQ(g1.week_day_name(), "thursday");
+	EXPECT_EQ(g2.week_day_name(), "friday");
+	EXPECT_EQ(g3.week_day_name(), "tuesday");
+	EXPECT_EQ(g4.week_day_name(), "sunday");
+	EXPECT_EQ(g5.week_day_name(), "monday");
 }

@@ -125,7 +125,10 @@ namespace lab2 {
 		}
 	}
 
-	std::string Gregorian::week_day_name() const {}
+	std::string Gregorian::week_day_name() const {
+		return week_day_names[ this->week_day() ];
+	}
+	
 	std::string Gregorian::month_name() const {}
 
 	// Calculate leap year http://support.microsoft.com/kb/214019
