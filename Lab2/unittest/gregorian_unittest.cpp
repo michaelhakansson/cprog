@@ -254,3 +254,16 @@ TEST(Gregorian, decrement_operator) {
 	EXPECT_EQ(g4.year(), 2001);
 }
 
+TEST(Gregorian, minus_equals) {
+	Gregorian g1(30,1,2014);
+	g1 -= 3;
+	EXPECT_EQ(g1.day(), 27);
+	EXPECT_EQ(g1.month(), 1);
+	EXPECT_EQ(g1.year(), 2014);
+
+	g1 -= 27;
+	EXPECT_EQ(g1.day(), 31);
+	EXPECT_EQ(g1.month(), 12);
+	EXPECT_EQ(g1.year(), 2013);
+
+}
