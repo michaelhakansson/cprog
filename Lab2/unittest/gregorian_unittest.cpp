@@ -132,3 +132,16 @@ TEST(Gregorian, week_day_name) {
 	EXPECT_EQ(g4.week_day_name(), "sunday");
 	EXPECT_EQ(g5.week_day_name(), "monday");
 }
+
+TEST(Gregorian, month_names) {
+	Gregorian g1(30,1,2014);
+	Gregorian g2(31,2,2014);
+	Gregorian g3(31,10,2006);
+	Gregorian g4(29,11,2006);
+	Gregorian g5(30,12,2006);
+	EXPECT_EQ(g1.month_name(), "january");
+	EXPECT_EQ(g2.month_name(), "february");
+	EXPECT_EQ(g3.month_name(), "october");
+	EXPECT_EQ(g4.month_name(), "november");
+	EXPECT_EQ(g5.month_name(), "december");
+}

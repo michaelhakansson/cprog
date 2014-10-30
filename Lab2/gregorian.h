@@ -21,7 +21,7 @@ namespace lab2 {
 		bool leap_year() const;
 
 	public:
-		virtual ~Gregorian();
+		virtual ~Gregorian(); // TODO
 		Gregorian();
 		Gregorian(const int a, const int b, const int c);
 
@@ -29,7 +29,7 @@ namespace lab2 {
 		virtual int days_per_week() const;
 		virtual int months_per_year() const;
 		virtual int days_this_month() const;
-		virtual std::string week_day_name() const; // TODO
+		virtual std::string week_day_name() const;
 		virtual std::string month_name() const; // TODO
 
 		virtual Date& operator++ (); // TODO
@@ -40,7 +40,7 @@ namespace lab2 {
 
 	};
 
-	// TODO
+
 	Gregorian::~Gregorian() {}
 
 	Gregorian::Gregorian() : Date() {
@@ -95,8 +95,8 @@ namespace lab2 {
 				c = 0;
 				break;
 		}
-		/* According to the formula from Wikipedia but with adjustment to get
-		monday == 1 and sunday == 7 */
+		/* Return according to the formula from Wikipedia but with 
+		adjustment to get monday == 1 and sunday == 7 */
 		int res = (d + m + y + (y/4) + c) % 7;
 		if (res == 0) {
 			return 7;
@@ -112,7 +112,6 @@ namespace lab2 {
 		return months_per_year_;
 	}
 
-	// TODO
 	int Gregorian::days_this_month() const {
 		if (this->month() != 2) {
 			return days_per_month[this->month()];
@@ -128,8 +127,10 @@ namespace lab2 {
 	std::string Gregorian::week_day_name() const {
 		return week_day_names[ this->week_day() ];
 	}
-	
-	std::string Gregorian::month_name() const {}
+
+	std::string Gregorian::month_name() const {
+		return month_names[ this-> month() ];
+	}
 
 	// Calculate leap year http://support.microsoft.com/kb/214019
 	bool Gregorian::leap_year(int year) const {
