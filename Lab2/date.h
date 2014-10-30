@@ -42,7 +42,7 @@ namespace lab2 {
 			void add_month(const int);
 
 			// Operator overloads
-			virtual Date& operator++ () =  0;
+			Date& operator++ ();
 			virtual Date& operator-- () = 0;
 			virtual Date& operator+= (Date const&) = 0;
 			virtual Date& operator-= (Date const&) = 0;
@@ -83,6 +83,23 @@ namespace lab2 {
 				 (date.month() < 10 ? "0" : "") << date.month() << "-" << 
 				 (date.day() < 10 ? "0" : "") << date.day();
 		return output;
+	}
+
+	Date& Date::operator++ () {
+		if ( this->days_this_month() > this->day() ) { // OK to add day this month
+			++day_;
+		} else {
+			if ( this->months_per_year() > this->month() ) { // OK to add month this year
+				++month_; // Increment month
+				day_ = 1; // Set day to first of the year
+			} else { // Must add a year
+				++year_;
+				month_ = 1;
+				day_  = 1;
+			}
+
+		}
+		return *this;
 	}
 }
 

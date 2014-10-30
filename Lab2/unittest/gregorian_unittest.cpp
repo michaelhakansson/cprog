@@ -145,3 +145,58 @@ TEST(Gregorian, month_names) {
 	EXPECT_EQ(g4.month_name(), "november");
 	EXPECT_EQ(g5.month_name(), "december");
 }
+
+TEST(Gregorian, increment_operator) {
+	Gregorian g1(30,12,2014);
+
+	EXPECT_EQ(g1.day(), 30);
+	EXPECT_EQ(g1.month(), 12);
+	EXPECT_EQ(g1.year(), 2014);
+	++g1;
+
+	EXPECT_EQ(g1.day(), 31);
+	EXPECT_EQ(g1.month(), 12);
+	EXPECT_EQ(g1.year(), 2014);
+	++g1;
+
+	EXPECT_EQ(g1.day(), 1);
+	EXPECT_EQ(g1.month(), 1);
+	EXPECT_EQ(g1.year(), 2015);
+
+	// A leap year
+	Gregorian g2(28,2,2000);
+	EXPECT_EQ(g2.day(), 28);
+	EXPECT_EQ(g2.month(), 2);
+	EXPECT_EQ(g2.year(), 2000);
+	++g2;
+
+	EXPECT_EQ(g2.day(), 29);
+	EXPECT_EQ(g2.month(), 2);
+	EXPECT_EQ(g2.year(), 2000);
+	++g2;
+
+	EXPECT_EQ(g2.day(), 1);
+	EXPECT_EQ(g2.month(), 3);
+	EXPECT_EQ(g2.year(), 2000);
+
+	// NOT a leap year
+	Gregorian g3(28,2,2001);
+	EXPECT_EQ(g3.day(), 28);
+	EXPECT_EQ(g3.month(), 2);
+	EXPECT_EQ(g3.year(), 2001);
+	++g3;
+
+	EXPECT_EQ(g3.day(), 1);
+	EXPECT_EQ(g3.month(), 3);
+	EXPECT_EQ(g3.year(), 2001);
+
+	Date& g4 = ++g3;
+	EXPECT_EQ(g3.day(), 2);
+	EXPECT_EQ(g3.month(), 3);
+	EXPECT_EQ(g3.year(), 2001);
+	EXPECT_EQ(g4.day(), 2);
+	EXPECT_EQ(g4.month(), 3);
+	EXPECT_EQ(g4.year(), 2001);
+
+}
+
