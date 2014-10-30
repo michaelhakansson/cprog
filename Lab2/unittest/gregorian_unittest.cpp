@@ -267,3 +267,17 @@ TEST(Gregorian, minus_equals) {
 	EXPECT_EQ(g1.year(), 2013);
 
 }
+
+TEST(Gregorian, plus_equals) {
+	Gregorian g1(30,1,2014);
+	g1 += 3;
+	EXPECT_EQ(g1.day(), 2);
+	EXPECT_EQ(g1.month(), 2);
+	EXPECT_EQ(g1.year(), 2014);
+
+	g1 += 27;
+	EXPECT_EQ(g1.day(), 1);
+	EXPECT_EQ(g1.month(), 3);
+	EXPECT_EQ(g1.year(), 2014);
+
+}

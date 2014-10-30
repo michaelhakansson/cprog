@@ -107,6 +107,13 @@ namespace lab2 {
 		return *this;
 	}
 
+	Date& Date::operator+= (int n) {
+		long j = this->mod_julian_day();
+		j += n;
+		this->inv_mod_julian_day(j);
+		return *this;
+	}
+
 }
 
 #endif // DATE_H
