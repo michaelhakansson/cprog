@@ -137,7 +137,7 @@ TEST(Gregorian, week_day_name) {
 
 TEST(Gregorian, month_names) {
 	Gregorian g1(30,1,2014);
-	Gregorian g2(31,2,2014);
+	Gregorian g2(28,2,2014);
 	Gregorian g3(31,10,2006);
 	Gregorian g4(29,11,2006);
 	Gregorian g5(30,12,2006);
@@ -341,3 +341,10 @@ TEST(Gregorian, minus) {
 	EXPECT_EQ(g1-g2, -29);
 	EXPECT_EQ(g2-g1, 29);
 }
+
+TEST(Gregorian, throw_on_unvalid_date) {
+	EXPECT_NO_THROW(Gregorian a(1,1,2014));
+	EXPECT_NO_THROW(Gregorian a(29,2,2000));
+	EXPECT_THROW(Gregorian a(29,2,2001), std::out_of_range);
+}
+

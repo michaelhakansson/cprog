@@ -39,8 +39,8 @@ namespace lab2 {
 			virtual std::string month_name() const = 0;
 
 			// Returntype void since only setter
-			void add_year(const int);
-			void add_month(const int);
+			void add_year(const int); // TODO
+			void add_month(const int); // TODO
 
 			// Operator overloads
 			Date& operator++ ();

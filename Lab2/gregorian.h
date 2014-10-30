@@ -7,6 +7,7 @@
 
 #include <string>
 #include <iostream>
+#include <stdexcept>
 
 namespace lab2 {
 
@@ -20,11 +21,12 @@ namespace lab2 {
 		bool leap_year(int year) const;
 		bool leap_year() const;
 		void inv_mod_julian_day(long jdn);
+		bool valid_date(const int day, const int month, const int year) const;
 
 	public:
 		virtual ~Gregorian(); // TODO
 		Gregorian();
-		Gregorian(const int a, const int b, const int c);
+		Gregorian(const int day, const int month, const int year);
 
 		virtual int week_day() const;
 		virtual int days_per_week() const;
@@ -49,8 +51,14 @@ namespace lab2 {
    		year_  = t->tm_year + 1900;
 	}
 
-	Gregorian::Gregorian(const int day, const int month, const int year)
-		: Date(day, month, year) {}
+	Gregorian::Gregorian(const int day, const int month, const int year) {
+		if ( !valid_date(day, month, year) ) {
+			throw std::out_of_range("Invalid date"); 
+		}
+		day_ = day;
+		month_ = month;
+		year_ = year;
+	}
 
 	// http://en.wikipedia.org/wiki/Julian_day#Finding_day_of_week_given_Julian_day_number
 	/* Returns the day of the week. Monday = 1, sunday = 7.*/
@@ -101,6 +109,12 @@ namespace lab2 {
 
 	bool Gregorian::leap_year() const {
 		return leap_year(year_);
+	}
+
+	bool Gregorian::valid_date(int day, int month, int year) const {
+		if (year < 1) return false;
+		if (month < 1 || month > this->months_per_year()) return false;
+		return ( day <= days_per_month[ month + (leap_year(year) ? 1 : 0) ] );
 	}
 
 	long Gregorian::mod_julian_day() const {
