@@ -3,7 +3,9 @@
 
 #include "date.h"
 #include "kattistime.cpp"
+#include "jdn.c"
 
+#include <string>
 #include <iostream>
 
 namespace lab2 {
@@ -11,6 +13,8 @@ namespace lab2 {
 	class Gregorian : public Date {
 	private:
 		int days_per_month [13] = {0,31,28,31,30,31,30,31,31,30,31,30,31};
+		std::string week_day_names [8] = {"","monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"};
+		std::string month_names [13] = {"", "january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"};
 		int days_per_week_ = 7;
 		int months_per_year_ = 12;
 		bool leap_year(int year) const;
@@ -31,6 +35,7 @@ namespace lab2 {
 		virtual Date& operator-- (); // TODO
 		virtual Date& operator+= (Date const&); // TODO
 		virtual Date& operator-= (Date const&); // TODO
+		virtual long mod_julian_day() const;
 
 	};
 
@@ -62,7 +67,7 @@ namespace lab2 {
 	int Gregorian::days_this_month() const {
 		if (this->month() != 2) {
 			return days_per_month[this->month()];
-		} else { // February --> check leap year
+		} else { // February --> check if leap year
 			if ( leap_year( this->year() ) ) {
 				return 1+days_per_month[this->month()];
 			} else {
@@ -91,6 +96,10 @@ namespace lab2 {
 	Date& Gregorian::operator+= (Date const& rhs) {}
 	Date& Gregorian::operator-= (Date const& rhs) {}
 
+	long Gregorian::mod_julian_day() const {
+		long jdn = ymd_to_jdn(year(), month(), day(), 0); // Last flag '0' is for Gregorian
+		return jdn - MOD_JULIAN_DATE; // Need to adjust according to 17 nov 1858
+	}
 
 }
 

@@ -9,6 +9,7 @@ namespace lab2 {
 			int day_;
 			int month_;
 			int year_;
+			static const long MOD_JULIAN_DATE = 2400001;
 
 		public:
 			// Default constructor - should initiate to todays date
@@ -54,7 +55,7 @@ namespace lab2 {
 			int   operator-  (Date const&) const; // TODO
 			friend std::ostream& operator<< (std::ostream&, Date const&);
 
-			virtual int mod_julian_day(Date const&) const;
+			virtual long mod_julian_day() const = 0;
 	};
 
 	// TODO
@@ -75,11 +76,6 @@ namespace lab2 {
 
 	int Date::year() const {
 		return year_;
-	}
-
-	// TODO
-	int Date::mod_julian_day(Date const&) const {
-		return 1;
 	}
 
 	std::ostream& operator<< (std::ostream& output, Date const& date) {
