@@ -32,7 +32,6 @@ namespace lab2 {
 		virtual std::string week_day_name() const;
 		virtual std::string month_name() const; // TODO
 
-		virtual Date& operator-- (); // TODO
 		virtual Date& operator+= (Date const&); // TODO
 		virtual Date& operator-= (Date const&); // TODO
 		virtual long mod_julian_day() const;
@@ -143,7 +142,6 @@ namespace lab2 {
 		return leap_year(year_);
 	}
 
-	Date& Gregorian::operator-- () {}
 	Date& Gregorian::operator+= (Date const& rhs) {}
 	Date& Gregorian::operator-= (Date const& rhs) {}
 

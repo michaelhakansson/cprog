@@ -43,7 +43,7 @@ namespace lab2 {
 
 			// Operator overloads
 			Date& operator++ ();
-			virtual Date& operator-- () = 0;
+			Date& operator-- ();
 			virtual Date& operator+= (Date const&) = 0;
 			virtual Date& operator-= (Date const&) = 0;
 			bool  operator== (Date const&) const; // TODO
@@ -97,7 +97,23 @@ namespace lab2 {
 				month_ = 1;
 				day_  = 1;
 			}
+		}
+		return *this;
+	}
 
+	Date& Date::operator-- () {
+		if ( this->day() > 1 ) { // OK to decrement day
+			--day_;
+		} else {
+			if ( this->month() > 1 ) { // OK to decrement month
+				--month_; // Increment month
+				// Set day to the last day of the month
+				day_ = this->days_this_month();
+			} else { // Must decrement the year
+				--year_;
+				month_ = this->months_per_year();
+				day_  = this->days_this_month();
+			}
 		}
 		return *this;
 	}
