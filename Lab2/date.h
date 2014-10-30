@@ -30,7 +30,7 @@ namespace lab2 {
 			int year() const;
 			int day() const;
 			int month() const;
-			virtual int week_day() const = 0; // TODO
+			virtual int week_day() const = 0;
 			virtual int days_per_week() const = 0;
 			virtual int months_per_year() const = 0;
 			virtual int days_this_month() const = 0;

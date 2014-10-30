@@ -100,10 +100,12 @@ TEST(Gregorian, julian_day_number) {
 	Gregorian g1(16,11,1858);
 	Gregorian g2(17,11,1858);
 	Gregorian g3(18,11,1858);
-	
+	Gregorian g4(12,3,2014);
+
 	EXPECT_EQ(g1.mod_julian_day(), -1);
 	EXPECT_EQ(g2.mod_julian_day(),  0);
 	EXPECT_EQ(g3.mod_julian_day(),  1);
+	EXPECT_EQ(g4.mod_julian_day(),  56728);
 
 }
 
