@@ -2,22 +2,11 @@
 #define GREGORIAN_H
 
 #include "date.h"
-#include "kattistime.cpp"
-#include "jdn.c"
-
-#include <string>
-#include <iostream>
-#include <stdexcept>
 
 namespace lab2 {
 
 	class Gregorian : public Date {
 	private:
-		int days_per_month [13] = {0,31,28,31,30,31,30,31,31,30,31,30,31};
-		std::string week_day_names [8] = {"","monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"};
-		std::string month_names [13] = {"", "january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"};
-		int days_per_week_ = 7;
-		int months_per_year_ = 12;
 		bool leap_year(int year) const;
 		bool leap_year() const;
 		void inv_mod_julian_day(long jdn);
@@ -37,8 +26,27 @@ namespace lab2 {
 		virtual long mod_julian_day() const;
 
 	};
+}
+#endif // GREGORIAN_H
 
 
+// THIS WILL GO INTO "gregorian.cpp"
+// #include "gregorian.h" // TODO: Uncomment this line
+#include "kattistime.cpp"
+#include "jdn.c"
+
+#include <string>
+#include <iostream>
+#include <stdexcept>
+
+namespace lab2 {
+
+	const int days_per_month [13] = {0,31,28,31,30,31,30,31,31,30,31,30,31};
+	const std::string week_day_names [8] = {"","monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"};
+	const std::string month_names [13] = {"", "january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"};
+	const int days_per_week_ = 7;
+	const int months_per_year_ = 12;
+	
 	Gregorian::~Gregorian() {}
 
 	Gregorian::Gregorian() : Date() {
@@ -128,4 +136,4 @@ namespace lab2 {
 
 }
 
-#endif // GREGORIAN_H
+

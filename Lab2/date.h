@@ -1,8 +1,6 @@
 #ifndef DATE_H
 #define DATE_H
 
-#include <ostream>
-
 namespace lab2 {
 	class Date {
 		protected:
@@ -13,20 +11,14 @@ namespace lab2 {
 			virtual void inv_mod_julian_day(long jdn) = 0;
 
 		public:
-			// Default constructor - should initiate to todays date
-			Date();
-			
-			// Constructor taking a date
+			// Constructors
+			Date(); // Initiates to current date
 			Date(const int day, const int month, const int year);
-
-			// Copy constructor
 			Date(Date const&);
 
 			// Destructor
 			virtual ~Date();
 
-			// Copy assignment
-			Date& operator= (Date const&);
 
 			int year() const;
 			int day() const;
@@ -37,12 +29,14 @@ namespace lab2 {
 			virtual int days_this_month() const = 0;
 			virtual std::string week_day_name() const = 0;
 			virtual std::string month_name() const = 0;
+			virtual long mod_julian_day() const = 0;
 
 			// Returntype void since only setter
 			void add_year(const int); // TODO
 			void add_month(const int); // TODO
 
 			// Operator overloads
+			Date& operator= (Date const&); // TODO
 			Date& operator++ ();
 			Date& operator-- ();
 			Date& operator-= (int);
@@ -56,9 +50,18 @@ namespace lab2 {
 			int   operator-  (Date const&) const;
 			friend std::ostream& operator<< (std::ostream&, Date const&);
 
-			virtual long mod_julian_day() const = 0;
 	};
+}
 
+#endif // DATE_H
+
+// THIS WILL GO INTO "date.cpp"
+// #include "date.h" // TODO: Uncomment this line
+
+#include <ostream>
+
+
+namespace lab2 {
 	// TODO
 	Date::~Date() {}
 
@@ -154,5 +157,3 @@ namespace lab2 {
 		return d1 - d2;
 	}
 }
-
-#endif // DATE_H
