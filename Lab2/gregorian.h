@@ -25,6 +25,7 @@ namespace lab2 {
 		Gregorian();
 		Gregorian(const int a, const int b, const int c);
 
+		virtual int week_day() const;
 		virtual int days_per_week() const;
 		virtual int months_per_year() const;
 		virtual int days_this_month() const;
@@ -55,6 +56,54 @@ namespace lab2 {
 	Gregorian::Gregorian(const int day, const int month, const int year)
 		: Date(day, month, year) {}
 
+	// http://en.wikipedia.org/wiki/Determination_of_the_day_of_the_week
+	int Gregorian::week_day() const {
+		/* Month table from wikipedia. month_table[0] is not to be used.
+		   Index 1-12 is for january-december during non-leap years.
+		   Index 13 is for january during leap year and index 14 for
+		   February during leap years. */
+
+		int d = this->day();
+		int y = this->year() % 100; // Last two digits of year
+
+		// Determine month number
+		int adjust = 0; // Variable used to adjust for leap year in the month table
+		if ( this->leap_year() ) { // Adjust for leap year
+			if ( this->month() == 1 ) {
+				adjust = 12;
+			} else if ( this -> month() == 2) {
+				adjust = 13;
+			}
+		}
+		int month_table [15] = {-1,0,3,3,6,1,4,6,2,5,0,3,5,6,2};
+		int m = month_table[ this->month() + adjust ];
+
+		/* Determine century number 'c' according to Wikipedia article 
+		mentioned above */
+		int c;
+		switch ( (this->month() / 100) % 4) { // First two digits of year mod 4
+			case 0:
+				c = 6;
+				break;
+			case 1:
+				c = 4;
+				break;
+			case 2:
+				c = 2;
+				break;
+			case 3:
+				c = 0;
+				break;
+		}
+		/* According to the formula from Wikipedia but with adjustment to get
+		monday == 1 and sunday == 7 */
+		int res = (d + m + y + (y/4) + c) % 7;
+		if (res == 0) {
+			return 7;
+		}
+		return res; 
+	}
+	
 	int Gregorian::days_per_week() const {
 		return days_per_week_;
 	}
@@ -97,7 +146,7 @@ namespace lab2 {
 	Date& Gregorian::operator-= (Date const& rhs) {}
 
 	long Gregorian::mod_julian_day() const {
-		long jdn = ymd_to_jdn(year(), month(), day(), 0); // Last flag '0' is for Gregorian
+		long jdn = ymd_to_jdn(this->year(), this->month(), this->day(), 0); // Last flag '0' is for Gregorian
 		return jdn - MOD_JULIAN_DATE; // Need to adjust according to 17 nov 1858
 	}
 
