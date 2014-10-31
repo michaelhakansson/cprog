@@ -13,7 +13,6 @@ namespace lab2 {
 		bool valid_date(const int day, const int month, const int year) const;
 
 	public:
-		virtual ~Gregorian(); // TODO
 		Gregorian();
 		Gregorian(const int day, const int month, const int year);
 
@@ -47,8 +46,6 @@ namespace lab2 {
 	const int days_per_week_ = 7;
 	const int months_per_year_ = 12;
 	
-	Gregorian::~Gregorian() {}
-
 	Gregorian::Gregorian() : Date() {
 		time_t tp;
 		k_time(&tp);

@@ -8,17 +8,12 @@ namespace lab2 {
 			int month_;
 			int year_;
 			static const long MOD_JULIAN_DATE = 2400001;
-			virtual void inv_mod_julian_day(long jdn) = 0;
 
 		public:
 			// Constructors
 			Date(); // Initiates to current date
 			Date(const int day, const int month, const int year);
 			Date(Date const&);
-
-			// Destructor
-			virtual ~Date();
-
 
 			int year() const;
 			int day() const;
@@ -30,13 +25,13 @@ namespace lab2 {
 			virtual std::string week_day_name() const = 0;
 			virtual std::string month_name() const = 0;
 			virtual long mod_julian_day() const = 0;
+			virtual void inv_mod_julian_day(long jdn) = 0;
 
 			// Returntype void since only setter
 			void add_year(const int); // TODO
 			void add_month(const int); // TODO
 
 			// Operator overloads
-			Date& operator= (Date const&); // TODO
 			Date& operator++ ();
 			Date& operator-- ();
 			Date& operator-= (int);
@@ -49,7 +44,6 @@ namespace lab2 {
 			bool  operator>= (Date const&) const;
 			int   operator-  (Date const&) const;
 			friend std::ostream& operator<< (std::ostream&, Date const&);
-
 	};
 }
 
@@ -60,15 +54,20 @@ namespace lab2 {
 
 #include <ostream>
 
-
 namespace lab2 {
-	// TODO
-	Date::~Date() {}
-
 	Date::Date() {}
 
 	Date::Date(const int day, const int month, const int year)
 		: day_(day), month_(month), year_(year) {}
+
+	Date::Date(Date const& rhs) {
+		if (this != &rhs) {
+			day_ = rhs.day();
+			month_ = rhs.month();
+			year_ = rhs.year();
+		}
+		return;
+	}
 
 	int Date::month() const {
 		return month_;

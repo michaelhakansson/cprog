@@ -348,3 +348,10 @@ TEST(Gregorian, throw_on_unvalid_date) {
 	EXPECT_THROW(Gregorian a(29,2,2001), std::out_of_range);
 }
 
+TEST(Gregorian, copy_constructor) {
+	Gregorian a(1,1,2014);
+	Gregorian b = a;
+	EXPECT_EQ(a, b);
+	EXPECT_EQ(a-b, 0);
+	EXPECT_EQ(b-a, 0);
+}
