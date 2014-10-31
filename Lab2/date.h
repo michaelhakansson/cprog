@@ -28,8 +28,8 @@ namespace lab2 {
 			virtual void inv_mod_julian_day(long jdn) = 0;
 
 			// Returntype void since only setter
-			void add_year(const int); // TODO
-			void add_month(const int); // TODO
+			virtual void add_year(const int) = 0;
+			virtual void add_month(const int) = 0;
 
 			// Operator overloads
 			Date& operator++ ();

@@ -23,6 +23,8 @@ namespace lab2 {
 		virtual std::string week_day_name() const;
 		virtual std::string month_name() const;
 		virtual long mod_julian_day() const;
+		virtual void add_year(const int);
+		virtual void add_month(const int);
 
 	};
 }
@@ -130,6 +132,16 @@ namespace lab2 {
 	void Gregorian::inv_mod_julian_day(long jdn) {
 		jdn_to_ymd(jdn + MOD_JULIAN_DATE, &year_, &month_, &day_, 0); // 0 as last argument for Gregorian
 	}
+
+	void Gregorian::add_year(const int i = 1) {
+		// Going from leap year to non leap year. If february 29, change the day to 28.
+		if ( this->leap_year() && !leap_year( year()+i ) && month() == 2 && day() == 29 ) {
+			day_ = 28;
+		}
+		year_ += i;
+	}
+
+	void Gregorian::add_month(const int i = 1) {}
 
 }
 

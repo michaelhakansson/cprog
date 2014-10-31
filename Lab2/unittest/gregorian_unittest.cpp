@@ -355,3 +355,27 @@ TEST(Gregorian, copy_constructor) {
 	EXPECT_EQ(a-b, 0);
 	EXPECT_EQ(b-a, 0);
 }
+
+TEST(Gregorian, add_year) {
+	Gregorian leap(29,2,2000);
+	leap.add_year();
+	EXPECT_EQ(leap.year(), 2001);
+	EXPECT_EQ(leap.month(), 2);
+	EXPECT_EQ(leap.day(), 28);
+
+	leap.add_year(-1);
+	EXPECT_EQ(leap.year(), 2000);
+	EXPECT_EQ(leap.month(), 2);
+	EXPECT_EQ(leap.day(), 28);
+
+	leap.add_year(1);
+	EXPECT_EQ(leap.year(), 2001);
+	EXPECT_EQ(leap.month(), 2);
+	EXPECT_EQ(leap.day(), 28);
+
+	Gregorian leap2(29,2,2000);
+	leap2.add_year(4);
+	EXPECT_EQ(leap2.year(), 2004);
+	EXPECT_EQ(leap2.month(), 2);
+	EXPECT_EQ(leap2.day(), 29);
+}
