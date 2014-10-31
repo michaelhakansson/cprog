@@ -3,6 +3,8 @@
 
 #include "date.h"
 
+#include <string>
+
 namespace lab2 {
 
 	class Gregorian : public Date {
@@ -10,11 +12,12 @@ namespace lab2 {
 		bool leap_year(int year) const;
 		bool leap_year() const;
 		void inv_mod_julian_day(long jdn);
-		bool valid_date(const int day, const int month, const int year) const;
+		bool valid_date(const int year, const int month, const int day) const;
 
 	public:
 		Gregorian();
-		Gregorian(const int day, const int month, const int year);
+		Gregorian(const int year, const int month, const int day);
+		Gregorian(Date const& rhs);
 
 		virtual int week_day() const;
 		virtual int days_per_week() const;
@@ -23,8 +26,8 @@ namespace lab2 {
 		virtual std::string week_day_name() const;
 		virtual std::string month_name() const;
 		virtual long mod_julian_day() const;
-		virtual void add_year(const int);
-		virtual void add_month(const int);
+		virtual void add_year(const int i = 1);
+		virtual void add_month(const int i = 1);
 
 	};
 }
@@ -36,7 +39,6 @@ namespace lab2 {
 #include "kattistime.cpp"
 #include "jdn.c"
 
-#include <string>
 #include <iostream>
 #include <stdexcept>
 
@@ -52,19 +54,33 @@ namespace lab2 {
 		time_t tp;
 		k_time(&tp);
 
+		
 	    struct tm *t = gmtime(&tp);
+		if ( !valid_date(t->tm_year + 1900, t->tm_mon + 1, t->tm_mday) ) {
+			throw std::out_of_range("Invalid date"); 
+		}
+
     	day_   = t->tm_mday;         // indexerade från ETT
     	month_ = t->tm_mon + 1;      // månaderna och dagarna
    		year_  = t->tm_year + 1900;
 	}
 
-	Gregorian::Gregorian(const int day, const int month, const int year) {
-		if ( !valid_date(day, month, year) ) {
+	Gregorian::Gregorian(const int year, const int month, const int day) {
+		if ( !valid_date(year, month, day) ) {
 			throw std::out_of_range("Invalid date"); 
 		}
 		day_ = day;
 		month_ = month;
 		year_ = year;
+	}
+
+	Gregorian::Gregorian(Date const& rhs) {
+		if (this != &rhs) {
+			day_ = rhs.day();
+			month_ = rhs.month();
+			year_ = rhs.year();
+		}
+		return;
 	}
 
 	// http://en.wikipedia.org/wiki/Julian_day#Finding_day_of_week_given_Julian_day_number
@@ -99,11 +115,18 @@ namespace lab2 {
 	}
 
 	std::string Gregorian::week_day_name() const {
-		return week_day_names[ this->week_day() ];
+        if (week_day() < 0 || week_day() > 7) {
+            throw std::out_of_range("Invalid week_day number");
+        }
+		return week_day_names[ week_day() ];
 	}
 
 	std::string Gregorian::month_name() const {
-		return month_names[ this->month() ];
+		int month_nr = this->month();
+        if (month_nr < 0 || month_nr > 12) {
+            throw std::out_of_range("Invalid month number");
+        }
+		return month_names[month_nr] ;
 	}
 
 	// Calculate leap year http://support.microsoft.com/kb/214019
@@ -118,7 +141,7 @@ namespace lab2 {
 		return leap_year(year_);
 	}
 
-	bool Gregorian::valid_date(int day, int month, int year) const {
+	bool Gregorian::valid_date(int year, int month, int day) const {
 		if (year < 1) return false;
 		if (month < 1 || month > this->months_per_year()) return false;
 		return ( day > 0 && day <= (days_per_month[month] + ((leap_year(year) && month == 2) ? 1 : 0)) );
@@ -133,7 +156,7 @@ namespace lab2 {
 		jdn_to_ymd(jdn + MOD_JULIAN_DATE, &year_, &month_, &day_, 0); // 0 as last argument for Gregorian
 	}
 
-	void Gregorian::add_year(const int i = 1) {
+	void Gregorian::add_year(const int i) {
 		// Going from leap year to non leap year. If february 29, change the day to 28.
 		if ( this->leap_year() && !leap_year( year()+i ) && month() == 2 && day() == 29 ) {
 			day_ = 28;
@@ -144,12 +167,32 @@ namespace lab2 {
 	/* Increments/decrements the month with size of input if possible.
 	If that does not work due to faulty date number, 30 days is added/removed
 	from current date. */
-	void Gregorian::add_month(const int i = 1) {
+	void Gregorian::add_month(const int i) {
 		// Do as many times as input says.
-		for (int j = 0; j < i; ++j) {
-			// OK to just increment month
-			if ( valid_date( day(), month()+i, year() ) ) {
-				i < 0 ? --month_ : ++month_;
+		for (int j = 0, k = i < 0 ? -i : i; j < k; ++j) {
+			// OK to just change month
+			int change_to_month = month();
+			int change_to_year = year();
+			if (i > 0) {
+				if (month() == 12) {
+					change_to_month = 1;
+					++change_to_year;	
+				} else {
+				++change_to_month;
+					
+				}
+			} else { // Decrease month
+				if (month() == 1) {
+					change_to_month = 12;
+					--change_to_year;
+				} else {
+					--change_to_month;
+				}
+			}
+
+			if ( valid_date( change_to_year, change_to_month, day() ) ) {
+				year_ = change_to_year;
+				month_ = change_to_month;
 			} else {
 				long jdn = mod_julian_day(); // Get julian day number
 				i < 0 ? jdn -= 30 : jdn += 30;
@@ -157,7 +200,6 @@ namespace lab2 {
 			}
 		}
 	}
-
 }
 
 

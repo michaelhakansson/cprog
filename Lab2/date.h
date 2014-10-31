@@ -1,6 +1,9 @@
 #ifndef DATE_H
 #define DATE_H
 
+#include <string>
+#include <ostream>
+
 namespace lab2 {
 	class Date {
 		protected:
@@ -12,7 +15,7 @@ namespace lab2 {
 		public:
 			// Constructors
 			Date(); // Initiates to current date
-			Date(const int day, const int month, const int year);
+			Date(const int year, const int month, const int day);
 			Date(Date const&);
 
 			int year() const;
@@ -28,10 +31,11 @@ namespace lab2 {
 			virtual void inv_mod_julian_day(long jdn) = 0;
 
 			// Returntype void since only setter
-			virtual void add_year(const int) = 0;
-			virtual void add_month(const int) = 0;
+			virtual void add_year(const int i = 1) = 0;
+			virtual void add_month(const int i = 1) = 0;
 
 			// Operator overloads
+			// Date& operator= (Date const& rhs);
 			Date& operator++ ();
 			Date& operator-- ();
 			Date& operator-= (int);
@@ -52,12 +56,10 @@ namespace lab2 {
 // THIS WILL GO INTO "date.cpp"
 // #include "date.h" // TODO: Uncomment this line
 
-#include <ostream>
-
 namespace lab2 {
 	Date::Date() {}
 
-	Date::Date(const int day, const int month, const int year)
+	Date::Date(const int year, const int month, const int day)
 		: day_(day), month_(month), year_(year) {}
 
 	Date::Date(Date const& rhs) {
@@ -80,6 +82,15 @@ namespace lab2 {
 	int Date::year() const {
 		return year_;
 	}
+
+	// Date& Date::operator= (Date const& rhs) {
+	// 	if (this != &rhs) {
+	// 		day_ = rhs.day();
+	// 		month_ = rhs.month();
+	// 		year_ = rhs.year();
+	// 	}
+	// 	return *this;
+	// }
 
 	std::ostream& operator<< (std::ostream& output, Date const& date) {
 		output << date.year() << "-" <<

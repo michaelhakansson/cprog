@@ -23,16 +23,16 @@ TEST(Gregorian, default_constructor) {
 }
 
 TEST(Gregorian, explicit_constructor) {
-	Gregorian g(13,3,2001);
+	Gregorian g(2001,3,13);
 	EXPECT_EQ(g.day(), 13);
 	EXPECT_EQ(g.month(), 3);
 	EXPECT_EQ(g.year(), 2001);
 }
 
 TEST(Gregorian, output_test) {
-	Gregorian g1(1,1,2000);
-	Gregorian g2(22,11,1921);
-	Gregorian g3(22,11,8);
+	Gregorian g1(2000,1,1);
+	Gregorian g2(1921,11,22);
+	Gregorian g3(8,11,22);
 	
 	std::stringstream ss1;
 	ss1 << g1;
@@ -66,19 +66,19 @@ TEST(Gregorian, output_test) {
 // }
 
 TEST(Gregorian, days_this_month) {
-	Gregorian g1(22,1,1921);
-	Gregorian g2(22,2,1921); // February NOT leap year
-	Gregorian g_leap_year(1,2,2000); // February leap year
-	Gregorian g3(22,3,1921);
-	Gregorian g4(22,4,1921);
-	Gregorian g5(22,5,1921);
-	Gregorian g6(22,6,1921);
-	Gregorian g7(22,7,1921);
-	Gregorian g8(22,8,1921);
-	Gregorian g9(22,9,1921);
-	Gregorian g10(22,10,1921);
-	Gregorian g11(22,11,1921);
-	Gregorian g12(22,12,1921);
+	Gregorian g1(1921,1,22);
+	Gregorian g2(1921,2,22); // February NOT leap year
+	Gregorian g_leap_year(2000,2,1); // February leap year
+	Gregorian g3(1921,3,22);
+	Gregorian g4(1921,4,22);
+	Gregorian g5(1921,5,22);
+	Gregorian g6(1921,6,22);
+	Gregorian g7(1921,7,22);
+	Gregorian g8(1921,8,22);
+	Gregorian g9(1921,9,22);
+	Gregorian g10(1921,10,22);
+	Gregorian g11(1921,11,22);
+	Gregorian g12(1921,12,22);
 
 
 	EXPECT_EQ(g1.days_this_month(), 31);
@@ -97,10 +97,10 @@ TEST(Gregorian, days_this_month) {
 }
 
 TEST(Gregorian, julian_day_number) {
-	Gregorian g1(16,11,1858);
-	Gregorian g2(17,11,1858);
-	Gregorian g3(18,11,1858);
-	Gregorian g4(12,3,2014);
+	Gregorian g1(1858,11,16);
+	Gregorian g2(1858,11,17);
+	Gregorian g3(1858,11,18);
+	Gregorian g4(2014,3,12);
 
 	EXPECT_EQ(g1.mod_julian_day(), -1);
 	EXPECT_EQ(g2.mod_julian_day(),  0);
@@ -110,24 +110,24 @@ TEST(Gregorian, julian_day_number) {
 }
 
 TEST(Gregorian, week_day_number) {
-	Gregorian g1(30,10,2014);
-	Gregorian g2(31,10,2014);
-	Gregorian g3(31,10,2006);
-	Gregorian g4(29,10,2006);
-	Gregorian g5(30,10,2006);
+	Gregorian g1(2014,10,30);
+	Gregorian g2(2014,10,31);
+	Gregorian g3(2006,10,31);
+	Gregorian g4(2006,10,29);
+	Gregorian g5(2006,10,31);
 	EXPECT_EQ(g1.week_day(), 4);
 	EXPECT_EQ(g2.week_day(), 5);
 	EXPECT_EQ(g3.week_day(), 2);
 	EXPECT_EQ(g4.week_day(), 7);
-	EXPECT_EQ(g5.week_day(), 1);
+	EXPECT_EQ(g5.week_day(), 2);
 }
 
 TEST(Gregorian, week_day_name) {
-	Gregorian g1(30,10,2014);
-	Gregorian g2(31,10,2014);
-	Gregorian g3(31,10,2006);
-	Gregorian g4(29,10,2006);
-	Gregorian g5(30,10,2006);
+	Gregorian g1(2014,10,30);
+	Gregorian g2(2014,10,31);
+	Gregorian g3(2006,10,31);
+	Gregorian g4(2006,10,29);
+	Gregorian g5(2006,10,30);
 	EXPECT_EQ(g1.week_day_name(), "thursday");
 	EXPECT_EQ(g2.week_day_name(), "friday");
 	EXPECT_EQ(g3.week_day_name(), "tuesday");
@@ -136,11 +136,11 @@ TEST(Gregorian, week_day_name) {
 }
 
 TEST(Gregorian, month_names) {
-	Gregorian g1(30,1,2014);
-	Gregorian g2(28,2,2014);
-	Gregorian g3(31,10,2006);
-	Gregorian g4(29,11,2006);
-	Gregorian g5(30,12,2006);
+	Gregorian g1(2014,1,30);
+	Gregorian g2(2014,2,28);
+	Gregorian g3(2006,10,31);
+	Gregorian g4(2006,11,29);
+	Gregorian g5(2006,12,30);
 	EXPECT_EQ(g1.month_name(), "january");
 	EXPECT_EQ(g2.month_name(), "february");
 	EXPECT_EQ(g3.month_name(), "october");
@@ -149,7 +149,7 @@ TEST(Gregorian, month_names) {
 }
 
 TEST(Gregorian, increment_operator) {
-	Gregorian g1(30,12,2014);
+	Gregorian g1(2014,12,30);
 
 	EXPECT_EQ(g1.day(), 30);
 	EXPECT_EQ(g1.month(), 12);
@@ -166,7 +166,7 @@ TEST(Gregorian, increment_operator) {
 	EXPECT_EQ(g1.year(), 2015);
 
 	// A leap year
-	Gregorian g2(28,2,2000);
+	Gregorian g2(2000,2,28);
 	EXPECT_EQ(g2.day(), 28);
 	EXPECT_EQ(g2.month(), 2);
 	EXPECT_EQ(g2.year(), 2000);
@@ -182,7 +182,7 @@ TEST(Gregorian, increment_operator) {
 	EXPECT_EQ(g2.year(), 2000);
 
 	// NOT a leap year
-	Gregorian g3(28,2,2001);
+	Gregorian g3(2001,2,28);
 	EXPECT_EQ(g3.day(), 28);
 	EXPECT_EQ(g3.month(), 2);
 	EXPECT_EQ(g3.year(), 2001);
@@ -202,7 +202,7 @@ TEST(Gregorian, increment_operator) {
 }
 
 TEST(Gregorian, decrement_operator) {
-	Gregorian g1(1,1,2014);
+	Gregorian g1(2014,1,1);
 
 	EXPECT_EQ(g1.day(), 1);
 	EXPECT_EQ(g1.month(), 1);
@@ -219,7 +219,7 @@ TEST(Gregorian, decrement_operator) {
 	EXPECT_EQ(g1.year(), 2013);
 
 	// A leap year
-	Gregorian g2(1,3,2000);
+	Gregorian g2(2000,3,1);
 	EXPECT_EQ(g2.day(), 1);
 	EXPECT_EQ(g2.month(), 3);
 	EXPECT_EQ(g2.year(), 2000);
@@ -235,7 +235,7 @@ TEST(Gregorian, decrement_operator) {
 	EXPECT_EQ(g2.year(), 2000);
 
 	// NOT a leap year
-	Gregorian g3(1,3,2001);
+	Gregorian g3(2001,3,1);
 	EXPECT_EQ(g3.day(), 1);
 	EXPECT_EQ(g3.month(), 3);
 	EXPECT_EQ(g3.year(), 2001);
@@ -255,7 +255,7 @@ TEST(Gregorian, decrement_operator) {
 }
 
 TEST(Gregorian, minus_equals) {
-	Gregorian g1(30,1,2014);
+	Gregorian g1(2014,1,30);
 	g1 -= 3;
 	EXPECT_EQ(g1.day(), 27);
 	EXPECT_EQ(g1.month(), 1);
@@ -268,7 +268,7 @@ TEST(Gregorian, minus_equals) {
 }
 
 TEST(Gregorian, plus_equals) {
-	Gregorian g1(30,1,2014);
+	Gregorian g1(2014,1,30);
 	g1 += 3;
 	EXPECT_EQ(g1.day(), 2);
 	EXPECT_EQ(g1.month(), 2);
@@ -281,34 +281,34 @@ TEST(Gregorian, plus_equals) {
 }
 
 TEST(Gregorian, equals) {
-	Gregorian g1(30,1,2014);
-	Gregorian g2(30,1,2014);
-	Gregorian g3(31,1,2014);
+	Gregorian g1(2014,1,30);
+	Gregorian g2(2014,1,30);
+	Gregorian g3(2014,1,31);
 
 	EXPECT_TRUE(g1 == g2);
 	EXPECT_FALSE(g1 == g3);
 }
 
 TEST(Gregorian, not_equals) {
-	Gregorian g1(30,1,2014);
-	Gregorian g2(30,1,2014);
-	Gregorian g3(31,1,2014);
+	Gregorian g1(2014,1,30);
+	Gregorian g2(2014,1,30);
+	Gregorian g3(2014,1,31);
 
 	EXPECT_FALSE(g1 != g2);
 	EXPECT_TRUE(g1 != g3);
 }
 
 TEST(Gregorian, less) {
-	Gregorian g1(29,1,2014);
-	Gregorian g2(30,1,2014);
+	Gregorian g1(2014,1,29);
+	Gregorian g2(2014,1,30);
 
 	EXPECT_FALSE(g2 < g1);
 	EXPECT_TRUE(g1 < g2);
 }
 
 TEST(Gregorian, less_equals) {
-	Gregorian g1(29,1,2014);
-	Gregorian g2(30,1,2014);
+	Gregorian g1(2014,1,29);
+	Gregorian g2(2014,1,30);
 
 	EXPECT_FALSE(g2 <= g1);
 	EXPECT_TRUE(g1 <= g2);
@@ -316,16 +316,16 @@ TEST(Gregorian, less_equals) {
 }
 
 TEST(Gregorian, greater) {
-	Gregorian g1(29,1,2014);
-	Gregorian g2(30,1,2014);
+	Gregorian g1(2014,1,29);
+	Gregorian g2(2014,1,30);
 
 	EXPECT_FALSE(g1 > g2);
 	EXPECT_TRUE(g2 > g1);
 }
 
 TEST(Gregorian, greater_equals) {
-	Gregorian g1(29,1,2014);
-	Gregorian g2(30,1,2014);
+	Gregorian g1(2014,1,29);
+	Gregorian g2(2014,1,30);
 
 	EXPECT_FALSE(g1 >= g2);
 	EXPECT_TRUE(g2 >= g1);
@@ -333,8 +333,8 @@ TEST(Gregorian, greater_equals) {
 }
 
 TEST(Gregorian, minus) {
-	Gregorian g1(1,1,2014);
-	Gregorian g2(30,1,2014);
+	Gregorian g1(2014,1,1);
+	Gregorian g2(2014,1,30);
 
 	EXPECT_EQ(g1-g1, 0);
 	EXPECT_EQ(g2-g2, 0);
@@ -343,14 +343,14 @@ TEST(Gregorian, minus) {
 }
 
 TEST(Gregorian, throw_on_unvalid_date) {
-	EXPECT_NO_THROW(Gregorian a(1,1,2014));
-	EXPECT_NO_THROW(Gregorian a(29,2,2000));
-	EXPECT_NO_THROW(Gregorian a(31,1,2000));
-	EXPECT_THROW(Gregorian a(29,2,2001), std::out_of_range);
+	EXPECT_NO_THROW(Gregorian a(2014,1,1));
+	EXPECT_NO_THROW(Gregorian a(2000,2,29));
+	EXPECT_NO_THROW(Gregorian a(2000,1,31));
+	EXPECT_THROW(Gregorian a(2001,2,29), std::out_of_range);
 }
 
 TEST(Gregorian, copy_constructor) {
-	Gregorian a(1,1,2014);
+	Gregorian a(2014,1,1);
 	Gregorian b = a;
 	EXPECT_EQ(a, b);
 	EXPECT_EQ(a-b, 0);
@@ -358,7 +358,7 @@ TEST(Gregorian, copy_constructor) {
 }
 
 TEST(Gregorian, add_year) {
-	Gregorian leap(29,2,2000);
+	Gregorian leap(2000,2,29);
 	leap.add_year();
 	EXPECT_EQ(leap.year(), 2001);
 	EXPECT_EQ(leap.month(), 2);
@@ -374,7 +374,7 @@ TEST(Gregorian, add_year) {
 	EXPECT_EQ(leap.month(), 2);
 	EXPECT_EQ(leap.day(), 28);
 
-	Gregorian leap2(29,2,2000);
+	Gregorian leap2(2000,2,29);
 	leap2.add_year(4);
 	EXPECT_EQ(leap2.year(), 2004);
 	EXPECT_EQ(leap2.month(), 2);
@@ -382,32 +382,32 @@ TEST(Gregorian, add_year) {
 }
 
 TEST(Gregorian, add_month) {
-	Gregorian g1(1,9,2014);
+	Gregorian g1(2014,9,1);
 	g1.add_month();
 	EXPECT_EQ(g1.year(), 2014);
 	EXPECT_EQ(g1.month(), 10);
 	EXPECT_EQ(g1.day(), 1);
 
-	Gregorian g2(31,3,2014);
+	Gregorian g2(2014,3,31);
 	g2.add_month();
 	EXPECT_EQ(g2.year(), 2014);
 	EXPECT_EQ(g2.month(), 4);
 	EXPECT_EQ(g2.day(), 30);
 
-	Gregorian leap(31,1,2000);
+	Gregorian leap(2000,1,31);
 	leap.add_month();
 	EXPECT_EQ(leap.year(), 2000);
 	EXPECT_EQ(leap.month(), 3);
 	EXPECT_EQ(leap.day(), 1);
 
-	Gregorian not_leap(31,1,2001);
+	Gregorian not_leap(2001,1,31);
 	not_leap.add_month();
 	EXPECT_EQ(not_leap.year(), 2001);
 	EXPECT_EQ(not_leap.month(), 3);
 	EXPECT_EQ(not_leap.day(), 2);
 
-	Gregorian g3(31,1,2001);
-	Gregorian g4(31,1,2001);
+	Gregorian g3(2001,1,31);
+	Gregorian g4(2001,1,31);
 	g3.add_month();
 	g3.add_month();
 	g3.add_month();
@@ -418,5 +418,29 @@ TEST(Gregorian, add_month) {
 	EXPECT_TRUE(g3-g4 == 0);
 	EXPECT_TRUE(g4-g3 == 0);
 
+	g3.add_month(-1);
+	g3.add_month(-1);
+	g3.add_month(-1);
+	g3.add_month(-1);
+	g3.add_month(-1);
+	g4.add_month(-5);
+	EXPECT_TRUE(g3==g4);
+	EXPECT_TRUE(g3-g4 == 0);
+	EXPECT_TRUE(g4-g3 == 0);
+}
 
+TEST(Gregorian, failing_kattis_tests) {
+	Gregorian g1(1992,2,29);
+	g1.add_month(29);
+	EXPECT_EQ(g1.year(), 1994);
+	EXPECT_EQ(g1.month(), 7);
+	EXPECT_EQ(g1.day(), 28);
+
+	Gregorian g2(1992,2,29);
+	for (int i = 0; i < 29; ++i) {
+		g2.add_month();
+	}
+	EXPECT_EQ(g2.year(), 1994);
+	EXPECT_EQ(g2.month(), 7);
+	EXPECT_EQ(g2.day(), 28);
 }
