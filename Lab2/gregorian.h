@@ -178,8 +178,7 @@ namespace lab2 {
 					change_to_month = 1;
 					++change_to_year;	
 				} else {
-				++change_to_month;
-					
+					++change_to_month;
 				}
 			} else { // Decrease month
 				if (month() == 1) {

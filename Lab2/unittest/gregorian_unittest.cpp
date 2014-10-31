@@ -427,6 +427,25 @@ TEST(Gregorian, add_month) {
 	EXPECT_TRUE(g3==g4);
 	EXPECT_TRUE(g3-g4 == 0);
 	EXPECT_TRUE(g4-g3 == 0);
+
+	Gregorian g5(2014,10,31);
+	g5.add_month(-1);
+	EXPECT_EQ(g5.year(), 2014);
+	EXPECT_EQ(g5.month(), 10);
+	EXPECT_EQ(g5.day(), 1);
+	g5.add_month(-1);
+	EXPECT_EQ(g5.year(), 2014);
+	EXPECT_EQ(g5.month(), 9);
+	EXPECT_EQ(g5.day(), 1);
+	g5.add_month(-1);
+	EXPECT_EQ(g5.year(), 2014);
+	EXPECT_EQ(g5.month(), 8);
+	EXPECT_EQ(g5.day(), 1);
+	g5.add_month(-1);
+	EXPECT_EQ(g5.year(), 2014);
+	EXPECT_EQ(g5.month(), 7);
+	EXPECT_EQ(g5.day(), 1);
+
 }
 
 TEST(Gregorian, failing_kattis_tests) {
