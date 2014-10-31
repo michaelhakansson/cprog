@@ -121,7 +121,7 @@ namespace lab2 {
 	bool Gregorian::valid_date(int day, int month, int year) const {
 		if (year < 1) return false;
 		if (month < 1 || month > this->months_per_year()) return false;
-		return ( day <= days_per_month[ month + (leap_year(year) ? 1 : 0) ] );
+		return ( day > 0 && day <= (days_per_month[month] + ((leap_year(year) && month == 2) ? 1 : 0)) );
 	}
 
 	long Gregorian::mod_julian_day() const {
@@ -141,7 +141,22 @@ namespace lab2 {
 		year_ += i;
 	}
 
-	void Gregorian::add_month(const int i = 1) {}
+	/* Increments/decrements the month with size of input if possible.
+	If that does not work due to faulty date number, 30 days is added/removed
+	from current date. */
+	void Gregorian::add_month(const int i = 1) {
+		// Do as many times as input says.
+		for (int j = 0; j < i; ++j) {
+			// OK to just increment month
+			if ( valid_date( day(), month()+i, year() ) ) {
+				i < 0 ? --month_ : ++month_;
+			} else {
+				long jdn = mod_julian_day(); // Get julian day number
+				i < 0 ? jdn -= 30 : jdn += 30;
+				inv_mod_julian_day(jdn);
+			}
+		}
+	}
 
 }
 

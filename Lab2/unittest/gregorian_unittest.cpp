@@ -345,6 +345,7 @@ TEST(Gregorian, minus) {
 TEST(Gregorian, throw_on_unvalid_date) {
 	EXPECT_NO_THROW(Gregorian a(1,1,2014));
 	EXPECT_NO_THROW(Gregorian a(29,2,2000));
+	EXPECT_NO_THROW(Gregorian a(31,1,2000));
 	EXPECT_THROW(Gregorian a(29,2,2001), std::out_of_range);
 }
 
@@ -378,4 +379,44 @@ TEST(Gregorian, add_year) {
 	EXPECT_EQ(leap2.year(), 2004);
 	EXPECT_EQ(leap2.month(), 2);
 	EXPECT_EQ(leap2.day(), 29);
+}
+
+TEST(Gregorian, add_month) {
+	Gregorian g1(1,9,2014);
+	g1.add_month();
+	EXPECT_EQ(g1.year(), 2014);
+	EXPECT_EQ(g1.month(), 10);
+	EXPECT_EQ(g1.day(), 1);
+
+	Gregorian g2(31,3,2014);
+	g2.add_month();
+	EXPECT_EQ(g2.year(), 2014);
+	EXPECT_EQ(g2.month(), 4);
+	EXPECT_EQ(g2.day(), 30);
+
+	Gregorian leap(31,1,2000);
+	leap.add_month();
+	EXPECT_EQ(leap.year(), 2000);
+	EXPECT_EQ(leap.month(), 3);
+	EXPECT_EQ(leap.day(), 1);
+
+	Gregorian not_leap(31,1,2001);
+	not_leap.add_month();
+	EXPECT_EQ(not_leap.year(), 2001);
+	EXPECT_EQ(not_leap.month(), 3);
+	EXPECT_EQ(not_leap.day(), 2);
+
+	Gregorian g3(31,1,2001);
+	Gregorian g4(31,1,2001);
+	g3.add_month();
+	g3.add_month();
+	g3.add_month();
+	g3.add_month();
+	g3.add_month();
+	g4.add_month(5);
+	EXPECT_TRUE(g3==g4);
+	EXPECT_TRUE(g3-g4 == 0);
+	EXPECT_TRUE(g4-g3 == 0);
+
+
 }
