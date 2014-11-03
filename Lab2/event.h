@@ -4,40 +4,44 @@
 #include "date.h"
 #include <string>
 
-class Event {
-private:
-    std::string name;
-    Date & date;
-public:
-    std::string get_name();
-    Date& get_date(); 
-    friend std::ostream& operator<< (std::ostream&, Event const&);
+namespace lab2 {
+    class Event {
+    private:
+        std::string name;
+        Date const* date;
+    public:
+        std::string get_name();
+        Date& get_date(); 
+        friend std::ostream& operator<< (std::ostream&, Event const&);
 
-    Event(std::string const&, Date const&);
-    ~Event();
-};
-
-std::string get_name(){
-    return name;
-}
-
-Date& get_date(){
-    return date;
-}
-
-std::ostream& operator<< (std::ostream& output, Event const& ev){
-    output << date << " : " << name;
-
-    return output;
-}
-
-Event(std::string n, Date const& d){
-    this.name = n;
-    this.date = d;
-}
-
-~Event(){
-    delete date;
+        Event(std::string const&, Date const&);
+        ~Event();
+    };
 }
 
 #endif // EVENT_H
+
+namespace lab2 {
+
+    std::string Event::get_name(){
+        return name;
+    }
+
+    Date& Event::get_date(){
+        return date;
+    }
+
+    std::ostream& operator<< (std::ostream& output, Event const& ev){
+        output << ev.name << " : " << *ev.date;
+
+        return output;
+    }
+
+    Event::Event(std::string const& n, Date const& d){
+        name = n;
+        date = &d;
+    }
+
+    Event::~Event(){
+    }
+}
