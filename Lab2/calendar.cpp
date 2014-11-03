@@ -3,6 +3,11 @@
 
 namespace lab2 {
 
+    // template <typename T>
+    // Calendar<T>& Calendar<T>::operator= (Calendar<T> const& asd) {
+
+    // }
+
     //Sets the date of the calendar
     template <typename T>
     bool Calendar<T>::set_date(int year, int month, int day){
@@ -145,7 +150,8 @@ namespace lab2 {
     }
 
     //Initializes the calendar with a given date
-    template <typename T, typename S>
+    template <typename T>
+    template <typename S>
     Calendar<T>::Calendar(S const& rhs) {
         current_date = rhs;
     }

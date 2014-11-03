@@ -11,6 +11,8 @@ namespace lab2 {
 		T & current_date;
 		std::vector<Event> events;
 	public:
+		// Calendar& operator= (Calendar const&);
+
 		bool set_date(int, int, int);
 
 		bool add_event(std::string);
@@ -31,7 +33,9 @@ namespace lab2 {
 		friend std::ostream& operator<< (std::ostream&, Calendar<F> const&);
 
 		Calendar(); //Initializes with current date
-		Calendar(Date const&);
+		template <typename S>
+		Calendar(S const&);
+		~Calendar();
 	};
 }
 

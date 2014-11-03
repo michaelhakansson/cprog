@@ -8,13 +8,13 @@ namespace lab2 {
     class Event {
     private:
         std::string name;
-        Date const* date;
+        Date * date;
     public:
         std::string get_name();
         Date& get_date(); 
         friend std::ostream& operator<< (std::ostream&, Event const&);
 
-        Event(std::string const&, Date const&);
+        Event(std::string const&, Date&);
         ~Event();
     };
 }
@@ -28,7 +28,7 @@ namespace lab2 {
     }
 
     Date& Event::get_date(){
-        return date;
+        return *date;
     }
 
     std::ostream& operator<< (std::ostream& output, Event const& ev){
@@ -37,7 +37,7 @@ namespace lab2 {
         return output;
     }
 
-    Event::Event(std::string const& n, Date const& d){
+    Event::Event(std::string const& n, Date& d){
         name = n;
         date = &d;
     }
