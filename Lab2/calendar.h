@@ -8,9 +8,9 @@
 namespace lab2 {
 	template <typename T> class Calendar {
 	private:
+	public:
 		T current_date;
 		std::vector<Event> events;
-	public:
 		// Calendar& operator= (Calendar const&);
 
 		bool set_date(int, int, int);
@@ -58,7 +58,7 @@ namespace lab2 {
             return false;
         }
 
-        current_date = new T(year, month, day);
+        current_date = T(year, month, day);
 
         return true;
     }
@@ -202,14 +202,14 @@ namespace lab2 {
     template <typename T>
     Calendar<T>::~Calendar(){
         
-        delete current_date;
+        // delete current_date;
 
-        //TODO check if works, arrayoutofbounds if not
-        for (int i = 0; i < events.size(); ++i){
-            events.erase(events.begin() + i);
-        }
+        // //TODO check if works, arrayoutofbounds if not
+        // for (int i = 0; i < events.size(); ++i){
+        //     events.erase(events.begin() + i);
+        // }
 
-        delete [] events;
+        // delete [] events;
     }
 }
 

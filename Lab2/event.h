@@ -32,7 +32,7 @@ namespace lab2 {
     }
 
     std::ostream& operator<< (std::ostream& output, Event const& ev){
-        output << *ev.date << " : " << *ev.name;
+        output << *ev.date << " : " << ev.name;
 
         return output;
     }
