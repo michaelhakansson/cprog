@@ -29,7 +29,7 @@ CXXFLAGS += -g -Wall -Wextra -pthread -std=c++11 -stdlib=libc++
 
 # All tests produced by this Makefile.  Remember to add new tests you
 # created to the list.
-TESTS = gregorian_unittest
+TESTS = julian_unittest
 
 # All Google Test headers.  Usually you shouldn't change this
 # definition.
@@ -71,12 +71,13 @@ gtest_main.a : gtest-all.o gtest_main.o
 # gtest_main.a, depending on whether it defines its own main()
 # function.
 
-gregorian.o : $(USER_DIR)/gregorian.cpp $(USER_DIR)/gregorian.h $(GTEST_HEADERS)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/gregorian.cpp
+julian.o : $(USER_DIR)/julian.cpp $(USER_DIR)/julian.h $(GTEST_HEADERS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/julian.cpp
 
-gregorian_unittest.o : $(USER_DIR)/unittest/gregorian_unittest.cpp \
-                     $(USER_DIR)/gregorian.h $(GTEST_HEADERS)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/unittest/gregorian_unittest.cpp
+julian_unittest.o : $(USER_DIR)/julian_unittest/julian_unittest.cpp \
+                     $(USER_DIR)/julian.h $(GTEST_HEADERS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/julian_unittest/julian_unittest.cpp
 
-gregorian_unittest : gregorian.o gregorian_unittest.o gtest_main.a
+julian_unittest : julian.o julian_unittest.o gtest_main.a
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@
+

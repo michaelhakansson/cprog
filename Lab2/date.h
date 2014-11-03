@@ -7,9 +7,7 @@
 namespace lab2 {
 	class Date {
 		protected:
-			int day_;
-			int month_;
-			int year_;
+			long jdn_;
 			static const long MOD_JULIAN_DATE = 2400001;
 
 		public:
@@ -18,9 +16,9 @@ namespace lab2 {
 			Date(const int year, const int month, const int day);
 			Date(Date const&);
 
-			int year() const;
-			int day() const;
-			int month() const;
+			virtual int year() const = 0;
+			virtual int day() const = 0;
+			virtual int month() const = 0;
 			virtual int week_day() const = 0;
 			virtual int days_per_week() const = 0;
 			virtual int months_per_year() const = 0;
@@ -28,14 +26,13 @@ namespace lab2 {
 			virtual std::string week_day_name() const = 0;
 			virtual std::string month_name() const = 0;
 			virtual long mod_julian_day() const = 0;
-			virtual void inv_mod_julian_day(long jdn) = 0;
 
 			// Returntype void since only setter
 			virtual void add_year(const int i = 1) = 0;
 			virtual void add_month(const int i = 1) = 0;
 
 			// Operator overloads
-			// Date& operator= (Date const& rhs);
+			Date& operator= (Date const& rhs);
 			Date& operator++ ();
 			Date& operator-- ();
 			Date& operator-= (int);
@@ -59,38 +56,11 @@ namespace lab2 {
 namespace lab2 {
 	Date::Date() {}
 
-	Date::Date(const int year, const int month, const int day)
-		: day_(day), month_(month), year_(year) {}
+	Date::Date(const int, const int, const int) {}
 
 	Date::Date(Date const& rhs) {
-		if (this != &rhs) {
-			day_ = rhs.day();
-			month_ = rhs.month();
-			year_ = rhs.year();
-		}
-		return;
+		jdn_ = rhs.mod_julian_day();
 	}
-
-	int Date::month() const {
-		return month_;
-	}
-
-	int Date::day() const {
-		return day_;
-	}
-
-	int Date::year() const {
-		return year_;
-	}
-
-	// Date& Date::operator= (Date const& rhs) {
-	// 	if (this != &rhs) {
-	// 		day_ = rhs.day();
-	// 		month_ = rhs.month();
-	// 		year_ = rhs.year();
-	// 	}
-	// 	return *this;
-	// }
 
 	std::ostream& operator<< (std::ostream& output, Date const& date) {
 		output << date.year() << "-" <<
@@ -99,71 +69,59 @@ namespace lab2 {
 		return output;
 	}
 
+	Date& Date::operator= (Date const& rhs) {
+		if (this != &rhs) {
+			jdn_ = rhs.mod_julian_day();
+		}
+		return *this;
+	}
+
 	Date& Date::operator++ () {
-		long j = this->mod_julian_day();
-		++j;
-		this->inv_mod_julian_day(j);
+		++jdn_;
 		return *this;
 	}
 
 	Date& Date::operator-- () {
-		long j = this->mod_julian_day();
-		--j;
-		this->inv_mod_julian_day(j);
+		--jdn_;
 		return *this;
 	}
 
 	Date& Date::operator-= (int n) {
-		long j = this->mod_julian_day();
-		j -= n;
-		this->inv_mod_julian_day(j);
+		jdn_ -= n;
 		return *this;
 	}
 
 	Date& Date::operator+= (int n) {
-		long j = this->mod_julian_day();
-		j += n;
-		this->inv_mod_julian_day(j);
+		jdn_ += n;
 		return *this;
 	}
 
 	bool Date::operator== (Date const& rhs) const {
-		long d1 = this->mod_julian_day();
-		long d2 = rhs.mod_julian_day();
-		return d1 == d2;
+		return jdn_ == rhs.mod_julian_day();
 	}
 
 	bool Date::operator!= (Date const& rhs) const {
-		return !(this->operator==(rhs));
+		return jdn_ != rhs.mod_julian_day();
 	}
 
 	bool Date::operator< (Date const& rhs) const {
-		long d1 = this->mod_julian_day();
-		long d2 = rhs.mod_julian_day();
-		return d1 < d2;
+		return jdn_ < rhs.mod_julian_day();
 	}
 
 	bool Date::operator<= (Date const& rhs) const {
-		long d1 = this->mod_julian_day();
-		long d2 = rhs.mod_julian_day();
-		return d1 <= d2;
+		return jdn_ <= rhs.mod_julian_day();
 	}
 
 	bool Date::operator> (Date const& rhs) const {
-		long d1 = this->mod_julian_day();
-		long d2 = rhs.mod_julian_day();
-		return d1 > d2;
+		return jdn_ > rhs.mod_julian_day();
 	}
 
 	bool Date::operator>= (Date const& rhs) const {
-		long d1 = this->mod_julian_day();
-		long d2 = rhs.mod_julian_day();
-		return d1 >= d2;
+		return jdn_ >= rhs.mod_julian_day();
+	}
+
+	int Date::operator- (Date const& rhs) const {
+		return jdn_ - rhs.mod_julian_day();
 	}
 	
-	int Date::operator- (Date const& rhs) const {
-		long d1 = this->mod_julian_day();
-		long d2 = rhs.mod_julian_day();
-		return d1 - d2;
-	}
 }

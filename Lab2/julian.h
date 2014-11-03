@@ -1,5 +1,5 @@
-#ifndef GREGORIAN_H
-#define GREGORIAN_H
+#ifndef JULIAN_H
+#define JULIAN_H
 
 #include "date.h"
 
@@ -7,18 +7,18 @@
 
 namespace lab2 {
 
-	class Gregorian : public Date {
+	class Julian : public Date {
 	protected:
 		virtual bool leap_year(int year) const;
 		virtual bool leap_year() const;
 		virtual bool valid_date(const int year, const int month, const int day) const;
-		virtual long ymd_to_jdn(int y, int m, int d) const;
-		virtual void jdn_to_ymd(long jdn, int *yy, int *mm, int *dd) const;
+		virtual long ymd_to_jdn(int y, int m, int d, int julian = 1) const;
+		virtual void jdn_to_ymd(long jdn, int *yy, int *mm, int *dd, int julian = 1) const;
 	
 	public:
-		Gregorian();
-		Gregorian(const int year, const int month, const int day);
-		Gregorian(Date const& rhs);
+		Julian();
+		Julian(const int year, const int month, const int day);
+		Julian(Date const& rhs);
 
 		virtual int year() const;
 		virtual int month() const;
@@ -34,11 +34,11 @@ namespace lab2 {
 		virtual void add_month(const int i = 1);
 	};
 }
-#endif // GREGORIAN_H
+#endif // JULIAN_H
 
 
-// THIS WILL GO INTO "gregorian.cpp"
-// #include "gregorian.h" // TODO: Uncomment this line
+// THIS WILL GO INTO "julian.cpp"
+// #include "julian.h" // TODO: Uncomment this line
 #include "kattistime.cpp"
 // #include "jdn.c"
 
@@ -53,47 +53,53 @@ namespace lab2 {
 	const int days_per_week_ = 7;
 	const int months_per_year_ = 12;
 
-	Gregorian::Gregorian() : Date() {
+	Julian::Julian() : Date() {
 		time_t tp;
 		k_time(&tp);
 
+		struct tm *t = gmtime(&tp);
+
+		// Expect Gregorian input
+		long jdn = ymd_to_jdn(t->tm_year + 1900, t->tm_mon + 1, t->tm_mday, 0);
 		
-	    struct tm *t = gmtime(&tp);
-	    int year = t->tm_year + 1900;
-	    int month = t->tm_mon + 1;
-	    int day = t->tm_mday;
+		int year;
+		int month;
+		int day;
+		jdn_to_ymd(jdn, &year, &month, &day, 1);
+
+
 		if ( !valid_date(year, month, day) ) {
 			throw std::out_of_range("Invalid date"); 
 		}
 
-		jdn_ = ymd_to_jdn(year, month, day);
+		jdn_ = jdn;
 	}
 
-	Gregorian::Gregorian(const int year, const int month, const int day) {
+	Julian::Julian(const int year, const int month, const int day) {
 		if ( !valid_date(year, month, day) ) {
 			throw std::out_of_range("Invalid date"); 
 		}
 		jdn_ = ymd_to_jdn(year, month, day);
 	}
 
-	Gregorian::Gregorian(Date const& rhs) {
+	Julian::Julian(Date const& rhs) {
 		jdn_ = rhs.mod_julian_day();
 	}
 
 
-	int Gregorian::year() const {
+	int Julian::year() const {
 		int year, month, day;
 		jdn_to_ymd(jdn_, &year, &month, &day);
 		return year;
 	}
 
-	int Gregorian::month() const {
+	int Julian::month() const {
 		int year, month, day;
 		jdn_to_ymd(jdn_, &year, &month, &day);
 		return month;
 	}
 
-	int Gregorian::day() const {
+	int Julian::day() const {
 		int year, month, day;
 		jdn_to_ymd(jdn_, &year, &month, &day);
 		return day;
@@ -101,7 +107,7 @@ namespace lab2 {
 
 	// http://en.wikipedia.org/wiki/Julian_day#Finding_day_of_week_given_Julian_day_number
 	/* Returns the day of the week. Monday = 1, sunday = 7.*/
-	int Gregorian::week_day() const {
+	int Julian::week_day() const {
 		// Must have the complete julian day
 		long jdn = this->mod_julian_day() + MOD_JULIAN_DATE;
 		if (jdn < 0) {
@@ -110,15 +116,15 @@ namespace lab2 {
 		return (jdn % 7) + 1;
 	}
 	
-	int Gregorian::days_per_week() const {
+	int Julian::days_per_week() const {
 		return days_per_week_;
 	}
 
-	int Gregorian::months_per_year() const {
+	int Julian::months_per_year() const {
 		return months_per_year_;
 	}
 
-	int Gregorian::days_this_month() const {
+	int Julian::days_this_month() const {
 		if (this->month() != 2) {
 			return days_per_month[this->month()];
 		} else { // February --> check if leap year
@@ -130,14 +136,14 @@ namespace lab2 {
 		}
 	}
 
-	std::string Gregorian::week_day_name() const {
+	std::string Julian::week_day_name() const {
         if (week_day() < 0 || week_day() > 7) {
             throw std::out_of_range("Invalid week_day number");
         }
 		return week_day_names[ week_day() ];
 	}
 
-	std::string Gregorian::month_name() const {
+	std::string Julian::month_name() const {
 		int month_nr = this->month();
         if (month_nr < 0 || month_nr > 12) {
             throw std::out_of_range("Invalid month number");
@@ -146,30 +152,26 @@ namespace lab2 {
 	}
 
 	// Calculate leap year http://support.microsoft.com/kb/214019
-	bool Gregorian::leap_year(int year) const {
-		if (year % 400 == 0) {return true;}
-		if (year % 100 == 0) {return false;}
+	bool Julian::leap_year(int year) const {
 		if (year % 4 == 0) {return true;}
 		return false;
 	}
 
-	bool Gregorian::leap_year() const {
+	bool Julian::leap_year() const {
 		return leap_year(year());
 	}
 
-	bool Gregorian::valid_date(int year, int month, int day) const {
+	bool Julian::valid_date(int year, int month, int day) const {
 		if (year < 1) return false;
 		if (month < 1 || month > this->months_per_year()) return false;
 		return ( day > 0 && day <= (days_per_month[month] + ((leap_year(year) && month == 2) ? 1 : 0)) );
 	}
 
-	long Gregorian::mod_julian_day() const {
+	long Julian::mod_julian_day() const {
 		return jdn_;
-		// long jdn = ymd_to_jdn(this->year(), this->month(), this->day()); // Last flag '0' is for Gregorian
-		// return jdn - MOD_JULIAN_DATE; // Need to adjust according to 17 nov 1858
 	}
 
-	void Gregorian::add_year(const int i) {
+	void Julian::add_year(const int i) {
 		// Going from leap year to non leap year. If february 29, change the day to 28.
 		int y = year();
 		int m = month();
@@ -184,7 +186,7 @@ namespace lab2 {
 	/* Increments/decrements the month with size of input if possible.
 	If that does not work due to faulty date number, 30 days is added/removed
 	from current date. */
-	void Gregorian::add_month(const int i) {
+	void Julian::add_month(const int i) {
 		// Do as many times as input says.
 		for (int j = 0, k = i < 0 ? -i : i; j < k; ++j) {
 			int change_to_month = month();
@@ -221,8 +223,7 @@ namespace lab2 {
 	#endif
 
 
-	long Gregorian::ymd_to_jdn(int y, int m, int d) const {
-		int julian = 0;
+	long Julian::ymd_to_jdn(int y, int m, int d, int julian) const {
 	    long jdn;
 
 	    if (julian < 0)         /* set Julian flag if auto set */
@@ -245,9 +246,8 @@ namespace lab2 {
 	}
 
 
-	void Gregorian::jdn_to_ymd(long jdn, int *yy, int *mm, int *dd) const {
+	void Julian::jdn_to_ymd(long jdn, int *yy, int *mm, int *dd, int julian) const {
 		jdn += MOD_JULIAN_DATE;
-		int julian =  0;
 	    long x, z, m, d, y;
 	    long daysPer400Years = 146097L;
 	    long fudgedDaysPer4000Years = 1460970L + 31;
