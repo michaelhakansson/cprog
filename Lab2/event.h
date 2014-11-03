@@ -1,6 +1,9 @@
 #ifndef EVENT_H
 #define EVENT_H
 
+#include "date.h"
+#include <string>
+
 class Event {
 private:
     std::string name;
