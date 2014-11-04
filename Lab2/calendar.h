@@ -11,7 +11,7 @@ namespace lab2 {
 	private:
 	public:
 		T current_date;
-		std::vector<Event<T> > events;
+		std::vector<Event<T> *> events;
 		// Calendar& operator= (Calendar const&);
 
 		bool set_date(int year, int month, int day);
@@ -95,7 +95,7 @@ namespace lab2 {
 
         T d = T(year, month, day);
         int index = get_future_events_index(d);
-        Event<T> ev = Event<T>(event, d);
+        Event<T> * ev = new Event<T>(event, d);
 
         //Adds the event to the appropriate index so the vector remains sorted
         events.insert(events.begin() + index, ev);
@@ -152,9 +152,9 @@ namespace lab2 {
 
         //Returns the index where the event exists
         for(int i = 0; i < events.size(); ++i){
-            Event<T> event = events.at(i);
-            if(event.get_name() == event_name && event.date.year() == year 
-                && event.date.month() == month && event.date.day() == day){
+            Event<T> * event = events.at(i);
+            if(event->get_name() == event_name && event->date.year() == year 
+                && event->date.month() == month && event->date.day() == day){
                 return i;
             }
         }
@@ -167,7 +167,7 @@ namespace lab2 {
     int Calendar<T>::get_future_events_index(Date const& d) const {
 
         for(int i = 0; i < events.size(); ++i){
-            if(events.at(i).get_date() >= d){
+            if(events.at(i)->get_date() >= d){
                 return i;
             }
         }
@@ -179,7 +179,7 @@ namespace lab2 {
     template <typename F>
     std::ostream& operator<< (std::ostream& output, Calendar<F> const& cal){
         for(int i = cal.get_future_events_index(cal.current_date); i < cal.events.size(); ++i){
-            output << cal.events.at(i) << std::endl;
+            output << *cal.events.at(i) << std::endl;
         }
 
         return output;
@@ -202,7 +202,7 @@ namespace lab2 {
             //events.resize(rhs.events.size());
 
             for (int i = 0; i < events.size(); ++i){
-                Event<T> temp = Event<T>(rhs.events.at(i));
+                Event<T> * temp = new Event<T>(*rhs.events.at(i));
                 events.push_back(temp);
             }
         //}
@@ -222,5 +222,3 @@ namespace lab2 {
 }
 
 #endif // CALENDAR_H
-
-
