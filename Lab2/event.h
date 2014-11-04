@@ -12,7 +12,7 @@ namespace lab2 {
         std::string name;
         T date;
         std::string get_name() const;
-        T& get_date() const;
+        T const& get_date() const;
 
         template <typename F>
         friend std::ostream& operator<< (std::ostream&, Event<F> const&);
@@ -33,7 +33,7 @@ namespace lab2 {
     }
 
     template <typename T>
-    T& Event<T>::get_date() const {
+    T const& Event<T>::get_date() const {
         return date;
     }
 
@@ -55,6 +55,5 @@ namespace lab2 {
     //Destructor
     template <typename T>
     Event<T>::~Event(){
-        //delete date;
     }
 }

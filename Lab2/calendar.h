@@ -200,7 +200,7 @@ namespace lab2 {
             current_date = T(rhs.current_date);
 
             //Copy assigning events
-            events = new Event<T>(rhs.events);
+            events = Event<T>(rhs.events);
         }
     }
 
@@ -208,12 +208,10 @@ namespace lab2 {
     template <typename T>
     Calendar<T>::~Calendar(){
         
-        // delete current_date;
-
-        // //TODO check if works, arrayoutofbounds if not
-        // for (int i = 0; i < events.size(); ++i){
-        //     events.erase(events.begin() + i);
-        // }
+        //TODO check if works, arrayoutofbounds if not
+        for (int i = 0; i < events.size(); ++i){
+            events.erase(events.begin() + i);
+        }
 
         // delete [] events;
     }
