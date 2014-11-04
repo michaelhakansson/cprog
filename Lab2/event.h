@@ -52,6 +52,14 @@ namespace lab2 {
         date = T(d);
     }
 
+    /*//Copy constructor
+    template <typename T>
+    template <typename S>
+    Event<T>::Event(std::vector<Event<S> > vec){
+        name = e.get_name();
+        date = e.get_date();
+    }*/
+
     //Destructor
     template <typename T>
     Event<T>::~Event(){

@@ -196,12 +196,12 @@ namespace lab2 {
     template <typename S>
     Calendar<T>::Calendar(Calendar<S> const& rhs) {
 
-        if ((size_t) this != (size_t) &rhs) {
+        //if (this != &rhs) {
             current_date = T(rhs.current_date);
 
             //Copy assigning events
-            events = Event<T>(rhs.events);
-        }
+            events = std::vector<Event<T> >(rhs.events);
+        //}
     }
 
     //Destructor
