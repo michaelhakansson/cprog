@@ -85,7 +85,7 @@ assert(j.add_event("Todays date") == true);
 
 
 
-// std::cout << "All tests passed!" << std::endl;
+std::cout << "All tests passed!" << std::endl;
 
     return 0;
 }
