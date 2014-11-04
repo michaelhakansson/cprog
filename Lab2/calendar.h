@@ -4,6 +4,7 @@
 // #include "date.h"
 #include "event.h"
 #include <vector>
+#include <iostream>
 
 namespace lab2 {
 	template <typename T> class Calendar {
@@ -13,7 +14,7 @@ namespace lab2 {
 		std::vector<Event> events;
 		// Calendar& operator= (Calendar const&);
 
-		bool set_date(int, int, int);
+		bool set_date(int year, int month, int day);
 
 		bool add_event(std::string);
 		bool add_event(std::string, int);
@@ -25,9 +26,9 @@ namespace lab2 {
 		bool remove_event(std::string, int, int);
 		bool remove_event(std::string, int, int, int);
 
-		int get_future_events_index(Date const&);
-		bool is_valid_date(int, int, int);
-		int event_exists(std::string, int, int, int);
+		int get_future_events_index(Date const&) const;
+		bool is_valid_date(int, int, int) const;
+		int event_exists(std::string, int, int, int) const;
 
 		template <typename F>
 		friend std::ostream& operator<< (std::ostream&, Calendar<F> const&);
@@ -71,12 +72,12 @@ namespace lab2 {
 
     template <typename T>
     bool Calendar<T>::add_event(std::string event, int day){
-        return add_event(event, current_date.day(), current_date.month(), current_date.year());
+        return add_event(event, day, current_date.month(), current_date.year());
     }
 
     template <typename T>
     bool Calendar<T>::add_event(std::string event, int day, int month){
-        return add_event(event, current_date.day(), current_date.month(), current_date.year());
+        return add_event(event, day, month, current_date.year());
     }
 
     template <typename T>
@@ -92,8 +93,8 @@ namespace lab2 {
             return false;
         }
 
-        T d = T(year, month, day);
-        int index = get_future_events_index(d);
+        T *d = new T(year, month, day);
+        int index = get_future_events_index(*d);
         Event ev = Event(event, d);
 
         //Adds the event to the appropriate index so the vector remains sorted
@@ -110,17 +111,16 @@ namespace lab2 {
 
     template <typename T>
     bool Calendar<T>::remove_event(std::string event, int day){
-        return remove_event(event, current_date.day(), current_date.month(), current_date.year());
+        return remove_event(event, day, current_date.month(), current_date.year());
     }
 
     template <typename T>
     bool Calendar<T>::remove_event(std::string event, int day, int month){
-        return remove_event(event, current_date.day(), current_date.month(), current_date.year());
+        return remove_event(event, day, month, current_date.year());
     }
 
     template <typename T>
     bool Calendar<T>::remove_event(std::string event, int day, int month, int year){
-        
         int index = event_exists(event, year, month, day);
 
         //The event doesn't exist, and can't be removed
@@ -135,7 +135,7 @@ namespace lab2 {
 
     //Check whether the date is valid
     template <typename T>
-    bool Calendar<T>::is_valid_date(int year, int month, int day){
+    bool Calendar<T>::is_valid_date(int year, int month, int day) const {
 
         try{
             T test = T(year, month, day);
@@ -148,11 +148,13 @@ namespace lab2 {
 
     //Checks whether an event with the same name exists
     template <typename T>
-    int Calendar<T>::event_exists(std::string event_name, int year, int month, int day){
+    int Calendar<T>::event_exists(std::string event_name, int year, int month, int day) const {
 
         //Returns the index where the event exists
         for(int i = 0; i < events.size(); ++i){
-            if(events.at(i).get_name() == event_name){
+            Event event = events.at(i);
+            if(event.get_name() == event_name && event.date->year() == year 
+                && event.date->month() == month && event.date->day() == day){
                 return i;
             }
         }
@@ -162,7 +164,7 @@ namespace lab2 {
 
     //Returns the index for all upcoming events from the current date
     template <typename T>
-    int Calendar<T>::get_future_events_index(Date const& d){
+    int Calendar<T>::get_future_events_index(Date const& d) const {
 
         for(int i = 0; i < events.size(); ++i){
             if(events.at(i).get_date() >= d){
@@ -176,8 +178,7 @@ namespace lab2 {
 
     template <typename F>
     std::ostream& operator<< (std::ostream& output, Calendar<F> const& cal){
-
-        for(int i = 0; i < cal.events.size(); ++i){
+        for(int i = cal.get_future_events_index(cal.current_date); i < cal.events.size(); ++i){
             output << cal.events.at(i) << std::endl;
         }
 

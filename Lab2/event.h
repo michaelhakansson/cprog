@@ -3,18 +3,19 @@
 
 #include "date.h"
 #include <string>
+#include <iostream>
 
 namespace lab2 {
     class Event {
     private:
+    public:
         std::string name;
         Date * date;
-    public:
-        std::string get_name();
-        Date& get_date(); 
+        std::string get_name() const;
+        Date& get_date() const; 
         friend std::ostream& operator<< (std::ostream&, Event const&);
 
-        Event(std::string const&, Date&);
+        Event(std::string const&, Date*);
         ~Event();
     };
 }
@@ -23,11 +24,11 @@ namespace lab2 {
 
 namespace lab2 {
 
-    std::string Event::get_name(){
+    std::string Event::get_name() const {
         return name;
     }
 
-    Date& Event::get_date(){
+    Date& Event::get_date() const {
         return *date;
     }
 
@@ -37,9 +38,9 @@ namespace lab2 {
         return output;
     }
 
-    Event::Event(std::string const& n, Date& d){
+    Event::Event(std::string const& n, Date* d){
         name = n;
-        date = &d;
+        date = d;
     }
 
     Event::~Event(){
