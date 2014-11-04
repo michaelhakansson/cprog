@@ -199,8 +199,12 @@ namespace lab2 {
         //if (this != &rhs) {
             current_date = T(rhs.current_date);
 
-            //Copy assigning events
-            events = std::vector<Event<T> >(rhs.events);
+            //events.resize(rhs.events.size());
+
+            for (int i = 0; i < events.size(); ++i){
+                Event<T> temp = Event<T>(rhs.events.at(i));
+                events.push_back(temp);
+            }
         //}
     }
 

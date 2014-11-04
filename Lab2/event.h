@@ -19,6 +19,9 @@ namespace lab2 {
 
         template <typename S>
         Event(std::string const&, S);
+
+        template <typename S>
+        Event(Event<S>);
         ~Event();
     };
 }
@@ -52,13 +55,13 @@ namespace lab2 {
         date = T(d);
     }
 
-    /*//Copy constructor
+    //Copy constructor
     template <typename T>
     template <typename S>
-    Event<T>::Event(std::vector<Event<S> > vec){
+    Event<T>::Event(Event<S> e){
         name = e.get_name();
         date = e.get_date();
-    }*/
+    }
 
     //Destructor
     template <typename T>
