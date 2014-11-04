@@ -11,7 +11,7 @@ namespace lab2 {
 	private:
 	public:
 		T current_date;
-		std::vector<Event> events;
+		std::vector<Event<T> > events;
 		// Calendar& operator= (Calendar const&);
 
 		bool set_date(int year, int month, int day);
@@ -93,9 +93,9 @@ namespace lab2 {
             return false;
         }
 
-        T *d = new T(year, month, day);
-        int index = get_future_events_index(*d);
-        Event ev = Event(event, d);
+        T d = T(year, month, day);
+        int index = get_future_events_index(d);
+        Event<T> ev = Event<T>(event, d);
 
         //Adds the event to the appropriate index so the vector remains sorted
         events.insert(events.begin() + index, ev);
@@ -152,9 +152,9 @@ namespace lab2 {
 
         //Returns the index where the event exists
         for(int i = 0; i < events.size(); ++i){
-            Event event = events.at(i);
-            if(event.get_name() == event_name && event.date->year() == year 
-                && event.date->month() == month && event.date->day() == day){
+            Event<T> event = events.at(i);
+            if(event.get_name() == event_name && event.date.year() == year 
+                && event.date.month() == month && event.date.day() == day){
                 return i;
             }
         }
@@ -185,18 +185,23 @@ namespace lab2 {
         return output;
     }
 
-    //Initializes the calendar with current date
+    //Default constructor - Initializes the calendar with current date
     template <typename T>
     Calendar<T>::Calendar() {
         current_date = T();
     }
 
-    //Initializes the calendar with a given date
+    //Copy constructor - Initializes the calendar with a given date
     template <typename T>
     template <typename S>
     Calendar<T>::Calendar(Calendar<S> const& rhs) {
-        current_date = rhs.current_date;
-        // TODO: COPY DATA FROM EVENT VECTOR
+
+        if (this != &rhs) {
+            current_date = T(rhs.current_date);
+
+            //Copy assigning events
+            events = new Event<T>(rhs.events);
+        }
     }
 
     //Destructor

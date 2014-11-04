@@ -6,16 +6,19 @@
 #include <iostream>
 
 namespace lab2 {
-    class Event {
+    template <typename T> class Event {
     private:
     public:
         std::string name;
-        Date * date;
+        T date;
         std::string get_name() const;
-        Date& get_date() const; 
-        friend std::ostream& operator<< (std::ostream&, Event const&);
+        T& get_date() const;
 
-        Event(std::string const&, Date*);
+        template <typename F>
+        friend std::ostream& operator<< (std::ostream&, Event<F> const&);
+
+        template <typename S>
+        Event(std::string const&, S);
         ~Event();
     };
 }
@@ -24,25 +27,34 @@ namespace lab2 {
 
 namespace lab2 {
 
-    std::string Event::get_name() const {
+    template <typename T>
+    std::string Event<T>::get_name() const {
         return name;
     }
 
-    Date& Event::get_date() const {
-        return *date;
+    template <typename T>
+    T& Event<T>::get_date() const {
+        return date;
     }
 
-    std::ostream& operator<< (std::ostream& output, Event const& ev){
-        output << *ev.date << " : " << ev.name;
+    template <typename F>
+    std::ostream& operator<< (std::ostream& output, Event<F> const& ev){
+        output << ev.date << " : " << ev.name;
 
         return output;
     }
 
-    Event::Event(std::string const& n, Date* d){
+    //Copy constructor
+    template <typename T>
+    template <typename S>
+    Event<T>::Event(std::string const& n, S d){
         name = n;
-        date = d;
+        date = T(d);
     }
 
-    Event::~Event(){
+    //Destructor
+    template <typename T>
+    Event<T>::~Event(){
+        //delete date;
     }
 }
