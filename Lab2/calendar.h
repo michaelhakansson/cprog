@@ -167,7 +167,7 @@ namespace lab2 {
     int Calendar<T>::get_future_events_index(Date const& d) const {
 
         for(int i = 0; i < events.size(); ++i){
-            if(events.at(i).get_date() >= d){
+            if(events.at(i).get_date() > d){
                 return i;
             }
         }
