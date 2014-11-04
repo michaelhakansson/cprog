@@ -113,25 +113,9 @@ Forvantad output:
     g.add_event("Date3", 3,11,2001);
 
     Calendar<Julian> j = g;
-
-    std::cout << "GREGORIAN VARIANTEN har storlek " << g.events.size() << std::endl;
-    assert(g.event_exists("Date3", 2001, 11, 3) != -1); // Should exist
-    for (int i = 0; i < g.events.size(); ++i) {
-        std::cout  << *(g.events.at(i)) << std::endl;
-    }
-
-    std::cout << "JULIAN KOPIAN har storlek " << j.events.size() << std::endl;
-    for (int i = 0; i < j.events.size(); ++i) {
-        std::cout  << *(j.events.at(i)) << std::endl;
-    }
-
-
-    // assert(j.event_exists("Date3", 2001, 11, 3) != -1); // Should exist
-
-
-    // assert(j.event_exists("Date1", 2014, 10, 21) != -1); // Should exist
-    // assert(j.event_exists("Date2", 2014, 10, 19) != -1); // Should exist
-    // assert(j.event_exists("Date3", 2001, 10, 21) != -1); // Should exist
+    assert(j.event_exists("Date1", 2014, 10, 19) != -1); // Should exist
+    assert(j.event_exists("Date2", 2014, 9, 19) != -1); // Should exist
+    assert(j.event_exists("Date3", 2001, 10, 21) != -1); // Should exist
 }
 
 {
