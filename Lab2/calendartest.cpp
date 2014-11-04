@@ -116,13 +116,13 @@ Forvantad output:
 
     std::cout << "GREGORIAN VARIANTEN har storlek " << g.events.size() << std::endl;
     assert(g.event_exists("Date3", 2001, 11, 3) != -1); // Should exist
-    for (Event<Gregorian>* event : g.events) {
-        std::cout  << *event << std::endl;
+    for (int i = 0; i < g.events.size(); ++i) {
+        std::cout  << *(g.events.at(i)) << std::endl;
     }
 
     std::cout << "JULIAN KOPIAN har storlek " << j.events.size() << std::endl;
-    for (Event<Julian>* event : j.events) {
-        std::cout  << *event << std::endl;
+    for (int i = 0; i < j.events.size(); ++i) {
+        std::cout  << *(j.events.at(i)) << std::endl;
     }
 
 
