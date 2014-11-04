@@ -68,25 +68,88 @@ Forvantad output:
 2001-01-01 : Nyarsfrukost
 */
 
-std::cout << "Testing default constructor" << std::endl;
-Calendar<Gregorian> g;
-Calendar<Julian> j;
+{
+    std::cout << "Testing default constructor" << std::endl;
+    Calendar<Gregorian> g;
+    g.set_date(2014,11,3);
+    assert(g.add_event("Todays date G") == true);
+    assert(g.event_exists("Todays date G", 2014, 11, 3) != -1); // Should exist
+    assert(g.event_exists("Todays date G", 2014, 11, 4) == -1); // Shouldn't exist
 
-g.set_date(2014,11,03);
-assert(g.add_event("Todays date") == true);
-assert(g.event_exists("Todays date", 2014, 11, 3) != -1); // Should exist
-assert(g.event_exists("Todays date", 2014, 11, 4) == -1); // Shouldn't exist
-// std::cout << g << std::endl;
+    Calendar<Julian> j;
+    j.set_date(2014,11,3);
+    assert(j.add_event("Todays date J") == true);
+    assert(j.event_exists("Todays date J", 2014, 11, 3) != -1); // Should exist
+}
 
-assert(j.add_event("Todays date") == true);
+{
+    std::cout << "Testing different types of constructors" << std::endl;
+    Calendar<Gregorian> g;
+    g.set_date(2014,11,3);
+    g.add_event("Date1", 1);
+    g.add_event("Date2", 2,10);
+    g.add_event("Date3", 3,11,2001);
+    assert(g.event_exists("Date1", 2014, 11, 1) != -1); // Should exist
+    assert(g.event_exists("Date2", 2014, 10, 2) != -1); // Should exist
+    assert(g.event_exists("Date3", 2001, 11, 3) != -1); // Should exist
+
+    Calendar<Julian> j;
+    j.set_date(2014,11,3);
+    j.add_event("Date1", 1);
+    j.add_event("Date2", 2,10);
+    j.add_event("Date3", 3,11,2001);
+    assert(j.event_exists("Date1", 2014, 11, 1) != -1); // Should exist
+    assert(j.event_exists("Date2", 2014, 10, 2) != -1); // Should exist
+    assert(j.event_exists("Date3", 2001, 11, 3) != -1); // Should exist
+}
 
 
+{
+    std::cout << "Testing copy constructor" << std::endl;
+    Calendar<Gregorian> g;
+    g.set_date(2014,11,3);
+    g.add_event("Date1", 1);
+    g.add_event("Date2", 2,10);
+    g.add_event("Date3", 3,11,2001);
 
+    Calendar<Julian> j = g;
 
+    assert(j.event_exists("Date1", 2014, 10, 21) != -1); // Should exist
+    assert(j.event_exists("Date2", 2014, 10, 19) != -1); // Should exist
+    assert(j.event_exists("Date3", 2001, 10, 21) != -1); // Should exist
+}
+
+{
+    std::cout << "Testing remove event" << std::endl;
+    Calendar<Gregorian> g;
+    g.set_date(2014,11,3);
+
+    assert(g.event_exists("Todays date G", 2014, 11, 3) == -1); // Shouldn't exist
+
+    g.add_event("Todays date G");
+    g.add_event("Date1", 1);
+    g.add_event("Date2", 2,10);
+    g.add_event("Date3", 3,11,2001);
+    assert(g.event_exists("Todays date G", 2014, 11, 3) != -1); // Should exist
+    assert(g.event_exists("Date1", 2014, 11, 1) != -1); // Should exist
+    assert(g.event_exists("Date2", 2014, 10, 2) != -1); // Should exist
+    assert(g.event_exists("Date3", 2001, 11, 3) != -1); // Should exist
+
+    assert(g.remove_event("Date1", 2) == false); // Doesn't exist with this day
+    assert(g.event_exists("Date1", 2014, 11, 1) != -1); // Should exist
+    assert(g.remove_event("Todays date G") == true);
+    assert(g.remove_event("Date1", 1) == true);
+    assert(g.remove_event("Date2", 2,10) == true);
+    assert(g.remove_event("Date3", 3,11,2001) == true);
+    assert(g.event_exists("Todays date G", 2014, 11, 3) == -1); // Should exist
+    assert(g.event_exists("Date1", 2014, 11, 1) == -1); // Shouldn't exist
+    assert(g.event_exists("Date2", 2014, 10, 2) == -1); // Shouldn't exist
+    assert(g.event_exists("Date3", 2001, 11, 3) == -1); // Shouldn't exist
+}
 
 
 std::cout << "All tests passed!" << std::endl;
 
-    return 0;
+return 0;
 }
 
