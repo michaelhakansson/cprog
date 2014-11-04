@@ -203,7 +203,7 @@ namespace lab2 {
 
             for (int i = 0; i < rhs.events.size(); ++i){
                 Event<T> temp = Event<T>(rhs.events.at(i));
-                events.push_back();
+                events.push_back(temp);
             }
         //}
     }
