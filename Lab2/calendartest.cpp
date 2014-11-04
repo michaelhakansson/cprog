@@ -114,9 +114,24 @@ Forvantad output:
 
     Calendar<Julian> j = g;
 
-    assert(j.event_exists("Date1", 2014, 10, 21) != -1); // Should exist
-    assert(j.event_exists("Date2", 2014, 10, 19) != -1); // Should exist
-    assert(j.event_exists("Date3", 2001, 10, 21) != -1); // Should exist
+    std::cout << "GREGORIAN VARIANTEN har storlek " << g.events.size() << std::endl;
+    assert(g.event_exists("Date3", 2001, 11, 3) != -1); // Should exist
+    for (Event<Gregorian>* event : g.events) {
+        std::cout  << *event << std::endl;
+    }
+
+    std::cout << "JULIAN KOPIAN har storlek " << j.events.size() << std::endl;
+    for (Event<Julian>* event : j.events) {
+        std::cout  << *event << std::endl;
+    }
+
+
+    // assert(j.event_exists("Date3", 2001, 11, 3) != -1); // Should exist
+
+
+    // assert(j.event_exists("Date1", 2014, 10, 21) != -1); // Should exist
+    // assert(j.event_exists("Date2", 2014, 10, 19) != -1); // Should exist
+    // assert(j.event_exists("Date3", 2001, 10, 21) != -1); // Should exist
 }
 
 {
@@ -145,6 +160,15 @@ Forvantad output:
     assert(g.event_exists("Date1", 2014, 11, 1) == -1); // Shouldn't exist
     assert(g.event_exists("Date2", 2014, 10, 2) == -1); // Shouldn't exist
     assert(g.event_exists("Date3", 2001, 11, 3) == -1); // Shouldn't exist
+}
+
+
+{ // TODO
+    std::cout << "Testing get_future_event_index" << std::endl;
+}
+
+{ // TODO
+    std::cout << "Testing is_valid_date" << std::endl;
 }
 
 
