@@ -26,7 +26,8 @@ namespace lab2 {
 		bool remove_event(std::string, int, int);
 		bool remove_event(std::string, int, int, int);
 
-		int get_future_events_index(Date const&) const;
+		int get_future_events_index() const;
+        int get_future_events_index(T const&) const;
 		bool is_valid_date(int, int, int) const;
 		int event_exists(std::string, int, int, int) const;
 
@@ -164,7 +165,13 @@ namespace lab2 {
 
     //Returns the index for all upcoming events from the current date
     template <typename T>
-    int Calendar<T>::get_future_events_index(Date const& d) const {
+    int Calendar<T>::get_future_events_index() const {
+        return get_future_events_index(this->current_date);
+    }
+
+    //Returns the index for all upcoming events from the current date
+    template <typename T>
+    int Calendar<T>::get_future_events_index(T const& d) const {
 
         for(int i = 0; i < events.size(); ++i){
             if(events.at(i).get_date() > d){
@@ -178,7 +185,7 @@ namespace lab2 {
 
     template <typename F>
     std::ostream& operator<< (std::ostream& output, Calendar<F> const& cal){
-        for(int i = cal.get_future_events_index(cal.current_date); i < cal.events.size(); ++i){
+        for(int i = cal.get_future_events_index(); i < cal.events.size(); ++i){
             output << cal.events.at(i) << std::endl;
         }
 
