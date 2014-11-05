@@ -9,6 +9,7 @@ namespace lab2 {
 		jdn_ = rhs.mod_julian_day();
 	}
 
+	/* Output operator. The date is printed as 'yyyy-mm-dd' */
 	std::ostream& operator<< (std::ostream& output, Date const& date) {
 		output << date.year() << "-" <<
 				 (date.month() < 10 ? "0" : "") << date.month() << "-" << 
@@ -16,6 +17,7 @@ namespace lab2 {
 		return output;
 	}
 
+	/* Copy assignment operator for Date objects */
 	Date& Date::operator= (Date const& rhs) {
 		if (this != &rhs) {
 			jdn_ = rhs.mod_julian_day();
@@ -23,50 +25,62 @@ namespace lab2 {
 		return *this;
 	}
 
+	/* Increments the date by one day. */
 	Date& Date::operator++ () {
 		++jdn_;
 		return *this;
 	}
 
+	
+	/* Decrements the date by one day. */
 	Date& Date::operator-- () {
 		--jdn_;
 		return *this;
 	}
 
-	Date& Date::operator-= (int n) {
-		jdn_ -= n;
-		return *this;
-	}
-
+	/* Increments the date by 'n' days. */
 	Date& Date::operator+= (int n) {
 		jdn_ += n;
 		return *this;
 	}
 
+	/* Decrements the date by 'n' days. */
+	Date& Date::operator-= (int n) {
+		jdn_ -= n;
+		return *this;
+	}
+
+	/* Compares two Date objects and return a bool. */
 	bool Date::operator== (Date const& rhs) const {
 		return jdn_ == rhs.mod_julian_day();
 	}
 
+	/* Compares two Date objects and return a bool. */
 	bool Date::operator!= (Date const& rhs) const {
 		return jdn_ != rhs.mod_julian_day();
 	}
 
+	/* Compares two Date objects and return a bool. */
 	bool Date::operator< (Date const& rhs) const {
 		return jdn_ < rhs.mod_julian_day();
 	}
 
+	/* Compares two Date objects and return a bool. */
 	bool Date::operator<= (Date const& rhs) const {
 		return jdn_ <= rhs.mod_julian_day();
 	}
 
+	/* Compares two Date objects and return a bool. */
 	bool Date::operator> (Date const& rhs) const {
 		return jdn_ > rhs.mod_julian_day();
 	}
 
+	/* Compares two Date objects and return a bool. */
 	bool Date::operator>= (Date const& rhs) const {
 		return jdn_ >= rhs.mod_julian_day();
 	}
 
+	/* Compares two Date objects and return a bool. */
 	int Date::operator- (Date const& rhs) const {
 		return jdn_ - rhs.mod_julian_day();
 	}

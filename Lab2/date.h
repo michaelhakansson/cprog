@@ -26,8 +26,6 @@ namespace lab2 {
 			virtual std::string week_day_name() const = 0;
 			virtual std::string month_name() const = 0;
 			virtual long mod_julian_day() const = 0;
-
-			// Returntype void since only setter
 			virtual void add_year(const int i = 1) = 0;
 			virtual void add_month(const int i = 1) = 0;
 
