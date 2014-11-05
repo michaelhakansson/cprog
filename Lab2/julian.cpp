@@ -64,10 +64,9 @@ namespace lab2 {
 		return day;
 	}
 
-	// http://en.wikipedia.org/wiki/Julian_day#Finding_day_of_week_given_Julian_day_number
-	/* Returns the day of the week. Monday = 1, sunday = 7.*/
 	int Julian::week_day() const {
-		// Must have the complete julian day
+	// http://en.wikipedia.org/wiki/Julian_day#Finding_day_of_week_given_Julian_day_number
+	// Must have the complete julian day
 		long jdn = this->mod_julian_day() + MOD_JULIAN_DATE;
 		if (jdn < 0) {
 			return ((-jdn) % 7) + 1;
@@ -142,9 +141,6 @@ namespace lab2 {
 		jdn_ = ymd_to_jdn(y, m, d);
 	}
 
-	/* Increments/decrements the month with size of input if possible.
-	If that does not work due to faulty date number, 30 days is added/removed
-	from current date. */
 	void Julian::add_month(const int i) {
 		// Do as many times as input says.
 		for (int j = 0, k = i < 0 ? -i : i; j < k; ++j) {
