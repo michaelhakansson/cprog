@@ -12,6 +12,7 @@ namespace lab2 {
 	const int days_per_week_ = 7;
 	const int months_per_year_ = 12;
 
+
 	Gregorian::Gregorian() : Date() {
 		time_t tp;
 		k_time(&tp);
@@ -35,10 +36,10 @@ namespace lab2 {
 		jdn_ = ymd_to_jdn(year, month, day);
 	}
 
+
 	Gregorian::Gregorian(Date const& rhs) {
 		jdn_ = rhs.mod_julian_day();
 	}
-
 
 	int Gregorian::year() const {
 		int year, month, day;
@@ -58,9 +59,8 @@ namespace lab2 {
 		return day;
 	}
 
-	// http://en.wikipedia.org/wiki/Julian_day#Finding_day_of_week_given_Julian_day_number
-	/* Returns the day of the week. Monday = 1, sunday = 7.*/
 	int Gregorian::week_day() const {
+		// http://en.wikipedia.org/wiki/Julian_day#Finding_day_of_week_given_Julian_day_number
 		// Must have the complete julian day
 		long jdn = this->mod_julian_day() + MOD_JULIAN_DATE;
 		if (jdn < 0) {
@@ -69,9 +69,11 @@ namespace lab2 {
 		return (jdn % 7) + 1;
 	}
 	
+
 	int Gregorian::days_per_week() const {
 		return days_per_week_;
 	}
+
 
 	int Gregorian::months_per_year() const {
 		return months_per_year_;
@@ -140,9 +142,6 @@ namespace lab2 {
 		jdn_ = ymd_to_jdn(y, m, d);
 	}
 
-	/* Increments/decrements the month with size of input if possible.
-	If that does not work due to faulty date number, 30 days is added/removed
-	from current date. */
 	void Gregorian::add_month(const int i) {
 		// Do as many times as input says.
 		for (int j = 0, k = i < 0 ? -i : i; j < k; ++j) {
