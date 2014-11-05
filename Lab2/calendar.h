@@ -12,7 +12,6 @@ namespace lab2 {
 	public:
 		T current_date;
 		std::vector<Event<T> > events;
-		// Calendar& operator= (Calendar const&);
 
 		bool set_date(int year, int month, int day);
 
@@ -37,7 +36,6 @@ namespace lab2 {
 		Calendar(); //Initializes with current date
 		template <typename S>
 		Calendar(Calendar<S> const&);
-		~Calendar();
 	};
 }
 
@@ -45,11 +43,6 @@ namespace lab2 {
 #include <stdexcept>
 
 namespace lab2 {
-
-    // template <typename T>
-    // Calendar<T>& Calendar<T>::operator= (Calendar<T> const& asd) {
-
-    // }
 
     //Sets the date of the calendar
     template <typename T>
@@ -211,18 +204,6 @@ namespace lab2 {
                 events.push_back(temp);
             }
         }
-    }
-
-    //Destructor
-    template <typename T>
-    Calendar<T>::~Calendar(){
-        
-        //TODO check if works, arrayoutofbounds if not
-        for (int i = 0; i < events.size(); ++i){
-            events.erase(events.begin() + i);
-        }
-
-        // delete [] events;
     }
 }
 
