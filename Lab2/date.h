@@ -30,7 +30,6 @@ namespace lab2 {
 			virtual void add_month(const int i = 1) = 0;
 
 			// Operator overloads
-			Date& operator= (Date const& rhs);
 			Date& operator++ ();
 			Date& operator-- ();
 			Date& operator-= (int);

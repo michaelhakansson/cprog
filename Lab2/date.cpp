@@ -17,14 +17,6 @@ namespace lab2 {
 		return output;
 	}
 
-	/* Copy assignment operator for Date objects */
-	Date& Date::operator= (Date const& rhs) {
-		if (this != &rhs) {
-			jdn_ = rhs.mod_julian_day();
-		}
-		return *this;
-	}
-
 	/* Increments the date by one day. */
 	Date& Date::operator++ () {
 		++jdn_;
