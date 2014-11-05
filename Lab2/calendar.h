@@ -196,16 +196,14 @@ namespace lab2 {
     template <typename S>
     Calendar<T>::Calendar(Calendar<S> const& rhs) {
 
-        //if (this != &rhs) {
+        if ((size_t)this != (size_t)&rhs) {
             current_date = T(rhs.current_date);
-
-            //events.resize(rhs.events.size());
 
             for (int i = 0; i < rhs.events.size(); ++i){
                 Event<T> temp = Event<T>(rhs.events.at(i));
                 events.push_back(temp);
             }
-        //}
+        }
     }
 
     //Destructor
