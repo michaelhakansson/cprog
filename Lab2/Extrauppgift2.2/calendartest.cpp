@@ -226,35 +226,90 @@ std::cout << "Initiating tests" << std::endl;
     Calendar<Gregorian> g;
     g.set_date(2007,12,2);
     g.add_event("Min andra cykel",20);
+    g.add_event("Smäll en bomb",24,11,2014);
     g.add_event("Julafton",24);
-    std::cout << g << std::endl;
+    g.add_event("Event",11,11,2014);
+    g.add_event("Prata tyst",28,11,2014);
+
     g.set_format(Calendar<Gregorian>::cal);
-    std::cout << g << std::endl;
-    g.set_date(2014,10,30);
-    std::cout << g << std::endl;
+    g.set_date(2014,11,29);
 
-    g.set_date(2014,01,13);
-    g.add_event("HEJ", 13,1,2014);
-    g.add_event("HEJ", 14,1,2014);
-    g.add_event("HEJ", 14,1,2015);
-    g.add_event("HEJ", 31,1,2014);
-    g.add_event("HEJ", 1,2,2014);
-    std::cout << g << std::endl;
-    g.set_date(2014,01,7);
-    std::cout << g << std::endl;
+    std::stringstream ss1;
+    std::stringstream ss1_expected;
 
-    // TODO: Skriv faktiska tester
+
+    ss1 << g;
+
+    ss1_expected << "           november 2014"              << std::endl
+                 << " må   ti   on   to   fr   lö   sö  "   << std::endl
+                 << "                           1    2  "   << std::endl
+                 << "  3    4    5    6    7    8    9  "   << std::endl
+                 << " 10   11*  12   13   14   15   16  "   << std::endl
+                 << " 17   18   19   20   21   22   23  "   << std::endl
+                 << " 24*  25   26   27   28* <29>  30  "   << std::endl
+                                                            << std::endl
+                 << "  2014-11-11: Event"                   << std::endl
+                 << "  2014-11-24: Smäll en bomb"           << std::endl
+                 << "  2014-11-28: Prata tyst"              << std::endl;
+
+    assert(ss1.str() == ss1_expected.str());
 }
 
 {
     std::cout << "Testing output operator (iCalendar)" << std::endl;
-    // TODO
+
+    Calendar<Gregorian> g;
+    g.set_date(2007,12,2);
+    g.add_event("Min andra cykel",20);
+    g.add_event("Julafton",24);
+    g.set_format(Calendar<Gregorian>::iCalendar);
+
+    std::stringstream ss1;
+    std::stringstream ss1_expected;
+
+    ss1 << g;
+
+    ss1_expected << "BEGIN:VCALENDAR" << std::endl;
+    ss1_expected << "VERSION:2.0" << std::endl;
+    ss1_expected << "PRODID:-//KalleKalender" << std::endl;
+    ss1_expected << "BEGIN:VEVENT" << std::endl;
+    ss1_expected << "DTSTART:20071220T080000" << std::endl;
+    ss1_expected << "DTEND:20071220T090000" << std::endl;
+    ss1_expected << "SUMMARY:Min andra cykel" << std::endl;
+    ss1_expected << "END:VEVENT" << std::endl;
+    ss1_expected << "BEGIN:VEVENT" << std::endl;
+    ss1_expected << "DTSTART:20071224T080000" << std::endl;
+    ss1_expected << "DTEND:20071224T090000" << std::endl;
+    ss1_expected << "SUMMARY:Julafton" << std::endl;
+    ss1_expected << "END:VEVENT" << std::endl;
+    ss1_expected << "END:VCALENDAR" << std::endl;
+
+    assert(ss1.str() == ss1_expected.str());
+
 }
 
-// TODO: Test has_event_on_date()
+{
+    std::cout << "Testing has_event_on_date" << std::endl;
+
+    Calendar<Gregorian> g;
+    g.set_date(2001,1,1);
+    g.add_event("Kul",24);
+    g.add_event("Min andra cykel",20,3);
+    g.add_event("Smäll en bomb",24,11,2014);
+    g.add_event("Event",11,11,2014);
+    g.add_event("Prata tyst",28,11,2014);
+
+    assert(g.has_event_on_date(2000,1,1)   == false);
+    assert(g.has_event_on_date(2014,11,10) == false);
+    assert(g.has_event_on_date(2006,5,10)  == false);
+    assert(g.has_event_on_date(2001,1,24)  == true);
+    assert(g.has_event_on_date(2001,3,20)  == true);
+    assert(g.has_event_on_date(2014,11,11) == true);
+    assert(g.has_event_on_date(2014,11,28) == true);
+}
 
 {
-    std::cout << "week_day_number_first_day_of_month" << std::endl;
+    std::cout << "Testing week_day_number_first_day_of_month" << std::endl;
     assert(week_day_number_first_day_of_month(1, 1) == 1);
     assert(week_day_number_first_day_of_month(1, 2) == 2);
     assert(week_day_number_first_day_of_month(1, 3) == 3);

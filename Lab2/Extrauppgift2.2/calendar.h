@@ -261,7 +261,6 @@ namespace lab2 {
     template <typename F>
     void cal_output(std::ostream& output, Calendar<F> const& cal) {
         int cal_width = 35;
-        int curr_pos = 0; // Tracks the current writing position
         std::string year = std::to_string( cal.current_date.year() );
         std::string month_name = cal.current_date.month_name();
         
@@ -274,24 +273,23 @@ namespace lab2 {
         output << month_name << " " << year << std::endl;
 
         // Print the day names
-        output << " må   " << "ti   " << "on   " << "to   " << "fr   " << "lö   " << "sö   " << std::endl;
+        output << " må   " << "ti   " << "on   " << "to   " << "fr   " << "lö   " << "sö  " << std::endl;
 
-        // Print each day
+        // The current week day number
         int wdn = week_day_number_first_day_of_month(cal.current_date.day(), cal.current_date.week_day());
 
         // Print leading spaces for first day of the month
-        for (int j = 0; j < wdn-1; ++j) { // The spaces before the first day in the month
+        for (int j = 1; j < wdn; ++j) { // The spaces before the first day in the month
             output << "     ";
-            curr_pos += 5;
         }
 
         // Printing all days
         for (int i = 1; i <= cal.current_date.days_this_month(); ++i) {
             bool has_event = cal.has_event_on_date(cal.current_date.year(), cal.current_date.month(), i);
 
-            if (curr_pos >= cal_width) { // New line
+            if (wdn > cal.current_date.days_per_week()) { // New line
                 output << std::endl;
-                curr_pos = 0;
+                wdn = 1;
             }
 
             if (i == cal.current_date.day()) { // Current day
@@ -301,15 +299,15 @@ namespace lab2 {
                     } else { // Has no event
                         output << "< " << i << "> ";
                     }
-                    curr_pos += 5;
                 } else { // Two digit date
                     if (has_event) {
                         output << "<" << i << "*>";
                     } else { // Has no event
                         output << "<" << i << "> ";
                     }
-                    curr_pos += 5;
+                    
                 }
+                ++wdn;
             } else { // Not the current day
                 if (i < 10) { // Single digit date
                     if (has_event) {
@@ -317,15 +315,14 @@ namespace lab2 {
                     } else { // Has no event
                         output << "  " << i << "  ";
                     }
-                    curr_pos += 5;
                 } else { // Two digit date
                     if (has_event) {
                         output << " " << i << "* ";
                     } else { // Has no event
                         output << " " << i << "  ";
                     }
-                    curr_pos += 5;
                 }
+                ++wdn;
             }
         }
 
@@ -345,7 +342,35 @@ namespace lab2 {
     /* Helper function for operator<< */
     template <typename F>
     void icalendar_output(std::ostream& output, Calendar<F> const& cal) {
-        // TODO
+        
+        // Calendar info
+        output << "BEGIN:VCALENDAR" << std::endl
+               << "VERSION:2.0" << std::endl
+               << "PRODID:-//KalleKalender"
+               << std::endl;
+
+        // Each event
+        for(int i = 0; i < cal.events.size(); ++i){
+            Event<F> event = cal.events.at(i);
+            F date = event.get_date();
+            output << "BEGIN:VEVENT" << std::endl
+                   << "DTSTART:" << date.year()
+                                 << date.month() 
+                                 << date.day() 
+                                 << "T080000" << std::endl
+                   << "DTEND:"   << date.year()
+                                 << date.month() 
+                                 << date.day() 
+                                 << "T090000" << std::endl
+
+                   << "SUMMARY:" << event.get_name() << std::endl
+                   << "END:VEVENT" << std::endl;
+
+        }
+
+        // End of calendar
+        output << "END:VCALENDAR" << std::endl;
+
     }
 }
 
