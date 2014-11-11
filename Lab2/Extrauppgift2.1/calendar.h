@@ -27,7 +27,7 @@ namespace lab2 {
 
 		bool move_event(const Date & from, const Date & to);
 		bool add_related_event(const Date & rel_date, int days, 
-			std::string rel_event, std::string new_event);i
+			std::string rel_event, std::string new_event);
 		bool add_recurring_event();
 		bool remove_recurring_event();
 		bool print_events(const Date & start_date, const Date & end_date);
