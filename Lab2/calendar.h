@@ -13,22 +13,124 @@ namespace lab2 {
 		T current_date;
 		std::vector<Event<T> > events;
 
+        /**
+         * Sets the current date of the calendar
+         * @param  year  an int representing the year
+         * @param  month an int representing the month
+         * @param  day   an int representing the day
+         * @return       True if the date is valid. Otherwise false.
+         */
 		bool set_date(int year, int month, int day);
 
+        /**
+         * Adds an event to the current date
+         * @param  std::string The event description as a string
+         * @return True if the event is successfully added. False if the
+         *         date is not valid or the event already existed on that date.
+         */
 		bool add_event(std::string);
-		bool add_event(std::string, int);
-		bool add_event(std::string, int, int);
-		bool add_event(std::string, int, int, int);
 
+        /**
+         * Adds an event to the current month and year on the day specified as parameters
+         * @param  std::string The event description as a string
+         * @param  day The day of the current year and month that the event is to be
+         *         added to.
+         * @return True if the event is successfully added. False if the
+         *         date is not valid or the event already existed on that date.
+         */
+		bool add_event(std::string, int day);
+
+        /**
+         * Adds an event to the current year on the month and day specified as parameters
+         * @param  std::string The event description as a string
+         * @param  day The day of the current year that the event is to be
+         *         added to.
+         * @param  month The month of the current year that the event is to be
+         *         added to.
+         * @return True if the event is successfully added. False if the
+         *         date is not valid or the event already existed on that date.
+         */
+		bool add_event(std::string, int day, int month);
+
+
+        /**
+         * Adds an event to the date specified in the parameters
+         * @param  std::string The event description as a string
+         * @param  day The day that the event is to be added to.
+         * @param  month The month that the event is to be added to.
+         * @param  year The year that the event is to be added to.
+         * @return True if the event is successfully added. False if the
+         *         date is not valid or the event already existed on that date.
+         */
+		bool add_event(std::string, int day, int month, int year);
+
+
+        /**
+         * Removes an event from the current date
+         * @param  std::string The event description as a string
+         * @return True if the event exists and is successfully removed. Otherwise false.
+         */
 		bool remove_event(std::string);
-		bool remove_event(std::string, int);
-		bool remove_event(std::string, int, int);
-		bool remove_event(std::string, int, int, int);
 
+        /**
+         * Removes an event from the current year on the month and day specified as parameters
+         * @param  std::string The event description as a string
+         * @param  day The day of the current year that the event is to be
+         *         removed from.
+         * @param  month The month of the current year that the event is to be
+         *         removed from.
+         * @return True if the event exists and is successfully removed. Otherwise false.
+         */
+		bool remove_event(std::string, int day);
+
+        /**
+         * Removes an event from the current year on the month and day specified as parameters
+         * @param  std::string The event description as a string
+         * @param  day The day of the current year that the event is to be
+         *         removed from
+         * @param  month The month of the current year that the event is to be
+         *         removed from
+         * @return True if the event exists and is successfully removed. Otherwise false.
+         */
+		bool remove_event(std::string, int day, int month);
+
+
+        /**
+         * Removes an event from the date specified in the parameters
+         * @param  std::string The event description as a string
+         * @param  day The day that the event is to be removed from.
+         * @param  month The month that the event is to be removed from.
+         * @param  year The year that the event is to be removed from.
+         * @return True if the event exists and is successfully removed. Otherwise false.
+         */
+		bool remove_event(std::string, int day, int month, int year);
+
+        /**
+         * Returns the index of the first future event in the events vector
+         * @return An int representing the index of the first future event.
+         */
 		int get_future_events_index() const;
         int get_future_events_index(T const&) const;
-		bool is_valid_date(int, int, int) const;
-		int event_exists(std::string, int, int, int) const;
+
+        /**
+         * Checks if the provided date is a valid date in the current calendar
+         * @param  year [description]
+         * @param  month [description]
+         * @param  day [description]
+         * @return     True if the date is valid. Otherwise false.
+         */
+		bool is_valid_date(int year, int month, int day) const;
+
+        /**
+         * Checks if an event exists
+         * @param  std::string  The event description
+         * @param  year         The year of the searched event
+         * @param  month        The month of the searched event
+         * @param  day          The day of the searched event
+         * @return              The index of the event in the events vector if the
+         *                      event exists. -1 if the event do not exist.
+         */
+		int event_exists(std::string, int year, int month, int day) const;
 
 		template <typename F>
 		friend std::ostream& operator<< (std::ostream&, Calendar<F> const&);
