@@ -184,16 +184,30 @@ public:
         Matrix b;
         std::stringstream ss;
         ss << a;
+
+        TS_ASSERT_EQUALS(a[0][0], 1);
+        TS_ASSERT_EQUALS(a[0][1], 0);
+        TS_ASSERT_EQUALS(a[0][2], 0);
+        
+        TS_ASSERT_EQUALS(a[1][0], 0);
+        TS_ASSERT_EQUALS(a[1][1], 1);
+        TS_ASSERT_EQUALS(a[1][2], 0);
+        
+        TS_ASSERT_EQUALS(a[2][0], 0);
+        TS_ASSERT_EQUALS(a[2][1], 0);
+        TS_ASSERT_EQUALS(a[2][2], 1);
+        
         ss >> b;
-        TS_ASSERT_EQUALS(b[0][0], a[0][0]);
-        TS_ASSERT_EQUALS(b[0][1], a[0][1]);
-        TS_ASSERT_EQUALS(b[0][2], a[0][2]);
-        TS_ASSERT_EQUALS(b[1][0], a[1][0]);
-        TS_ASSERT_EQUALS(b[1][1], a[1][1]);
-        TS_ASSERT_EQUALS(b[1][2], a[1][2]);
-        TS_ASSERT_EQUALS(b[2][0], a[2][0]);
-        TS_ASSERT_EQUALS(b[2][1], a[2][1]);
-        TS_ASSERT_EQUALS(b[2][2], a[2][2]);
+
+        TS_ASSERT_EQUALS(a[0][0], b[0][0]);
+        TS_ASSERT_EQUALS(a[0][1], b[0][1]);
+        TS_ASSERT_EQUALS(a[0][2], b[0][2]);
+        TS_ASSERT_EQUALS(a[1][0], b[1][0]);
+        TS_ASSERT_EQUALS(a[1][1], b[1][1]);
+        TS_ASSERT_EQUALS(a[1][2], b[1][2]);
+        TS_ASSERT_EQUALS(a[2][0], b[2][0]);
+        TS_ASSERT_EQUALS(a[2][1], b[2][1]);
+        TS_ASSERT_EQUALS(a[2][2], b[2][2]);
     }
 
     void testscalar_mult_positive_scalar () {
@@ -357,6 +371,13 @@ public:
         a[1][1] = 4;
         a[1][2] = 5;
 
+        TS_ASSERT(a[0][0] == 0);
+        TS_ASSERT(a[0][1] == 1);
+        TS_ASSERT(a[0][2] == 2);
+        TS_ASSERT(a[1][0] == 3);
+        TS_ASSERT(a[1][1] == 4);
+        TS_ASSERT(a[1][2] == 5);
+
         Matrix b(3,2);
         b[0][0] = 0;
         b[0][1] = 1;
@@ -364,6 +385,14 @@ public:
         b[1][1] = 3;
         b[2][0] = 4;
         b[2][1] = 5;
+
+        TS_ASSERT(b[0][0] == 0);
+        TS_ASSERT(b[0][1] == 1);
+        TS_ASSERT(b[1][0] == 2);
+        TS_ASSERT(b[1][1] == 3);
+        TS_ASSERT(b[2][0] == 4);
+        TS_ASSERT(b[2][1] == 5);
+
 
         Matrix test1;
         test1 = a * b;
@@ -438,6 +467,19 @@ public:
         TS_ASSERT_EQUALS(c[1][0], 18);
         TS_ASSERT_EQUALS(c[1][1], 9);
         TS_ASSERT_EQUALS(c[1][2], 14);
+
+
+        Matrix d;
+        std::stringstream("[1 1 1 ; 1 1 1]") >> d;
+        Matrix e;
+        e = a + d;
+        TS_ASSERT_EQUALS(e[0][0], 2);
+        TS_ASSERT_EQUALS(e[0][1], 3);
+        TS_ASSERT_EQUALS(e[0][2], 1);
+        TS_ASSERT_EQUALS(e[1][0], 10);
+        TS_ASSERT_EQUALS(e[1][1], 9);
+        TS_ASSERT_EQUALS(e[1][2], 8);
+
     }
 
     void testmatrix_addition_non_compatible_sizes () {
@@ -532,7 +574,64 @@ public:
         TS_ASSERT_EQUALS(b[1][1], 5);
         TS_ASSERT_EQUALS(b[2][0], 3);
         TS_ASSERT_EQUALS(b[2][1], 6);
+
+
+        Matrix c;
+        std::stringstream("[1 2 3 ; 4 5 6]") >> c;
+        c.transpose();
+
+        // a changed
+        TS_ASSERT_EQUALS(c[0][0], 1);
+        TS_ASSERT_EQUALS(c[0][1], 4);
+        TS_ASSERT_EQUALS(c[1][0], 2);
+        TS_ASSERT_EQUALS(c[1][1], 5);
+        TS_ASSERT_EQUALS(c[2][0], 3);
+        TS_ASSERT_EQUALS(c[2][1], 6);
     }
+
+    void testmatrix_misc () {
+        std::stringstream ss_a;
+        std::stringstream ss_b;
+        Matrix a(100,90);
+
+        for (int i = 0; i < 100; ++i) {
+            for (int j = 0; j < 90; ++j) {
+                if (i == j) {
+                    a[i][j] = 1;
+                }
+            }
+        }
+
+        ss_a << a;
+
+        Matrix b = a;
+        ss_b << b;
+
+        TS_ASSERT_EQUALS(ss_a.str(), ss_b.str());
+
+        std::stringstream ss_c;
+        Matrix c;
+
+        c = b;
+        TS_ASSERT_EQUALS(ss_a.str(), ss_b.str());
+
+        ss_c << c;
+        TS_ASSERT_EQUALS(ss_a.str(), ss_b.str());
+        TS_ASSERT_EQUALS(ss_c.str(), ss_a.str());
+        TS_ASSERT_EQUALS(ss_c.str(), ss_b.str());
+
+        for (int i = 0; i < 100; ++i) {
+            for (int j = 0; j < 90; ++j) {
+                if (i == j) {
+                    TS_ASSERT(a[i][j] == 1);
+                } else {
+                    TS_ASSERT(a[i][j] == 0);
+                }
+                TS_ASSERT_EQUALS(a[i][j], b[i][j])
+            }
+        }
+    }
+
 
     // END OF OUR TESTS
 
