@@ -36,4 +36,4 @@ for 32-bit files look in 32bit subdir
 
 
 
-make clean && make testcode.cpp
+clear && make clean && make testcode.cpp && make runtest01 && valgrind ./runtest01
