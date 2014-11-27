@@ -14,7 +14,7 @@ void main(int argc, char* argv[]) {
 	Renderer renderer = new Renderer();
 
     //This is the main loop of the game, it handles everything
-	while(true){
+	while(true) {
 
 		//Gets user input
 		input();

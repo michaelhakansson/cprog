@@ -11,17 +11,17 @@ public:
 };
 
 //Returns the type of environment, etc desert or indoors
-std::String type(){
+std::String type() {
 	return type;
 }
 
 //Returns a description of the environment
-std::String description(){
+std::String description() {
 	return description;
 }
 
 //Returns what available exits exist for this environment
-int exits(){
+int exits() {
 	return exits;
 }
 

@@ -1,12 +1,12 @@
 #include "Environment.h"
 
-class World{
+class World {
 public:
 	void init();
 };
 
 //Generates a collection of environments and characters etc
-void init(){
+void init() {
 
 	//Generate map
 

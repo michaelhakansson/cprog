@@ -1,5 +1,5 @@
 //Base class for all items
-class Item{
+class Item {
 public:
 	std::String weight();
 	std::String volume();
