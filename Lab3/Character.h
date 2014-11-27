@@ -1,9 +1,9 @@
 //Base class for all characters, and NPCs
 class Character {
 public:
-	std::String type();
-	std::String name();
-	std::String health();
+	std::String type() const;
+	std::String name() const;
+	std::String health() const;
 
 	void action();
 	void go(direction);
