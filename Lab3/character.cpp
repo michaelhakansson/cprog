@@ -1,4 +1,4 @@
-#include "Character.h"
+#include "character.h"
 
 std::String type() const {
 	return type_;

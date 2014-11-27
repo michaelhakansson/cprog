@@ -1,5 +1,5 @@
 #include <iostream>
-#include "World.h"
+#include "world.h"
 
 //TODO the resolution of the window in pixels
 static final int WIDTH = 400;
