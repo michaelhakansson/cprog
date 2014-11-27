@@ -7,10 +7,11 @@
 
 namespace lab2 {
     template <typename T> class Event {
+
     private:
-    public:
         std::string name;
         T date;
+    public:
         std::string get_name() const;
         T const& get_date() const;
 

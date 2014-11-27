@@ -237,8 +237,9 @@ std::cout << "Initiating tests" << std::endl;
     std::stringstream ss1;
     std::stringstream ss1_expected;
 
-
+    // g.add_event("Hejsan", 1,11,2014);
     ss1 << g;
+    std::cout << g << std::endl;
 
     ss1_expected << "           november 2014"              << std::endl
                  << " må   ti   on   to   fr   lö   sö  "   << std::endl
@@ -264,10 +265,13 @@ std::cout << "Initiating tests" << std::endl;
     g.add_event("Julafton",24);
     g.set_format(Calendar<Gregorian>::iCalendar);
 
+    g.add_event("Hejsan", 1,1,2014);
     std::stringstream ss1;
     std::stringstream ss1_expected;
 
     ss1 << g;
+
+    std::cout << g << std::endl;
 
     ss1_expected << "BEGIN:VCALENDAR" << std::endl;
     ss1_expected << "VERSION:2.0" << std::endl;

@@ -6,11 +6,11 @@
 
 namespace lab2 {
 
-    const int days_per_month [13] = {0,31,28,31,30,31,30,31,31,30,31,30,31};
-	const std::string week_day_names [8] = {"","monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"};
-	const std::string month_names [13] = {"", "january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"};
-	const int days_per_week_ = 7;
-	const int months_per_year_ = 12;
+    static const int days_per_month [13] = {0,31,28,31,30,31,30,31,31,30,31,30,31};
+	static const std::string week_day_names [8] = {"","monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"};
+	static const std::string month_names [13] = {"", "january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"};
+	static const int days_per_week_ = 7;
+	static const int months_per_year_ = 12;
 
 
 	Gregorian::Gregorian() : Date() {

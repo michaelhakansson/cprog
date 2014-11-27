@@ -155,14 +155,14 @@ std::cout << "Initiating tests" << std::endl;
     std::cout << "Testing set_date" << std::endl;
     Calendar<Gregorian> g;
     g.set_date(2012,12,13);
-    assert(g.current_date.year() == 2012);
-    assert(g.current_date.month() == 12);
-    assert(g.current_date.day() == 13);
+    assert(g.get_current_date().year() == 2012);
+    assert(g.get_current_date().month() == 12);
+    assert(g.get_current_date().day() == 13);
 
     g.set_date(2014,1,1);
-    assert(g.current_date.year() == 2014);
-    assert(g.current_date.month() == 1);
-    assert(g.current_date.day() == 1);
+    assert(g.get_current_date().year() == 2014);
+    assert(g.get_current_date().month() == 1);
+    assert(g.get_current_date().day() == 1);
 }
 
 

@@ -8,10 +8,14 @@
 
 namespace lab2 {
 	template <typename T> class Calendar {
+
 	private:
-	public:
-		T current_date;
-		std::vector<Event<T> > events;
+        T current_date;
+        std::vector<Event<T> > events;
+    public:
+        T const& get_current_date() const;
+
+        std::vector<Event<T> > const& get_events() const;
 
         /**
          * Sets the current date of the calendar
@@ -146,6 +150,16 @@ namespace lab2 {
 
 namespace lab2 {
 
+    template <typename T>
+    T const& Calendar<T>::get_current_date() const {
+        return current_date;
+    }
+
+    template <typename T>
+    std::vector<Event<T> > const& Calendar<T>::get_events() const {
+        return events;
+    }
+
     //Sets the date of the calendar
     template <typename T>
     bool Calendar<T>::set_date(int year, int month, int day){
@@ -249,8 +263,8 @@ namespace lab2 {
         //Returns the index where the event exists
         for(int i = 0; i < events.size(); ++i){
             Event<T> event = events.at(i);
-            if(event.get_name() == event_name && event.date.year() == year 
-                && event.date.month() == month && event.date.day() == day){
+            if(event.get_name() == event_name && event.get_date().year() == year 
+                && event.get_date().month() == month && event.get_date().day() == day){
                 return i;
             }
         }
@@ -299,10 +313,10 @@ namespace lab2 {
     Calendar<T>::Calendar(Calendar<S> const& rhs) {
 
         if ((size_t)this != (size_t)&rhs) {
-            current_date = T(rhs.current_date);
+            current_date = T(rhs.get_current_date());
 
-            for (int i = 0; i < rhs.events.size(); ++i){
-                Event<T> temp = Event<T>(rhs.events.at(i));
+            for (int i = 0; i < rhs.get_events().size(); ++i){
+                Event<T> temp = Event<T>(rhs.get_events().at(i));
                 events.push_back(temp);
             }
         }

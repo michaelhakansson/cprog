@@ -12,8 +12,22 @@ namespace lab2 {
         T current_date;
         std::vector<Event<T> > events;
 
+        /*
+         * The available calendar formats
+         */
         enum format {list, cal, iCalendar};
+        
+        /**
+         * Returns the current format of the calendar
+         * @return The current format
+         */
         format get_format() const;
+
+        /**
+         * Sets the format of the calendar
+         * @param f The wanted format. The format must be in the
+         *          enum format list.
+         */
         void set_format(format f);
 
         bool set_date(int year, int month, int day);
@@ -223,16 +237,20 @@ namespace lab2 {
         return false;
     }
 
+
+    /**
+     * Returns an ostream in the current format of the calendar.
+     */
     template <typename F>
     std::ostream& operator<< (std::ostream& output, Calendar<F> const& cal){
         switch (cal.get_format()) {
-            case 0:
+            case 0: // list
                 list_output(output, cal);
                 break;
-            case 1:
+            case 1: // cal
                 cal_output(output, cal);
                 break;
-            case 2:
+            case 2: // iCalendar
                 icalendar_output(output, cal);
                 break;
             default:
@@ -240,8 +258,12 @@ namespace lab2 {
         }
         return output;
     }
-
-    /* Helper function for operator<< */
+    
+    /**
+     * Helper function for operator<<.
+     * Modifies the referenced to ostream so that it corresponds to the list
+     * view.
+     */
     template <typename F>
     void list_output(std::ostream& output, Calendar<F> const& cal) {
         for(int i = cal.get_future_events_index(); i < cal.events.size(); ++i){
@@ -250,14 +272,20 @@ namespace lab2 {
     }
 
     /**
-     * Helper function for cal_output
+     * Helper function for cal_output.
+     * Returns the week day number (1=monday, 7=sunday) for the first
+     * day of the month.
      */
     int week_day_number_first_day_of_month(int day_date, int current_week_day) {
         int res = current_week_day - ( (day_date-1) % 7);
             return (res <= 0 ? res + 7 : res);
     }
 
-    /* Helper function for operator<< */
+    /**
+     * Helper function for operator<<.
+     * Modifies the referenced to ostream so that it corresponds to the cal
+     * view.
+     */
     template <typename F>
     void cal_output(std::ostream& output, Calendar<F> const& cal) {
         int cal_width = 35;
@@ -339,7 +367,11 @@ namespace lab2 {
 
     }
 
-    /* Helper function for operator<< */
+    /**
+     * Helper function for operator<<.
+     * Modifies the referenced to ostream so that it corresponds to the
+     * iCalendar view.
+     */
     template <typename F>
     void icalendar_output(std::ostream& output, Calendar<F> const& cal) {
         
@@ -353,14 +385,16 @@ namespace lab2 {
         for(int i = 0; i < cal.events.size(); ++i){
             Event<F> event = cal.events.at(i);
             F date = event.get_date();
+            int month = date.month();
+            int day  = date.day();
             output << "BEGIN:VEVENT" << std::endl
                    << "DTSTART:" << date.year()
-                                 << date.month() 
-                                 << date.day() 
+                                 << (month < 10 ? "0" : "") << month
+                                 << (day < 10 ? "0" : "") << day
                                  << "T080000" << std::endl
                    << "DTEND:"   << date.year()
-                                 << date.month() 
-                                 << date.day() 
+                                 << (month < 10 ? "0" : "") << month
+                                 << (day < 10 ? "0" : "") << day
                                  << "T090000" << std::endl
 
                    << "SUMMARY:" << event.get_name() << std::endl
