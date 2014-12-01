@@ -5,10 +5,10 @@ public:
 	void init();
 };
 
-//Generates a collection of environments and characters etc
+// Generates a collection of environments and characters etc
 void init() {
 
-	//Generate map
+	// Generate map
 
-	//Place characters inside maps
+	// Place characters inside maps
 }

@@ -1,15 +1,28 @@
 #include <string>
 
-//Base class for all characters, and NPCs
+// Base class for all characters, and NPCs
 class Character {
 private:
 	std::String type_;
 	std::String name_;
-	std::String health_;
+	int health_;
+	int strength_;
+	std::String name_of_attack_;
 public:
+	// Returns what type the character is eg Ogre
 	std::String type() const;
+
+	// Returns the name of the character eg Gandalf
 	std::String name() const;
-	std::String health() const;
+
+	// Returns the HP of the character
+	int health() const;
+
+	// Returns the strength of the 
+	int strength() const;
+
+	// Returns the name of the attack that this character has
+	std::String name_of_attack() const;
 
 	void action();
 	void go(direction);
@@ -18,36 +31,3 @@ public:
 	void drop(Object);
 	void talk_to(Character)
 };
-
-//Returns what type the character is eg Ogre
-std::String type() const {
-	return type_;
-}
-
-//Returns the name of the character eg Gandalf
-std::String name() const {
-	return name_;
-}
-
-//Returns the HP of the character
-std::String health() const {
-	return health_;
-}
-
-//The character takes an action
-void action() {}
-
-//The chararacter goes a step in a direction
-void go(direction) {}
-
-//The character enters a fight with another character
-void fight(Character) {}
-
-//The character picks up an object
-void pick_up(Object) {}
-
-//The character drops an object
-void drop(Object) {}
-
-//The character talks to another character
-void talk_to(Character) {}

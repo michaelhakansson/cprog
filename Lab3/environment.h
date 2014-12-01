@@ -1,28 +1,38 @@
-//The number of tiles for each environment
+#include <vector>
+
+// The number of tiles for each environment
 static final int ENV_WIDTH = 10;
 static final int ENV_HEIGHT = 10;
 
-//Contains one single tile of the map
+// Contains one single tile of the map
 class Environment{
+private:
+	std::vector<Item> items_;
+	std::vector<Environment&> neighbors_;
+	std::String description_;
+	std::String type_;
 public:
-	std::String type();
-	std::String description();
-	int exits();
+	std::vector<Item>& items() const;
+	std::String type() const;
+	std::String description() const;
+	std::vector<Environment&> & neighbors() const;
 };
 
-//Returns the type of environment, etc desert or indoors
-std::String type() {
-	return type;
+std::vector<Item>& items() const {
+	return items_;
 }
 
-//Returns a description of the environment
-std::String description() {
-	return description;
+// Returns the type of environment, etc desert or indoors
+std::String type() const {
+	return type_;
 }
 
-//Returns what available exits exist for this environment
-int exits() {
-	return exits;
+// Returns a description of the environment
+std::String description() const {
+	return description_;
 }
 
-//TODO egenskap
+std::vector<Environment&> & neighbors() const {
+	return neighbors_;
+}
+
