@@ -1,3 +1,6 @@
+#ifndef WORLD_H
+#define WORLD_H
+
 #include "environment.h"
 
 class World {
@@ -12,3 +15,5 @@ void init() {
 
 	// Place characters inside maps
 }
+
+#endif // WORLD_H

@@ -1,3 +1,6 @@
+#ifndef CHEST_H
+#define CHEST_H
+
 #include <string>
 #include <vector>
 #include "item.h"
@@ -7,5 +10,7 @@ class Chest {
 private:
 	std::vector<Item> items_;
 public:
-	
+
 };
+
+#endif // CHEST_H

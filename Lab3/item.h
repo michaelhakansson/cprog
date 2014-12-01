@@ -1,26 +1,31 @@
+#ifndef ITEM_H
+#define ITEM_H
+
 #include <string>
 
 // Base class for all items
 class Item {
 private:
-	std::String name_;
+	std::string name_;
 	int weight_;
 	int value_;
 public:
-	std::String name() const;
+	std::string name() const;
 	int weight() const;
 	int value() const;
 };
 
 
-std::String name() const {
+std::string Item::name() const {
 	return name_;
 }
 
-int weight() const {
+int Item::weight() const {
 	return weight_;
 }
 
-int value() const {
+int Item::value() const {
 	return value_;
 }
+
+#endif // ITEM_H

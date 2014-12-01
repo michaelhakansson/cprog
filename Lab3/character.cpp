@@ -1,39 +1,39 @@
 #include "character.h"
 
-std::String type() const {
+std::string Character::type() const {
 	return type_;
 }
 
-std::String name() const {
+std::string Character::name() const {
 	return name_;
 }
 
-int health() const {
+int Character::health() const {
 	return health_;
 }
 
-int strength() const {
+int Character::strength() const {
 	return strength_;
 }
 
-std::String name_of_attack() const {
+std::string Character::name_of_attack() const {
 	return name_of_attack_;
 }
 
 // The character takes an action
-void action() {}
+void Character::action() {}
 
-// The chararacter goes a step in a direction
-void go(direction) {}
+// The chararacter goes a step in a direction (see Enum)
+void Character::go(int) {}
 
 // The character enters a fight with another character
-void fight(Character) {}
+void Character::fight(Character) {}
 
-// The character picks up an object
-void pick_up(Object) {}
+// The character picks up an Item
+void Character::pick_up(Item) {}
 
-// The character drops an object
-void drop(Object) {}
+// The character drops an Item
+void Character::drop(Item) {}
 
 // The character talks to another character
-void talk_to(Character) {}
+void Character::talk_to(Character) {}
