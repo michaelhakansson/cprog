@@ -4,20 +4,6 @@
 #include <iostream>
 #include <stdexcept>
 
-// template <class T>
-// class Vector : public std::vector< T > {
-// public:
-//     explicit Vector <T> (std::size_t size  = 0, T data = T()) : std::vector<T>(size, data) {}
-//     const T& operator[](unsigned int i) const throw(std::out_of_range) {
-//         return this->at( i );
-//     }
-//     T& operator[](unsigned int i) throw(std::out_of_range) {
-//         return this->at( i );
-//     }    
-// };
-
-//using namespace std;
-
 class Matrix
 {
  public:
@@ -45,7 +31,6 @@ class Matrix
     Matrix operator-( const Matrix& ) const;
     Matrix operator-( ) const;
     
-    // TODO: FIX - Should transpose original matrix and return reference to it.
     Matrix& transpose( );
     
     matrix_row& operator[]( index i );
@@ -235,7 +220,6 @@ const Matrix::matrix_row& Matrix::operator[]( index i ) const {
 }
 
 
-// TODO: FIX - SHOULD NOT CHANGE MATRIX SIZE
 std::istream& operator>> ( std::istream& input, Matrix& matrix ) {  
     if (matrix.m_rows) {
         matrix.m_vectors->clear();
@@ -267,34 +251,6 @@ std::istream& operator>> ( std::istream& input, Matrix& matrix ) {
     return input;
 }
 
-// // TODO: FIX - SHOULD NOT CHANGE MATRIX SIZE UNLESS MATRIX IS EMPTY
-// std::istream& operator>> ( std::istream& input, Matrix& matrix ) {  
-//     if( matrix.rows() == 0 || matrix.cols() == 0 ) {
-
-//     }
-
-//     size_t i = 0;   // Row count
-//     size_t j = 0;   // Column count
-
-//     while (input) {
-//         char ch = input.peek();
-//         if (ch == ']') {
-//             break;
-//         } else if (ch == '[' || ch == ' ' || ch == '\n') {
-//             input.ignore(1);
-//         } else if (ch == ';') {
-//             input.ignore(1);
-//             ++i;    // Go to next row
-//             j = 0;  // Set column to the first column
-//         } else {
-//             int value;
-//             input >> value;
-//             matrix[i][j] = value;
-//             ++j;    // Go to next column;
-//         }
-//     }
-//     return input;
-// }
 
 std::ostream& operator<< ( std::ostream& output, Matrix& matrix) {
     output << "[ ";
