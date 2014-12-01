@@ -502,7 +502,7 @@ public:
         Matrix b;
 
         std::stringstream("[1 2 0 ; 9 8 7]") >> a;
-        std::stringstream("[3 4 1 ; 9 1 7]") >> b;
+		std::stringstream("[3 4 1 ; 9 1 7]") >> b;
 
         Matrix c;
         c = a - b;
@@ -635,6 +635,22 @@ public:
 
     // END OF OUR TESTS
 
+    void testmatrix_tillstand () {
+
+        std::stringstream ss("[2 0 ; 0 2]");
+        Matrix i;
+        ss >> i;
+
+        TS_ASSERT_EQUALS(i[0][0], 2);
+		TS_ASSERT_EQUALS(i[0][1], 0);
+		TS_ASSERT_THROWS(i[0][2], std::out_of_range);
+		TS_ASSERT_EQUALS(i[1][0], 0);
+		TS_ASSERT_EQUALS(i[1][1], 2);
+		TS_ASSERT_THROWS(i[1][2], std::out_of_range);
+
+		std::cout << std::endl;
+		std::cout << i << std::endl;
+	}
 };
 
 #endif
