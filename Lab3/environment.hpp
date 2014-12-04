@@ -8,10 +8,12 @@
 class Environment{
 private:
 	std::vector<Item> items_;
-	std::vector<Environment> neighbors_;
+	std::vector<Environment> neighbours_;
 	std::string description_;
 	std::string type_;
 public:
+    Environment();
+    Environment(std::vector<Item> & items, std::vector<Environment> & neighbours, std::string description, std::string type);
 	std::vector<Item> items() const;
 	std::string type() const;
 	std::string description() const;

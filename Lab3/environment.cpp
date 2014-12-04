@@ -1,5 +1,19 @@
 #include "environment.hpp"
 
+Environment::Environment() {
+    description_ = "unknown";
+    type_ = "unknown";
+}
+
+Environment::Environment(std::vector<Item> & items, std::vector<Environment> & neighbours, std::string description, std::string type){
+
+    //OBS! Shared pointers?
+    items_ = items;
+    neighbours_ = neighbours;
+    description_ = description;
+    type_ = type;
+}
+
 std::vector<Item> Environment::items() const {
 	return items_;
 }
@@ -15,5 +29,5 @@ std::string Environment::description() const {
 }
 
 std::vector<Environment> Environment::neighbors() const {
-	return neighbors_;
+	return neighbours_;
 }
