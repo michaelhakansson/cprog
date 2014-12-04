@@ -1,5 +1,23 @@
 #include "character.hpp"
 
+Character::Character() {
+    type_ = "unknown";
+    name_ = "unknown";
+    health_ = 1;
+    strength_ = 1;
+    name_of_attack_ = "attacks";
+    current_environment_ = NULL;
+}
+
+Character::Character(std::string type, std::string name, int health, int strength, std::string name_of_attack, Environment * current_environment) {
+    type_ = type;
+    name_ = name;
+    health_ = health;
+    strength_ = strength;
+    name_of_attack_ = name_of_attack;
+    current_environment_ = current_environment;
+}
+
 std::string Character::type() const {
 	return type_;
 }
@@ -25,6 +43,10 @@ void Character::action() {}
 
 // The chararacter goes a step in a direction (see Enum)
 void Character::go(int) {}
+
+void Character::enter(Environment * new_environment) {
+	current_environment_ = new_environment;
+}
 
 // The character enters a fight with another character
 void Character::fight(Character) {}

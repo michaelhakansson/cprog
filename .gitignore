@@ -80,3 +80,5 @@ Session.vim
 
 ### ??? ###
 *.gch
+
+*.out*

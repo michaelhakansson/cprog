@@ -2,6 +2,7 @@
 #define CHARACTER_H
 
 #include <string>
+#include "environment.hpp"
 #include "item.hpp"
 
 // Base class for all characters, and NPCs
@@ -12,7 +13,12 @@ private:
 	int health_;
 	int strength_;
 	std::string name_of_attack_;
+	Environment * current_environment_;
 public:
+	Character();
+
+	Character(std::string type, std::string name, int health, int strength, std::string name_of_attack, Environment * current_environment);
+
 	// Returns what type the character is eg Ogre
 	std::string type() const;
 
@@ -30,6 +36,7 @@ public:
 
 	void action();
 	void go(int);
+	void enter(Environment *);
 	void fight(Character);
 	void pick_up(Item);
 	void drop(Item);
