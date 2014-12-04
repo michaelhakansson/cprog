@@ -1,5 +1,5 @@
-spel.out: character.h character.cpp environment.h world.h main.cpp item.h
-	g++ -std=c++11 -g -Wall character.cpp environment.h world.h main.cpp item.h
+spel.out: character.cpp environment.cpp world.cpp main.cpp item.cpp
+	g++ -std=c++11 -g -Wall character.cpp environment.hpp world.cpp main.cpp item.cpp
 
 clean:
 	rm *.gch
