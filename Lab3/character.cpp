@@ -44,6 +44,10 @@ void Character::action() {}
 // The chararacter goes a step in a direction (see Enum)
 void Character::go(int) {}
 
+Environment * Character::get_environment() {
+    return current_environment_;
+}
+
 void Character::enter(Environment * new_environment) {
 	current_environment_ = new_environment;
 }

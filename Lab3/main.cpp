@@ -1,6 +1,7 @@
 #include <iostream>
 #include "world.hpp"
 
+bool input();
 
 // TODO namespace for everything
 int main(int argc, char* argv[]) {
@@ -9,19 +10,29 @@ int main(int argc, char* argv[]) {
 	world->init();
 
     // This is the main loop of the game, it handles everything
-	// while(true) {
+	while(true) {
 
-	// 	// Gets user input
-	// 	input();
+		std::string input;
+		std::cout << "> ";
+		std::cin >> input;
 
-	// 	// Updates the model
-	// 	world.update();
+		//result = input bla bla map
 
-	// 	// Renders the model graphically
-	// 	renderer.render(world);
+		if(input == "description"){
 
-	// 	// Sleep so that we don't exceed 30FPS and set fire to some poor CPU
-	// }
+			world->description();
+
+		// 	// Updates the model
+		// 	world.update();
+
+		// 	// Renders the model graphically
+		// 	renderer.render(world);
+
+		// 	// Sleep so that we don't exceed 30FPS and set fire to some poor CPU
+		// 
+
+		}
+	}
 
     return 1;
 }

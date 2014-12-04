@@ -36,6 +36,7 @@ public:
 
 	void action();
 	void go(int);
+	Environment * get_environment();
 	void enter(Environment *);
 	void fight(Character);
 	void pick_up(Item);
