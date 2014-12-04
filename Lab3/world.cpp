@@ -11,6 +11,6 @@ void World::init() {
     main_character_ = new Character("Robot", "TestBot", 10, 10, "SEGFAULT", starting_environment_);
 }
 
-void World::description(){
+void World::description(std::string args){
     std::cout << main_character_->get_environment()->description() << std::endl;
 }

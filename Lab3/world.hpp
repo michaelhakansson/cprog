@@ -12,7 +12,7 @@ private:
     Environment * starting_environment_;
 public:
 	void init();
-    void description();
+    void description(std::string);
 };
 
 
