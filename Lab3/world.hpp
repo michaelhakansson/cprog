@@ -2,8 +2,10 @@
 #define WORLD_H
 
 #include <iostream>
-#include "environment.hpp" // OBS! Uncommenting this line generates 'duplicate symbol' error on compilation
+#include <algorithm>
+#include "environment.hpp"
 #include "character.hpp"
+#include "directions.hpp"
 
 class World {
 private:
@@ -13,6 +15,7 @@ private:
 public:
 	void init();
     void description(std::string);
+    void move_character(std::string);
 };
 
 

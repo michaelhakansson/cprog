@@ -1,4 +1,5 @@
 #include "character.hpp"
+#include "directions.hpp"
 
 Character::Character() {
     type_ = "unknown";
@@ -42,7 +43,10 @@ std::string Character::name_of_attack() const {
 void Character::action() {}
 
 // The chararacter goes a step in a direction (see Enum)
-void Character::go(int) {}
+void Character::go(int direction) {
+	// TODO: Make move action
+	std::cout << "Character " << name() << " goes " << direction << std::endl;
+}
 
 Environment * Character::get_environment() {
     return current_environment_;

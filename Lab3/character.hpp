@@ -4,6 +4,7 @@
 #include <string>
 #include "environment.hpp"
 #include "item.hpp"
+#include <iostream>
 
 // Base class for all characters, and NPCs
 class Character {

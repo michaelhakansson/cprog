@@ -10,6 +10,8 @@ private:
 	int weight_;
 	int value_;
 public:
+	Item();
+	Item(std::string name, int weight, int value);
 	std::string name() const;
 	int weight() const;
 	int value() const;

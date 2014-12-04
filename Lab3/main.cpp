@@ -15,6 +15,7 @@ int main(int argc, char* argv[]) {
 
 	std::map<std::string, void (World::*)(std::string)> functions;
 	functions["description"] = &World::description;
+	functions["go"] = &World::move_character;
 
     // This is the main loop of the game, it handles everything
 	while(true) {
@@ -40,5 +41,5 @@ std::string splice_function(std::string str) {
 //Returns all the words in the string except for the first
 std::string splice_arguments(std::string str) {
 	std::size_t val = str.find(" ");
-	return str.substr(std::min(val, str.length()), str.length());
+	return str.substr(std::min(val + 1, str.length()), str.length());
 }
