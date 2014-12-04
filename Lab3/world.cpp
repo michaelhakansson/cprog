@@ -3,7 +3,6 @@
 // Generates a collection of environments and characters etc
 void World::init() {
 	// Declare all the items in the world
-	std::vector<Environment> neighbors_room_0;
 	// TODO: More items
 	// TODO: Put items in vectors per room
 	std::vector<Item> items_room_0;
@@ -12,7 +11,13 @@ void World::init() {
 	Environment * entrance = new Environment(items_room_0, neighbors_room_0, "Room 0", "room");
 	// TODO: More environments
 
+	// TODO: Declare all links between rooms
+	std::vector<Environment> neighbors_room_0;
+	// TODO: More links
+
+	// TODO: Put all environments in vector
     environments_.push_back(starting_environment_);
+    // TODO: Push more elements
 
 	// Generate map
     starting_environment_ = entrance;
