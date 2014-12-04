@@ -5,7 +5,7 @@ Environment::Environment() {
     type_ = "unknown";
 }
 
-Environment::Environment(std::vector<Item> & items, std::vector<Environment> & neighbours, std::string description, std::string type){
+Environment::Environment(std::vector<Item*> & items, std::vector<Environment> & neighbours, std::string description, std::string type){
 
     //OBS! Shared pointers?
     items_ = items;
@@ -14,8 +14,19 @@ Environment::Environment(std::vector<Item> & items, std::vector<Environment> & n
     type_ = type;
 }
 
-std::vector<Item> Environment::items() const {
+std::vector<Item*> Environment::items() const {
 	return items_;
+}
+
+std::string Environment::item_string() const {
+    std::stringstream ss;
+    for (int i = 0; i < items().size(); ++i) {
+        if (i > 0) {
+             ss << ", ";
+        }
+        ss << (items().at(i))->name();
+    }
+    return ss.str();
 }
 
 // Returns the type of environment, etc desert or indoors
