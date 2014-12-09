@@ -3,6 +3,7 @@
 #include <map>
 #include <algorithm>
 
+
 bool input();
 std::string splice_function(std::string);
 std::string splice_arguments(std::string);
@@ -10,12 +11,12 @@ std::string splice_arguments(std::string);
 // TODO namespace for everything
 int main(int argc, char* argv[]) {
     
-	World * world = new World();
+	jonsson_league::World * world = new jonsson_league::World();
 	world->init();
 
-	std::map<std::string, bool (World::*)(std::string)> functions;
-	functions["DESCRIPTION"] = &World::description;
-	functions["GO"] = &World::move_character;
+	std::map<std::string, bool (jonsson_league::World::*)(std::string)> functions;
+	functions["DESCRIPTION"] = &jonsson_league::World::description;
+	functions["GO"] = &jonsson_league::World::move_character;
 
     // This is the main loop of the game, it handles everything
 	while(true) {
