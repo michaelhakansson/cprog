@@ -46,8 +46,7 @@ namespace jonsson_league {
 
     // The chararacter goes a step in a direction (see Enum)
     void Character::go(int direction) {
-    	// TODO: Make move action
-    	std::cout << "Character " << name() << " goes " << direction << std::endl;
+    	current_environment_ = get_environment()->get_neighbour(direction);
     }
 
     Environment * Character::get_environment() {

@@ -34,7 +34,7 @@ namespace jonsson_league {
 	    main_character_ = new Character("Robot", "TestBot", 10, 10, "SEGFAULT", starting_environment_);
 	}
 
-	bool World::description(std::string args){
+	void World::describe_room() {
 		Environment * current_environment = main_character_->get_environment();
 	    std::cout << current_environment->description() << std::endl;
 
@@ -43,7 +43,10 @@ namespace jonsson_league {
 	    		  << current_environment->item_string()
 	    		  << std::endl;
 	    }
+	}
 
+	bool World::description(std::string args){
+		describe_room();
 		return true;
 	}
 
@@ -73,6 +76,9 @@ namespace jonsson_league {
 			//If it's possible to enter in that direction
 			if(main_character_->get_environment()->get_neighbour(direction)){
 				main_character_ -> go(direction);
+				std::cout << "Character " << main_character_->name() << " goes " << get_string_from_enum(direction) << "." << std::endl;
+				describe_room();
+
 				return true;
 			} else {
 				std::cout << "didn't find any direction" << std::endl;
