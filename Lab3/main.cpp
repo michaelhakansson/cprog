@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include "world.hpp"
 #include <map>
 #include <algorithm>
@@ -7,9 +8,12 @@
 bool input();
 std::string splice_function(std::string);
 std::string splice_arguments(std::string);
+void print_intro();
 
 // TODO namespace for everything
 int main(int argc, char* argv[]) {
+
+	print_intro();
     
 	jonsson_league::World * world = new jonsson_league::World();
 	world->init();
@@ -53,4 +57,20 @@ std::string splice_function(std::string str) {
 std::string splice_arguments(std::string str) {
 	std::size_t val = str.find(" ");
 	return str.substr(std::min(val + 1, str.length()), str.length());
+}
+
+void print_intro(){
+	std::string line;
+	std::ifstream intro_file ("intro.txt");
+	
+	if (intro_file.is_open()){
+		
+		while(getline(intro_file, line) ){
+			std::cout << line << '\n';
+		}
+
+		intro_file.close();
+	}
+
+	return;
 }
