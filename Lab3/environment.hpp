@@ -20,7 +20,8 @@ namespace jonsson_league {
 	    Environment();
 		Environment(std::string, std::string);
 	    Environment(std::vector<Item*> * items, std::vector<Environment*> * neighbours, std::string description, std::string type);
-		std::vector<Item*> * items() const;
+		std::vector<Item*> * get_items() const;
+		void set_item(Item *);
 		std::string item_string() const;
 		std::string type() const;
 		std::string description() const;

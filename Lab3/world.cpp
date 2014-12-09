@@ -13,14 +13,13 @@ namespace jonsson_league {
 		entrance->set_neighbour(SOUTH, entrance);
 
 		// Declare all the items in the world
-		Item * sword = new Item("Svärdet Sivert", 1, 1);
-		Item * pants = new Item("Byxan Bosse", 1, 1);
+		Item * sword = new Item("Svärdet Sivert", "A legendary sword, forged by blacksmith Yggrimmar.", 1, 1);
+		Item * pants = new Item("Byxan Bosse", "A legendary pair of pants, forged by children in Indonesia.", 1, 1);
 
 		// TODO: More items
 		// TODO: Put items in vectors per room
-		std::vector<Item*> items_room_0;
-		items_room_0.push_back(sword);
-		items_room_0.push_back(pants);
+		entrance->set_item(sword);
+		entrance->set_item(pants);
 
 		// TODO: Put all environments in vector
 	    environments_.push_back(starting_environment_);
@@ -38,10 +37,12 @@ namespace jonsson_league {
 		Environment * current_environment = main_character_->get_environment();
 	    std::cout << current_environment->description() << std::endl;
 
-	    if (current_environment->items()->size()) {
-	    	std::cout << "In this room the following item(s) can be seen: "
-	    		  << current_environment->item_string()
-	    		  << std::endl;
+	    if (current_environment->get_items()->size()) {
+	    	std::cout << "In this room the following item(s) can be seen: " << std::endl;
+
+			for(int i = 0; i < (int) current_environment->get_items()->size(); ++i){
+				std::cout << (* (current_environment->get_items()))[i]->get_name() << ", \"" << (* (current_environment->get_items()))[i]->get_description() << "\"" << std::endl;
+			}
 	    }
 	}
 

@@ -25,23 +25,15 @@ namespace jonsson_league {
         type_ = type;
     }
 
-    std::vector<Item*> * Environment::items() const {
+    std::vector<Item*> * Environment::get_items() const {
     	return items_;
     }
 
-    std::string Environment::item_string() const {
-        std::stringstream ss;
-        for (unsigned int i = 0; i < items()->size(); ++i) {
-            if (i > 0) {
-                 ss << ", ";
-            }
-            ss << (items()->at(i))->get_name();
-        }
-        return ss.str();
-    }
-
-    // Returns the type of environment, etc desert or indoors
-    std::string Environment::type() const {
+	void Environment::set_item(Item * item){
+		items_->push_back(item);
+	}
+    
+	std::string Environment::type() const {
     	return type_;
     }
 

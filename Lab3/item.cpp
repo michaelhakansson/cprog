@@ -3,13 +3,15 @@
 namespace jonsson_league {
 
 	Item::Item() {
-		name_ = "unknown",
+		name_ = "Unknown";
+		description_ = "An unknown item";
 		weight_ = 0;
 		value_ = 0;
 	}
 
-	Item::Item(std::string name, int weight, int value) {
+	Item::Item(std::string name, std::string description, int weight, int value) {
 		name_ = name;
+		description_ = description;
 		weight_ = weight;
 		value_ = value; 
 	}

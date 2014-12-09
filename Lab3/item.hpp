@@ -14,7 +14,7 @@ namespace jonsson_league {
 		int value_;
 	public:
 		Item();
-		Item(std::string name, int weight, int value);
+		Item(std::string name, std::string description, int weight, int value);
 		std::string get_name() const;
 		std::string get_description() const;
 		int weight() const;
