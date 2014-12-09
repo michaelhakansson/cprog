@@ -17,7 +17,7 @@ void World::init() {
 	// TODO: More links
 
 	// Declare all the environments in the world
-	Environment * entrance = new Environment(items_room_0, neighbors_room_0, "Room 0", "room");
+	Environment * entrance = new Environment(items_room_0, neighbors_room_0, "A very dark room, you hear the faint sounds of nerds typing.", "Default");
 	// TODO: More environments
 
 
@@ -35,10 +35,7 @@ void World::init() {
 
 bool World::description(std::string args){
 	Environment * current_environment = main_character_->get_environment();
-    std::cout << main_character_->name()
-    		  << " is in "
-    		  << current_environment->description() 
-    		  << std::endl;
+    std::cout << current_environment->description() << std::endl;
     if (current_environment->items().size()) {
     	std::cout << "In this "
     		  << current_environment->type()
@@ -46,6 +43,10 @@ bool World::description(std::string args){
     		  << current_environment->item_string()
     		  << std::endl;
     }
+
+	std::cout << "You can go: ";
+
+	//std::vector<Environment *> & neighbours = main_character->get_environment()->get_neighbours();
 
 	return true;
 }
