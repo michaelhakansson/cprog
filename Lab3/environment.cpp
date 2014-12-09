@@ -35,7 +35,7 @@ namespace jonsson_league {
             if (i > 0) {
                  ss << ", ";
             }
-            ss << (items()->at(i))->name();
+            ss << (items()->at(i))->get_name();
         }
         return ss.str();
     }

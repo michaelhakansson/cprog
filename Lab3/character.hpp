@@ -7,7 +7,7 @@
 #include <iostream>
 
 namespace jonsson_league {
-	
+
 	// Base class for all characters, and NPCs
 	class Character {
 	private:

@@ -9,12 +9,14 @@ namespace jonsson_league {
 	class Item {
 	private:
 		std::string name_;
+		std::string description_;
 		int weight_;
 		int value_;
 	public:
 		Item();
 		Item(std::string name, int weight, int value);
-		std::string name() const;
+		std::string get_name() const;
+		std::string get_description() const;
 		int weight() const;
 		int value() const;
 	};

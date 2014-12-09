@@ -15,8 +15,12 @@ namespace jonsson_league {
 	}
 
 
-	std::string Item::name() const {
+	std::string Item::get_name() const {
 		return name_;
+	}
+
+	std::string Item::get_description() const {
+		return description_;
 	}
 
 	int Item::weight() const {
