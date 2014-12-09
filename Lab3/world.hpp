@@ -7,16 +7,19 @@
 #include "character.hpp"
 #include "directions.hpp"
 
-class World {
-private:
-    std::vector<Environment *> environments_;
-    Character * main_character_;
-    Environment * starting_environment_;
-public:
-	void init();
-    bool description(std::string);
-    bool move_character(std::string);
-};
+namespace jonsson_league {
 
+	class World {
+	private:
+	    std::vector<Environment *> environments_;
+	    Character * main_character_;
+	    Environment * starting_environment_;
+	public:
+		void init();
+	    bool description(std::string);
+	    bool move_character(std::string);
+	};
+
+}
 
 #endif // WORLD_H

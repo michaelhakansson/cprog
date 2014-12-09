@@ -5,12 +5,16 @@
 #include <vector>
 #include "item.hpp"
 
-// Base class for all characters, and NPCs
-class Chest {
-private:
-	std::vector<Item> items_;
-public:
+namespace jonsson_league {
 
-};
+	// Base class for all characters, and NPCs
+	class Chest {
+	private:
+		std::vector<Item> items_;
+	public:
 
-#endif // CHEST_H
+	};
+
+	#endif // CHEST_H
+
+}
