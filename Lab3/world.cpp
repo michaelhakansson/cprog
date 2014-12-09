@@ -34,7 +34,7 @@ namespace jonsson_league {
 	    main_character_ = new Character("Robot", "TestBot", 10, 10, "SEGFAULT", starting_environment_);
 	}
 
-	bool World::description(std::string args){
+	void World::describe_room() {
 		Environment * current_environment = main_character_->get_environment();
 	    std::cout << current_environment->description() << std::endl;
 
@@ -43,7 +43,10 @@ namespace jonsson_league {
 	    		  << current_environment->item_string()
 	    		  << std::endl;
 	    }
+	}
 
+	bool World::description(std::string args){
+		describe_room();
 		return true;
 	}
 
@@ -73,6 +76,9 @@ namespace jonsson_league {
 			//If it's possible to enter in that direction
 			if(main_character_->get_environment()->get_neighbour(direction)){
 				main_character_ -> go(direction);
+				std::cout << "Character " << main_character_->name() << " goes " << get_string_from_enum(direction) << "." << std::endl;
+				describe_room();
+
 				return true;
 			} else {
 				std::cout << "didn't find any direction" << std::endl;
@@ -81,6 +87,26 @@ namespace jonsson_league {
 		}
 
 		return true;
+	}
+
+	bool World::directions(std::string args){
+		std::cout << "You can go:" << std::endl;
+		for (int i = 0; i < 4; ++i) {
+			if (main_character_->get_environment()->get_neighbour(i)) {
+				std::cout << get_string_from_enum(i) << std::endl;
+			}
+		}
+		return true;
+	}
+
+	std::string World::get_string_from_enum(int num) {
+	  switch (num) {
+	  case 0: return "north";
+	  case 1: return "west";
+	  case 2: return "south";
+	  case 3: return "east";
+	  default: return "nowhere";
+	  }
 	}
 
 }

@@ -16,8 +16,11 @@ namespace jonsson_league {
 	    Environment * starting_environment_;
 	public:
 		void init();
+		void describe_room();
 	    bool description(std::string);
 	    bool move_character(std::string);
+	    bool directions(std::string args);
+	    std::string get_string_from_enum(int num);
 	};
 
 }
