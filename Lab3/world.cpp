@@ -83,4 +83,24 @@ namespace jonsson_league {
 		return true;
 	}
 
+	bool World::directions(std::string args){
+		std::cout << "You can go:" << std::endl;
+		for (int i = 0; i < 4; ++i) {
+			if (main_character_->get_environment()->get_neighbour(i)) {
+				std::cout << get_string_from_enum(i) << std::endl;
+			}
+		}
+		return true;
+	}
+
+	std::string World::get_string_from_enum(int num) {
+	  switch (num) {
+	  case 0: return "north";
+	  case 1: return "west";
+	  case 2: return "south";
+	  case 3: return "east";
+	  default: return "nowhere";
+	  }
+	}
+
 }

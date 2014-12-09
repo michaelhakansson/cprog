@@ -17,6 +17,7 @@ int main(int argc, char* argv[]) {
 	std::map<std::string, bool (jonsson_league::World::*)(std::string)> functions;
 	functions["DESCRIPTION"] = &jonsson_league::World::description;
 	functions["GO"] = &jonsson_league::World::move_character;
+	functions["DIRECTIONS"] = &jonsson_league::World::directions;
 
     // This is the main loop of the game, it handles everything
 	while(true) {
