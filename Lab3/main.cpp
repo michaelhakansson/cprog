@@ -13,9 +13,9 @@ int main(int argc, char* argv[]) {
 	World * world = new World();
 	world->init();
 
-	std::map<std::string, void (World::*)(std::string)> functions;
-	functions["description"] = &World::description;
-	functions["go"] = &World::move_character;
+	std::map<std::string, bool (World::*)(std::string)> functions;
+	functions["DESCRIPTION"] = &World::description;
+	functions["GO"] = &World::move_character;
 
     // This is the main loop of the game, it handles everything
 	while(true) {
@@ -24,8 +24,18 @@ int main(int argc, char* argv[]) {
 		std::cout << "> ";
 		std::getline(std::cin, input);
 
+		//Input to upper case
+		transform(input.begin(), input.end(), input.begin(), toupper);
+
+		//Check if the desired function is in the map
 		if(functions[splice_function(input)] != NULL){
-			(world->*(functions[splice_function(input)]))(splice_arguments(input));
+
+			//Run the function and check if it successfully completed
+			if(!(world->*(functions[splice_function(input)]))(splice_arguments(input))){
+				std::cout << "Invalid arguments!" << std::endl;
+			}
+		} else {
+			std::cout << "Invalid command!" << std::endl;
 		}
 	}
 

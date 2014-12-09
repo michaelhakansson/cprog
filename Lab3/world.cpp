@@ -33,7 +33,7 @@ void World::init() {
     main_character_ = new Character("Robot", "TestBot", 10, 10, "SEGFAULT", starting_environment_);
 }
 
-void World::description(std::string args){
+bool World::description(std::string args){
 	Environment * current_environment = main_character_->get_environment();
     std::cout << main_character_->name()
     		  << " is in "
@@ -46,9 +46,11 @@ void World::description(std::string args){
     		  << current_environment->item_string()
     		  << std::endl;
     }
+
+	return true;
 }
 
-void World::move_character(std::string input_direction){
+bool World::move_character(std::string input_direction){
 	direction_t direction;
 
 	// Make input upper case to remove case sensitivity
@@ -60,15 +62,16 @@ void World::move_character(std::string input_direction){
 		direction = WEST;
 	} else if (input_direction == "SOUTH") {
 		direction = SOUTH;
-	} else if (input_direction == "east") {
+	} else if (input_direction == "EAST") {
 		direction = EAST;
 	} else {
 		direction = INVALID;
 	}
 	if (direction == INVALID) {
-		// TODO: ERROR HANDLING
+		return false;
 	} else {
 		main_character_ -> go(direction);
 	}
 
+	return true;
 }

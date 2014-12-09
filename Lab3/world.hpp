@@ -14,8 +14,8 @@ private:
     Environment * starting_environment_;
 public:
 	void init();
-    void description(std::string);
-    void move_character(std::string);
+    bool description(std::string);
+    bool move_character(std::string);
 };
 
 

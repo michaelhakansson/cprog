@@ -20,7 +20,7 @@ std::vector<Item*> Environment::items() const {
 
 std::string Environment::item_string() const {
     std::stringstream ss;
-    for (int i = 0; i < items().size(); ++i) {
+    for (unsigned int i = 0; i < items().size(); ++i) {
         if (i > 0) {
              ss << ", ";
         }
