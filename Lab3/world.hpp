@@ -26,21 +26,23 @@ namespace jonsson_league {
 	    bool directions(std::string args);
 	    bool attack(std::string args);
 	    void check_status() const;
-	    Character* get_target(std::string target);
 	    bool in_combat();
 	    bool set_combat_flag(bool);
 	    bool resolve_combat(bool aggressive);
-	    void get_local_enemies(std::vector<Character *> *);
+	    std::vector<Character * > get_local_enemies() const;
+	    void set_local_enemies(std::vector<Character *> *);
 
 	    std::string get_string_from_enum(int num);
 
-		Character* get_main_character() const;
-		void set_main_character(Character * character);
+	    Character* get_main_character() const;
+	    void set_main_character(Character * character);
 
-		Character* get_current_character() const;
-		void set_current_character(Character * character);
+	    Character* get_current_character() const;
+	    void set_current_character(Character * character);
 
-		std::vector<Character *> get_local_enemies() const;
+	    Character* get_target(std::string target);
+	    Character* get_target_by_name(std::string target) const;
+	    Character* get_next_character() const;
 	};
 
 }

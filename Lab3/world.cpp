@@ -116,7 +116,7 @@ namespace jonsson_league {
 		// The attack
 		Character * attacker = get_current_character();
 		Character * target = get_target(args);
-		std::cout << attacker << " attacks " << target << std::endl;
+		std::cout << attacker->get_name() << " attacks " << target->get_name() << std::endl;
 
 		// Update HP of target
 		target->set_health(target->get_health() - attacker->get_strength());
@@ -148,7 +148,59 @@ namespace jonsson_league {
 		return NULL;
 	}
 
-	//get_characters_by_name
+	Character* World::get_target_by_name(std::string target) const {
+		
+		//If we have empty string
+		if(target == ""){
+			return NULL;
+		}
+
+		std::string name;
+		std::vector<Character*> enemies = get_local_enemies();
+
+		for (int i = 0; i < enemies.size(); ++i) {
+			
+			name = enemies.at(i)->get_name();
+			transform(name.begin(), name.end(), name.begin(), toupper);
+
+			if(target == name){
+				return enemies.at(i);
+			}
+		}	
+
+		return NULL;
+	}
+
+	Character* World::get_next_character() const {
+
+		std::vector<Character*> enemies = get_local_enemies();
+
+		//If the current character is the main character
+		if (get_current_character() == get_main_character()) {
+			for (int i = 0; i < enemies.size(); ++i) {
+				if (enemies[i]->get_health() > 0) {
+					return enemies[i];
+				}
+			}	
+			return get_main_character();
+		} 
+		//If we have the enemy
+		else {
+			//Gets the index of the current enemy
+			int pos = find(enemies.begin(), enemies.end(), get_current_character()) - enemies.begin();
+
+			//If we can iterate to the next enemy
+			if(pos + 1 < enemies.size()){
+				return enemies.at(pos + 1);
+			} 
+
+			//Otherwise, it's the main characters turn
+			else {
+				return get_main_character();
+			}
+		}
+		return NULL;
+	}
 
 	bool World::in_combat(){
 		return in_combat_;
@@ -172,7 +224,7 @@ namespace jonsson_league {
 	bool World::resolve_combat(bool aggressive){
 
 		bool combat_initated = false;
-		get_local_enemies(&local_enemies_);
+		set_local_enemies(&local_enemies_);
 
 		for(int i = 0; i < (int) local_enemies_.size(); i++){
 
@@ -187,8 +239,12 @@ namespace jonsson_league {
 		return combat_initated;
 	}
 
+	std::vector<Character *> World::get_local_enemies() const {
+		return local_enemies_;
+	}
+
 	//Gets all the enemies in the same environment as the main character
-	void World::get_local_enemies(std::vector<Character *> * vec){
+	void World::set_local_enemies(std::vector<Character *> * vec) {
 
 		for(int i = 0; i < (int) enemies_.size(); i++){
 
@@ -222,9 +278,5 @@ namespace jonsson_league {
 
 	void World::set_current_character(Character * character) {
 		current_character_ = character;
-	}
-
-	std::vector<Character *> World::get_local_enemies() const {
-		return local_enemies_;
 	}
 }
