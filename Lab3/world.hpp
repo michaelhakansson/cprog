@@ -14,9 +14,10 @@ namespace jonsson_league {
 	    std::vector<Environment *> environments_;
 	    Environment * starting_environment_;
 	    std::vector<Character *> enemies_;
+	    std::vector<Character *> local_enemies_;
 	    Character * main_character_;
+	    Character * current_character_;
 	    bool in_combat_;
-	    bool main_character_turn_;
 	public:
 		void init();
 		void describe_room();
@@ -27,6 +28,7 @@ namespace jonsson_league {
 	    bool in_combat();
 	    bool set_combat_flag(bool);
 	    bool resolve_combat(bool aggressive);
+	    void get_local_enemies(std::vector<Character *> *);
 
 	    std::string get_string_from_enum(int num);
 	};

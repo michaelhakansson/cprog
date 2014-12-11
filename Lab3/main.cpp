@@ -22,9 +22,10 @@ int main(int argc, char* argv[]) {
 	functions["DESCRIPTION"] = &jonsson_league::World::description;
 	functions["GO"] = &jonsson_league::World::move_character;
 	functions["DIRECTIONS"] = &jonsson_league::World::directions;
+	//functions["INVESTIGATE"] = &jonsson_league::World::investigate;
 
 	std::map<std::string, bool (jonsson_league::World::*)(std::string)> combat_functions;
-	//functions["ATTACK"] = &jonsson_league::World::attack;
+	combat_functions["ATTACK"] = &jonsson_league::World::attack;
 
     // This is the main loop of the game, it handles everything
 	while(true) {

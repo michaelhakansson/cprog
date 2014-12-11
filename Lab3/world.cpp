@@ -28,6 +28,7 @@ namespace jonsson_league {
 
 		// Place characters inside maps
 	    main_character_ = new Character("Robot", "TestBot", 10, 10, "SEGFAULT", starting_environment_);
+	    current_character_ = main_character_;
 
 		Environment * boss_room = new Environment("A room filled with spider webs, you hear crawling in the corner", "Boss room");
 		Character * spider = new Character("Spider", "Imse Vimse", 1, 1, "bites", boss_room);
@@ -107,8 +108,30 @@ namespace jonsson_league {
 	}
 
 	bool World::attack(std::string args){
+
+		if(current_character_ == main_character_){
+
+			//Check if dead
+			current_character_ = local_enemies_[0];
+
+			//get character by name
+
+		} else {
+
+			if(current_character_ == local_enemies_[local_enemies_.size()]){
+				current_character_ = main_character_;
+			}
+
+			std::cout << "Player takes 1 damage!" << std::endl;
+
+		}
+
+		//if combat ends
+
 		return true;
 	}
+
+	//get_characters_by_name
 
 	bool World::in_combat(){
 		return in_combat_;
@@ -118,7 +141,11 @@ namespace jonsson_league {
 		in_combat_ = combat;
 
 		//Sets the main characters turn when we both enter and leave combat
-		main_character_turn_ = true;
+		current_character_ = main_character_;
+		
+		if(false){
+			local_enemies_.clear();
+		}
 
 		return true;
 	}
@@ -128,18 +155,30 @@ namespace jonsson_league {
 	bool World::resolve_combat(bool aggressive){
 
 		bool combat_initated = false;
+		get_local_enemies(&local_enemies_);
 
-		for(int i = 0; i < (int) enemies_.size(); i++){
+		for(int i = 0; i < (int) local_enemies_.size(); i++){
 
-			if(enemies_.at(i)->get_environment() == main_character_->get_environment() && (aggressive || enemies_.at(i)->get_aggression())){
+			if(local_enemies_.at(i)->get_environment() == main_character_->get_environment() && (aggressive || local_enemies_.at(i)->get_aggression())){
 				set_combat_flag(true);
 				combat_initated = true;
 
-				std::cout << "You enter combat with " << enemies_.at(i)->get_name() << std::endl;
+				std::cout << "You enter combat with " << local_enemies_.at(i)->get_name() << std::endl;
 			}
 		}
 
 		return combat_initated;
+	}
+
+	//Gets all the enemies in the same environment as the main character
+	void World::get_local_enemies(std::vector<Character *> * vec){
+
+		for(int i = 0; i < (int) enemies_.size(); i++){
+
+			if(enemies_.at(i)->get_environment() == main_character_->get_environment()){
+				vec->push_back(enemies_.at(i));
+			}
+		}
 	}
 
 	std::string World::get_string_from_enum(int num) {
