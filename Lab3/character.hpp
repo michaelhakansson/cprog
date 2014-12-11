@@ -13,10 +13,11 @@ namespace jonsson_league {
 	private:
 		std::string type_;
 		std::string name_;
+		std::string name_of_attack_;
 		int health_;
 		int strength_;
 		bool aggression_;
-		std::string name_of_attack_;
+		bool is_dead_;
 		Environment * current_environment_;
 	public:
 		Character();
@@ -31,6 +32,9 @@ namespace jonsson_league {
 
 		// Returns the HP of the character
 		int get_health() const;
+
+		// Sets the HP of the character
+		void set_health(int new_health);
 
 		// Returns the strength of the 
 		int get_strength() const;
@@ -48,6 +52,7 @@ namespace jonsson_league {
 		void talk_to(Character);
 		bool get_aggression();
 		void set_aggression(bool);
+		bool is_dead() const;
 	};
 
 }

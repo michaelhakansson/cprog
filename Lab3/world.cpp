@@ -107,48 +107,34 @@ namespace jonsson_league {
 		return true;
 	}
 
-	bool World::attack(std::string target){
-
-
-		// THE ATTACK
+	bool World::attack(std::string args){
 		// check_status (hälsa etc.)
 		// resolve next character
 		// 
 		// Main characters turn
-		if(get_current_character() == get_main_character()){
+		
+		// The attack
+		Character * attacker = get_current_character();
+		Character * target = get_target(args);
+		std::cout << attacker << " attacks " << target << std::endl;
 
-			if (get_current_character()->get_health() <= 0) {
-				// TODO: Game over
-			}
-			
-			set_current_character(local_enemies_[0]);
+		// Update HP of target
+		target->set_health(target->get_health() - attacker->get_strength());
 
-			//get character by name
-
-		} else { // Enemies turn
-
-			if (get_current_character()->get_health() <= 0) {
-				std::cout << get_main_character()->get_name() << " defeated " << get_current_character()->get_name() << ".";
-				// TODO: Destroy enemies somewhere. Idea: After combat, if players is still alive. Destroy all enemies.
-				set_current_character(get_main_character());
-			}
-
-			if(get_current_character() == local_enemies_[local_enemies_.size()]) {
-				set_current_character(get_main_character());
-			}
-
-			std::cout << "Player takes 1 damage!" << std::endl;
-
-		}
-
-		//if combat ends
+		// TODO: Check status?
+		
+		// TODO: next_character();
 
 		return true;
 	}
 
+	void World::check_status() const {
+		// TODO: DO STUFF?		
+	}
 
-	Character* World::get_target() {
+	Character* World::get_target(std::string target) {
 		// Main characters turn
+		// TODO: get target by name
 		if (get_current_character() == get_main_character()) {
 			std::vector<Character*> enemies = get_local_enemies();
 			for (int i = 0; i < enemies.size(); ++i) {

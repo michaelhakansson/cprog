@@ -6,20 +6,22 @@ namespace jonsson_league {
     Character::Character() {
         type_ = "unknown";
         name_ = "unknown";
+        name_of_attack_ = "attacks";
         health_ = 1;
         strength_ = 1;
         aggression_ = false;
-        name_of_attack_ = "attacks";
+        is_dead_ = false;
         current_environment_ = NULL;
     }
 
     Character::Character(std::string type, std::string name, int health, int strength, std::string name_of_attack, Environment * current_environment) {
         type_ = type;
         name_ = name;
+        name_of_attack_ = name_of_attack;
         health_ = health;
         strength_ = strength;
         aggression_ = false; //TODO NOT AN ARGUMENT
-        name_of_attack_ = name_of_attack;
+        is_dead_ = false;
         current_environment_ = current_environment;
     }
 
@@ -33,6 +35,10 @@ namespace jonsson_league {
 
     int Character::get_health() const {
     	return health_;
+    }
+
+    void Character::set_health(int new_health) {
+        health_ = new_health;
     }
 
     int Character::get_strength() const {
@@ -79,5 +85,9 @@ namespace jonsson_league {
 
     void Character::set_aggression(bool aggression){
         aggression_ = aggression;
+    }
+
+    bool Character::is_dead() const {
+        return health_ <= 0;
     }
 }
