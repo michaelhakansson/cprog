@@ -128,6 +128,13 @@ namespace jonsson_league {
 		return true;
 	}
 
+	//Kills the main character
+	bool World::suicide(std::string args){
+		get_main_character()->set_health(0);
+
+		return true;
+	}
+
 	void World::check_status() {
 	
 		std::vector<Character*> enemies = get_local_enemies();

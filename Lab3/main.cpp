@@ -21,8 +21,17 @@ int main(int argc, char* argv[]) {
 	//Maps commands to functions
 	std::map<std::string, bool (jonsson_league::World::*)(std::string)> functions;
 	functions["DESCRIPTION"] = &jonsson_league::World::description;
+	functions["DESCRIPTIONS"] = &jonsson_league::World::description;
+	functions["DESCRIBE"] = &jonsson_league::World::description;
+
 	functions["GO"] = &jonsson_league::World::move_character;
+	functions["MOVE"] = &jonsson_league::World::move_character;
+	functions["WALK"] = &jonsson_league::World::move_character;
+	
+	functions["DIRECTION"] = &jonsson_league::World::directions;
 	functions["DIRECTIONS"] = &jonsson_league::World::directions;
+	
+	functions["SUICIDE"] = &jonsson_league::World::suicide;
 	//functions["INVESTIGATE"] = &jonsson_league::World::investigate;
 	//TODO attack?
 
@@ -77,11 +86,11 @@ int main(int argc, char* argv[]) {
 		}
 
 		//If the player has died
-		/*if(world->get_main_character()->get_health() <= 0){
+		if(world->get_main_character()->get_health() <= 0){
 			print_file("game_over.txt");
 
 			return 1;
-		}*/
+		}
 	}
 
     return 1;
