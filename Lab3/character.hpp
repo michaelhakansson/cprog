@@ -24,19 +24,19 @@ namespace jonsson_league {
 		Character(std::string type, std::string name, int health, int strength, std::string name_of_attack, Environment * current_environment);
 
 		// Returns what type the character is eg Ogre
-		std::string type() const;
+		std::string get_type() const;
 
 		// Returns the name of the character eg Gandalf
-		std::string name() const;
+		std::string get_name() const;
 
 		// Returns the HP of the character
-		int health() const;
+		int get_health() const;
 
 		// Returns the strength of the 
-		int strength() const;
+		int get_strength() const;
 
 		// Returns the name of the attack that this character has
-		std::string name_of_attack() const;
+		std::string get_name_of_attack() const;
 
 		void action();
 		void go(int);

@@ -33,12 +33,12 @@ namespace jonsson_league {
 		items_->push_back(item);
 	}
     
-	std::string Environment::type() const {
+	std::string Environment::get_type() const {
     	return type_;
     }
 
     // Returns a description of the environment
-    std::string Environment::description() const {
+    std::string Environment::get_description() const {
     	return description_;
     }
 

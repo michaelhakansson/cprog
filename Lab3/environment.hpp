@@ -21,9 +21,8 @@ namespace jonsson_league {
 	    Environment(std::vector<Item*> * items, std::vector<Environment*> * neighbours, std::string description, std::string type);
 		std::vector<Item*> * get_items() const;
 		void set_item(Item *);
-		std::string item_string() const;
-		std::string type() const;
-		std::string description() const;
+		std::string get_type() const;
+		std::string get_description() const;
 		std::vector<Environment *> * get_neighbours() const;
 		Environment * get_neighbour(int) const;
 		bool set_neighbour(int, Environment *);

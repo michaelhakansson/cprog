@@ -23,23 +23,23 @@ namespace jonsson_league {
         current_environment_ = current_environment;
     }
 
-    std::string Character::type() const {
+    std::string Character::get_type() const {
     	return type_;
     }
 
-    std::string Character::name() const {
+    std::string Character::get_name() const {
     	return name_;
     }
 
-    int Character::health() const {
+    int Character::get_health() const {
     	return health_;
     }
 
-    int Character::strength() const {
+    int Character::get_strength() const {
     	return strength_;
     }
 
-    std::string Character::name_of_attack() const {
+    std::string Character::get_name_of_attack() const {
     	return name_of_attack_;
     }
 

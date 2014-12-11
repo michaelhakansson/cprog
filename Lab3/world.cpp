@@ -40,7 +40,7 @@ namespace jonsson_league {
 
 	void World::describe_room() {
 		Environment * current_environment = main_character_->get_environment();
-	    std::cout << current_environment->description() << std::endl;
+	    std::cout << current_environment->get_description() << std::endl;
 
 	    if (current_environment->get_items()->size()) {
 	    	std::cout << "In this room the following item(s) can be seen: " << std::endl;
@@ -82,7 +82,7 @@ namespace jonsson_league {
 			//If it's possible to enter in that direction
 			if(main_character_->get_environment()->get_neighbour(direction)){
 				main_character_ -> go(direction);
-				std::cout << "Character " << main_character_->name() << " goes " << get_string_from_enum(direction) << "." << std::endl;
+				std::cout << "Character " << main_character_->get_name() << " goes " << get_string_from_enum(direction) << "." << std::endl;
 				describe_room();
 				resolve_combat(false);
 
@@ -135,7 +135,7 @@ namespace jonsson_league {
 				set_combat_flag(true);
 				combat_initated = true;
 
-				std::cout << "You enter combat with " << enemies_.at(i)->name() << std::endl;
+				std::cout << "You enter combat with " << enemies_.at(i)->get_name() << std::endl;
 			}
 		}
 
