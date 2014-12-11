@@ -2,8 +2,8 @@
 #define CHARACTER_H
 
 #include <string>
-#include "environment.hpp"
 #include "item.hpp"
+#include "environment.hpp"
 #include <iostream>
 
 namespace jonsson_league {
@@ -15,6 +15,7 @@ namespace jonsson_league {
 		std::string name_;
 		int health_;
 		int strength_;
+		bool aggressive_;
 		std::string name_of_attack_;
 		Environment * current_environment_;
 	public:

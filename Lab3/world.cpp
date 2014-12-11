@@ -9,9 +9,6 @@ namespace jonsson_league {
 		Environment * entrance = new Environment("A very dark room, you hear the faint sounds of nerds typing.", "Default");
 		// TODO: More environments
 
-		entrance->set_neighbour(NORTH, entrance);
-		entrance->set_neighbour(SOUTH, entrance);
-
 		// Declare all the items in the world
 		Item * sword = new Item("Svärdet Sivert", "A legendary sword, forged by blacksmith Yggrimmar.", 1, 1);
 		Item * pants = new Item("Byxan Bosse", "A legendary pair of pants, forged by children in Indonesia.", 1, 1);
@@ -27,10 +24,17 @@ namespace jonsson_league {
 		
 		// Generate map
 	    starting_environment_ = entrance;
-	    // TODO: Link environments
+	    // TODO: Link environments		
 
 		// Place characters inside maps
 	    main_character_ = new Character("Robot", "TestBot", 10, 10, "SEGFAULT", starting_environment_);
+
+		Environment * boss_room = new Environment("A room filled with spider webs, you hear crawling in the corner", "Boss room");
+		Character * spider = new Character("Spider", "Imse Vimse", 1, 1, "bites", boss_room);
+		enemies_.push_back(spider);
+
+		entrance->set_neighbour(NORTH, boss_room);
+		boss_room->set_neighbour(SOUTH, entrance);
 	}
 
 	void World::describe_room() {
@@ -101,13 +105,17 @@ namespace jonsson_league {
 	}
 
 	std::string World::get_string_from_enum(int num) {
-	  switch (num) {
-	  case 0: return "north";
-	  case 1: return "west";
-	  case 2: return "south";
-	  case 3: return "east";
-	  default: return "nowhere";
-	  }
+		switch (num) {
+			case 0: return "north";
+			case 1: return "west";
+			case 2: return "south";
+			case 3: return "east";
+			default: return "nowhere";
+		}
+	}
+
+	bool World::in_combat(){
+		return in_combat_;
 	}
 
 }

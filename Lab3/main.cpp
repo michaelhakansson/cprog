@@ -23,6 +23,9 @@ int main(int argc, char* argv[]) {
 	functions["GO"] = &jonsson_league::World::move_character;
 	functions["DIRECTIONS"] = &jonsson_league::World::directions;
 
+	std::map<std::string, bool (jonsson_league::World::*)(std::string)> combat_functions;
+	//functions["ATTACK"] = &jonsson_league::World::attack;
+
     // This is the main loop of the game, it handles everything
 	while(true) {
 
@@ -33,15 +36,35 @@ int main(int argc, char* argv[]) {
 		//Input to upper case
 		transform(input.begin(), input.end(), input.begin(), toupper);
 
-		//Check if the desired function is in the map
-		if(functions[splice_function(input)] != NULL){
+		//Exit
+		if(splice_function(input) == "EXIT"){
+			return 1;
+		}
 
-			//Run the function and check if it successfully completed
-			if(!(world->*(functions[splice_function(input)]))(splice_arguments(input))){
-				std::cout << "Invalid arguments!" << std::endl;
+		//If we aren't in combat
+		if(!world->in_combat()){
+
+			//Check if the desired function is in the map
+			if(functions[splice_function(input)] != NULL){
+
+				//Run the function and check if it successfully completed
+				if(!(world->*(functions[splice_function(input)]))(splice_arguments(input))){
+					std::cout << "Invalid arguments!" << std::endl;
+				}
+			} else {
+				std::cout << "Invalid command!" << std::endl;
 			}
 		} else {
-			std::cout << "Invalid command!" << std::endl;
+			
+			//Check if the desired function is in the map
+			if(combat_functions[splice_function(input)] != NULL){
+				//Run the function and check if it successfully completed
+				if(!(world->*(combat_functions[splice_function(input)]))(splice_arguments(input))){
+					std::cout << "Invalid arguments!" << std::endl;
+				}
+			} else {
+				std::cout << "Invalid command!" << std::endl;
+			}
 		}
 	}
 

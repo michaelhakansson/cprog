@@ -12,8 +12,10 @@ namespace jonsson_league {
 	class World {
 	private:
 	    std::vector<Environment *> environments_;
-	    Character * main_character_;
 	    Environment * starting_environment_;
+	    std::vector<Character *> enemies_;
+	    Character * main_character_;
+	    bool in_combat_;
 	public:
 		void init();
 		void describe_room();
@@ -21,6 +23,7 @@ namespace jonsson_league {
 	    bool move_character(std::string);
 	    bool directions(std::string args);
 	    std::string get_string_from_enum(int num);
+	    bool in_combat();
 	};
 
 }

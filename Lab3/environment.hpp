@@ -9,7 +9,6 @@
 
 namespace jonsson_league {
 
-	// Contains one single tile of the map
 	class Environment{
 	private:
 		std::vector<Item*> * items_;
@@ -29,7 +28,6 @@ namespace jonsson_league {
 		Environment * get_neighbour(int) const;
 		bool set_neighbour(int, Environment *);
 	};
-
 }
 
 #endif // ENVIRONMENT_H
