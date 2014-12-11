@@ -18,14 +18,18 @@ int main(int argc, char* argv[]) {
 	jonsson_league::World * world = new jonsson_league::World();
 	world->init();
 
+	//Maps commands to functions
 	std::map<std::string, bool (jonsson_league::World::*)(std::string)> functions;
 	functions["DESCRIPTION"] = &jonsson_league::World::description;
 	functions["GO"] = &jonsson_league::World::move_character;
 	functions["DIRECTIONS"] = &jonsson_league::World::directions;
 	//functions["INVESTIGATE"] = &jonsson_league::World::investigate;
+	//TODO attack?
 
+	//For combat, we restrict the player to a different set of functions
 	std::map<std::string, bool (jonsson_league::World::*)(std::string)> combat_functions;
 	combat_functions["ATTACK"] = &jonsson_league::World::attack;
+	//TODO special?
 
     // This is the main loop of the game, it handles everything
 	while(true) {
@@ -37,8 +41,8 @@ int main(int argc, char* argv[]) {
 		//Input to upper case
 		transform(input.begin(), input.end(), input.begin(), toupper);
 
-		//Exit
-		if(splice_function(input) == "EXIT"){
+		//The player wants to exit
+		if(splice_function(input) == "EXIT" || splice_function(input) == "QUIT"){
 			return 1;
 		}
 
@@ -55,10 +59,14 @@ int main(int argc, char* argv[]) {
 			} else {
 				std::cout << "Invalid command!" << std::endl;
 			}
-		} else {
+		} 
+
+		//If we are in combat
+		else {
 			
 			//Check if the desired function is in the map
 			if(combat_functions[splice_function(input)] != NULL){
+
 				//Run the function and check if it successfully completed
 				if(!(world->*(combat_functions[splice_function(input)]))(splice_arguments(input))){
 					std::cout << "Invalid arguments!" << std::endl;
@@ -68,6 +76,7 @@ int main(int argc, char* argv[]) {
 			}
 		}
 
+		//If the player has died
 		/*if(world->get_main_character()->get_health() <= 0){
 			print_file("game_over.txt");
 
@@ -90,17 +99,18 @@ std::string splice_arguments(std::string str) {
 	return str.substr(std::min(val + 1, str.length()), str.length());
 }
 
+//Takes a file name and prints out an arbitrary file
 void print_file(std::string filename){
 	std::string line;
-	std::ifstream intro_file (filename);
+	std::ifstream file (filename);
 	
-	if (intro_file.is_open()){
+	if (file.is_open()){
 		
-		while(getline(intro_file, line) ){
+		while(getline(file, line) ){
 			std::cout << line << '\n';
 		}
 
-		intro_file.close();
+		file.close();
 	}
 
 	return;
