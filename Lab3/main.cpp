@@ -8,12 +8,12 @@
 bool input();
 std::string splice_function(std::string);
 std::string splice_arguments(std::string);
-void print_intro();
+void print_file(std::string);
 
-// TODO namespace for everything
 int main(int argc, char* argv[]) {
 
-	print_intro();
+	print_file("intro.txt");
+	//print_file("tutorial.txt");
     
 	jonsson_league::World * world = new jonsson_league::World();
 	world->init();
@@ -67,6 +67,12 @@ int main(int argc, char* argv[]) {
 				std::cout << "Invalid command!" << std::endl;
 			}
 		}
+
+		/*if(world->get_main_character()->get_health() <= 0){
+			print_file("game_over.txt");
+
+			return 1;
+		}*/
 	}
 
     return 1;
@@ -84,9 +90,9 @@ std::string splice_arguments(std::string str) {
 	return str.substr(std::min(val + 1, str.length()), str.length());
 }
 
-void print_intro(){
+void print_file(std::string filename){
 	std::string line;
-	std::ifstream intro_file ("intro.txt");
+	std::ifstream intro_file (filename);
 	
 	if (intro_file.is_open()){
 		
