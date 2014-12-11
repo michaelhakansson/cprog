@@ -107,19 +107,34 @@ namespace jonsson_league {
 		return true;
 	}
 
-	bool World::attack(std::string args){
+	bool World::attack(std::string target){
 
-		if(current_character_ == main_character_){
 
-			//Check if dead
-			current_character_ = local_enemies_[0];
+		// THE ATTACK
+		// check_status (hälsa etc.)
+		// resolve next character
+		// 
+		// Main characters turn
+		if(get_current_character() == get_main_character()){
+
+			if (get_current_character()->get_health() <= 0) {
+				// TODO: Game over
+			}
+			
+			set_current_character(local_enemies_[0]);
 
 			//get character by name
 
-		} else {
+		} else { // Enemies turn
 
-			if(current_character_ == local_enemies_[local_enemies_.size()]){
-				current_character_ = main_character_;
+			if (get_current_character()->get_health() <= 0) {
+				std::cout << get_main_character()->get_name() << " defeated " << get_current_character()->get_name() << ".";
+				// TODO: Destroy enemies somewhere. Idea: After combat, if players is still alive. Destroy all enemies.
+				set_current_character(get_main_character());
+			}
+
+			if(get_current_character() == local_enemies_[local_enemies_.size()]) {
+				set_current_character(get_main_character());
 			}
 
 			std::cout << "Player takes 1 damage!" << std::endl;
@@ -129,6 +144,22 @@ namespace jonsson_league {
 		//if combat ends
 
 		return true;
+	}
+
+
+	Character* World::get_target() {
+		// Main characters turn
+		if (get_current_character() == get_main_character()) {
+			std::vector<Character*> enemies = get_local_enemies();
+			for (int i = 0; i < enemies.size(); ++i) {
+				if (enemies[i]->get_health() > 0) {
+					return enemies[i];
+				}
+			}	
+		} else { // Enemies turn
+			return get_main_character();
+		}
+		return NULL;
 	}
 
 	//get_characters_by_name
@@ -189,5 +220,25 @@ namespace jonsson_league {
 			case 3: return "east";
 			default: return "nowhere";
 		}
+	}
+
+	Character* World::get_main_character() const {
+		return main_character_;
+	}
+
+	void World::set_main_character(Character * character) {
+		main_character_ = character;
+	}
+
+	Character* World::get_current_character() const {
+		return current_character_;
+	}
+
+	void World::set_current_character(Character * character) {
+		current_character_ = character;
+	}
+
+	std::vector<Character *> World::get_local_enemies() const {
+		return local_enemies_;
 	}
 }
