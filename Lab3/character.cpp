@@ -10,7 +10,6 @@ namespace jonsson_league {
         health_ = 1;
         strength_ = 1;
         aggression_ = false;
-        is_dead_ = false;
         current_environment_ = NULL;
     }
 
@@ -21,7 +20,6 @@ namespace jonsson_league {
         health_ = health;
         strength_ = strength;
         aggression_ = false; //TODO NOT AN ARGUMENT
-        is_dead_ = false;
         current_environment_ = current_environment;
     }
 

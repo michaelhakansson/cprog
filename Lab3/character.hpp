@@ -17,7 +17,6 @@ namespace jonsson_league {
 		int health_;
 		int strength_;
 		bool aggression_;
-		bool is_dead_;
 		Environment * current_environment_;
 	public:
 		Character();
