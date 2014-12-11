@@ -8,6 +8,7 @@ namespace jonsson_league {
         name_ = "unknown";
         health_ = 1;
         strength_ = 1;
+        aggression_ = false;
         name_of_attack_ = "attacks";
         current_environment_ = NULL;
     }
@@ -17,6 +18,7 @@ namespace jonsson_league {
         name_ = name;
         health_ = health;
         strength_ = strength;
+        aggression_ = false; //TODO NOT AN ARGUMENT
         name_of_attack_ = name_of_attack;
         current_environment_ = current_environment;
     }
@@ -69,4 +71,11 @@ namespace jonsson_league {
     // The character talks to another character
     void Character::talk_to(Character) {}
 
+    bool Character::get_aggression(){
+        return aggression_;
+    }
+
+    void Character::set_aggression(bool aggression){
+        aggression_ = aggression;
+    }
 }

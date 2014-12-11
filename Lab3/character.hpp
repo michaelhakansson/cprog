@@ -15,7 +15,7 @@ namespace jonsson_league {
 		std::string name_;
 		int health_;
 		int strength_;
-		bool aggressive_;
+		bool aggression_;
 		std::string name_of_attack_;
 		Environment * current_environment_;
 	public:
@@ -46,6 +46,8 @@ namespace jonsson_league {
 		void pick_up(Item);
 		void drop(Item);
 		void talk_to(Character);
+		bool get_aggression();
+		void set_aggression(bool);
 	};
 
 }

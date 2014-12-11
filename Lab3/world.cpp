@@ -31,6 +31,7 @@ namespace jonsson_league {
 
 		Environment * boss_room = new Environment("A room filled with spider webs, you hear crawling in the corner", "Boss room");
 		Character * spider = new Character("Spider", "Imse Vimse", 1, 1, "bites", boss_room);
+		spider->set_aggression(true);
 		enemies_.push_back(spider);
 
 		entrance->set_neighbour(NORTH, boss_room);
@@ -83,6 +84,7 @@ namespace jonsson_league {
 				main_character_ -> go(direction);
 				std::cout << "Character " << main_character_->name() << " goes " << get_string_from_enum(direction) << "." << std::endl;
 				describe_room();
+				resolve_combat(false);
 
 				return true;
 			} else {
@@ -127,11 +129,13 @@ namespace jonsson_league {
 
 		bool combat_initated = false;
 
-		for(int i = 0; i < enemies_.size(); i++){
+		for(int i = 0; i < (int) enemies_.size(); i++){
 
-			if(enemies_.at(i).get_environment() == main_character_->get_environment() && (aggressive || enemies_.at(i).get_aggression())){
-				set_combat(true);
+			if(enemies_.at(i)->get_environment() == main_character_->get_environment() && (aggressive || enemies_.at(i)->get_aggression())){
+				set_combat_flag(true);
 				combat_initated = true;
+
+				std::cout << "You enter combat with " << enemies_.at(i)->name() << std::endl;
 			}
 		}
 
