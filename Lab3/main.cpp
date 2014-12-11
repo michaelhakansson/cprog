@@ -35,7 +35,7 @@ int main(int argc, char* argv[]) {
 	while(true) {
 
 		std::string input;
-		std::cout << "> ";
+		std::cout << world->get_current_character()->get_name() << "> ";
 		std::getline(std::cin, input);
 
 		//Input to upper case

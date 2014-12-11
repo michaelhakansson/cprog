@@ -31,7 +31,7 @@ namespace jonsson_league {
 	    current_character_ = main_character_;
 
 		Environment * boss_room = new Environment("A room filled with spider webs, you hear crawling in the corner", "Boss room");
-		Character * spider = new Character("Spider", "Imse Vimse", 1, 1, "bites", boss_room);
+		Character * spider = new Character("Spider", "Imse Vimse", 20, 1, "bites", boss_room);
 		spider->set_aggression(true);
 		enemies_.push_back(spider);
 
@@ -116,20 +116,30 @@ namespace jonsson_league {
 		// The attack
 		Character * attacker = get_current_character();
 		Character * target = get_target(args);
-		std::cout << attacker->get_name() << " attacks " << target->get_name() << std::endl;
+		std::cout << attacker->get_name() << " " << attacker->get_name_of_attack() << " " << target->get_name() << " for " << attacker->get_strength() << " damage" << std::endl;
 
 		// Update HP of target
 		target->set_health(target->get_health() - attacker->get_strength());
 
-		// TODO: Check status?
-		
-		// TODO: next_character();
+		set_current_character(get_next_character());
+
+		check_status();
 
 		return true;
 	}
 
-	void World::check_status() const {
-		// TODO: DO STUFF?		
+	void World::check_status() {
+	
+		std::vector<Character*> enemies = get_local_enemies();
+		for (int i = 0; i < (int) enemies.size(); ++i) {
+			if (!enemies[i]->is_dead()) {
+				return;
+			}
+		}
+
+		std::cout << "You have defeated the enemy!" << std::endl;
+	
+		set_combat_flag(false);
 	}
 
 	Character* World::get_target(std::string target) {
@@ -137,8 +147,8 @@ namespace jonsson_league {
 		// TODO: get target by name
 		if (get_current_character() == get_main_character()) {
 			std::vector<Character*> enemies = get_local_enemies();
-			for (int i = 0; i < enemies.size(); ++i) {
-				if (enemies[i]->get_health() > 0) {
+			for (int i = 0; i < (int) enemies.size(); ++i) {
+				if (!enemies[i]->is_dead()) {
 					return enemies[i];
 				}
 			}	
@@ -158,7 +168,7 @@ namespace jonsson_league {
 		std::string name;
 		std::vector<Character*> enemies = get_local_enemies();
 
-		for (int i = 0; i < enemies.size(); ++i) {
+		for (int i = 0; i < (int) enemies.size(); ++i) {
 			
 			name = enemies.at(i)->get_name();
 			transform(name.begin(), name.end(), name.begin(), toupper);
@@ -177,7 +187,7 @@ namespace jonsson_league {
 
 		//If the current character is the main character
 		if (get_current_character() == get_main_character()) {
-			for (int i = 0; i < enemies.size(); ++i) {
+			for (int i = 0; i < (int) enemies.size(); ++i) {
 				if (enemies[i]->get_health() > 0) {
 					return enemies[i];
 				}
@@ -190,7 +200,7 @@ namespace jonsson_league {
 			int pos = find(enemies.begin(), enemies.end(), get_current_character()) - enemies.begin();
 
 			//If we can iterate to the next enemy
-			if(pos + 1 < enemies.size()){
+			if(pos + 1 < (int) enemies.size()){
 				return enemies.at(pos + 1);
 			} 
 
@@ -246,9 +256,11 @@ namespace jonsson_league {
 	//Gets all the enemies in the same environment as the main character
 	void World::set_local_enemies(std::vector<Character *> * vec) {
 
+		vec->clear();
+
 		for(int i = 0; i < (int) enemies_.size(); i++){
 
-			if(enemies_.at(i)->get_environment() == main_character_->get_environment()){
+			if(enemies_.at(i)->get_environment() == get_main_character()->get_environment() && enemies_.at(i) != get_main_character() && !enemies_.at(i)->is_dead()){
 				vec->push_back(enemies_.at(i));
 			}
 		}
