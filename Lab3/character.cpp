@@ -36,6 +36,8 @@ namespace jonsson_league {
     }
 
     int Character::get_strength() const {
+        //Count item strength
+        //Count buff/debuff strength
     	return strength_;
     }
 
