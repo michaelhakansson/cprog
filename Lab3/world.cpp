@@ -6,7 +6,7 @@ namespace jonsson_league {
 	void World::init() {
 		
 		// Declare all the environments in the world
-		Environment * entrance = new Environment("A very dark room, you hear the faint sounds of nerds typing.", "Default");
+		Environment * entrance = new Environment("A very dark room, you hear the faint sounds of nerds typing.", "Starting area");
 		// TODO: More environments
 
 		// Declare all the items in the world
@@ -31,17 +31,51 @@ namespace jonsson_league {
 	    // TODO: Link environments		
 
 		// Place characters inside maps
-	    main_character_ = new Character("Robot", "TestBot", 10, 10, "SEGFAULT", starting_environment_);
+	    main_character_ = new Character("Robot", "TestBot", 10, 10, "SEGFAULTS", starting_environment_);
 	    current_character_ = main_character_;
 	    main_character_->add_inventory(main_character_inventory);
 
-		Environment * boss_room = new Environment("A room filled with spider webs, you hear crawling in the corner", "Boss room");
+		Environment * boss_room = new Environment("A room filled with spider webs... Icky!", "Boss room");
 		Character * spider = new Character("Spider", "Imse Vimse", 20, 1, "bites", boss_room);
 		spider->set_aggression(true);
 		enemies_.push_back(spider);
 
-		entrance->set_neighbour(NORTH, boss_room);
 		boss_room->set_neighbour(SOUTH, entrance);
+		entrance->set_neighbour(NORTH, boss_room);
+
+		Environment * dining_room = new Environment("A dining room filled with delicious food! Maybe you should EAT some?", "Dining room");
+		dining_room->set_neighbour(SOUTH, boss_room);
+		boss_room->set_neighbour(NORTH, dining_room);
+		
+		Environment * kandelaber_room = new Environment("A room with a very mysticious kandelaber...", "Kandelaber room");
+		kandelaber_room->set_neighbour(WEST, dining_room);
+		dining_room->set_neighbour(EAST, kandelaber_room);
+
+		//TODO catacombs
+
+		Environment * fuskbygge = new Environment("A fuskbygge that is almost falling apart! Damn polish immigrants!", "Fuskbygge");
+		fuskbygge->set_neighbour(NORTH, kandelaber_room);
+		kandelaber_room->set_neighbour(SOUTH, fuskbygge);
+
+		Environment * princess_room = new Environment("A room with the faint glow of glow of computer screens. Victoria and Madeleine are LANing rock paper scissors!", "Princess room");
+		princess_room->set_neighbour(NORTH, fuskbygge);
+		fuskbygge->set_neighbour(SOUTH, princess_room);
+
+		Environment * bedroom = new Environment("The royal bedrooom, with a sleeping queen Silvia!", "Bedroom");
+		bedroom->set_neighbour(WEST, princess_room);
+		princess_room->set_neighbour(EAST, bedroom);
+
+		Environment * trophy_room = new Environment("A trophy room. Filled with the skulls of thieves who have tried to steal from the one true monarch...", "Trophy room");
+		trophy_room->set_neighbour(SOUTH, bedroom);
+		bedroom->set_neighbour(NORTH, trophy_room);
+
+		//TODO restrict access to throne room
+		Environment * throne_room = new Environment("The throne room... full with all kinds of treasures and jewels! And a sleeping monarch...", "Throne room");
+		throne_room->set_neighbour(WEST, kandelaber_room);
+		kandelaber_room->set_neighbour(EAST, throne_room);
+		
+		throne_room->set_neighbour(SOUTH, trophy_room);
+		trophy_room->set_neighbour(NORTH, throne_room);
 	}
 
 	void World::describe_room() {
@@ -49,7 +83,7 @@ namespace jonsson_league {
 	    std::cout << current_environment->get_description() << std::endl;
 
 	    if (current_environment->get_items()->size()) {
-	    	std::cout << "In this room the following item(s) can be seen: " << std::endl;
+	    	std::cout << "In this room you see the following item(s): " << std::endl;
 
 			for(int i = 0; i < (int) current_environment->get_items()->size(); ++i){
 				std::cout << (* (current_environment->get_items()))[i]->get_name() << ", \"" << (* (current_environment->get_items()))[i]->get_description() << "\"" << std::endl;
@@ -129,6 +163,13 @@ namespace jonsson_league {
 		set_current_character(get_next_character());
 
 		check_status();
+
+		return true;
+	}
+
+	//Kills the main character
+	bool World::suicide(std::string args){
+		get_main_character()->set_health(0);
 
 		return true;
 	}
