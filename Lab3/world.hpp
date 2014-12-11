@@ -25,7 +25,6 @@ namespace jonsson_league {
 	    bool move_character(std::string);
 	    bool directions(std::string args);
 	    bool attack(std::string args);
-	    Character* get_target();
 	    bool in_combat();
 	    bool set_combat_flag(bool);
 	    bool resolve_combat(bool aggressive);
@@ -33,13 +32,15 @@ namespace jonsson_league {
 
 	    std::string get_string_from_enum(int num);
 
-		Character* get_main_character() const;
-		void set_main_character(Character * character);
+	    Character* get_main_character() const;
+	    void set_main_character(Character * character);
 
-		Character* get_current_character() const;
-		void set_current_character(Character * character);
+	    Character* get_current_character() const;
+	    void set_current_character(Character * character);
 
-		std::vector<Character *> get_local_enemies() const;
+	    Character* get_target();
+	    Character* get_target_from_name(std::vector<Character *> *) const;
+	    Character* get_next_character() const;
 	};
 
 }

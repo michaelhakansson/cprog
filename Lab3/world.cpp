@@ -146,7 +146,6 @@ namespace jonsson_league {
 		return true;
 	}
 
-
 	Character* World::get_target() {
 		// Main characters turn
 		if (get_current_character() == get_main_character()) {
@@ -162,7 +161,59 @@ namespace jonsson_league {
 		return NULL;
 	}
 
-	//get_characters_by_name
+	Character* World::get_target_by_name(std::string target){
+		
+		//If we have empty string
+		if(target == ""){
+			return NULL;
+		}
+
+		std::string name;
+		std::vector<Character*> enemies = get_local_enemies();
+
+		for (int i = 0; i < enemies.size(); ++i) {
+			
+			name = enemies.at(i)->get_name();
+			transform(name.begin(), name.end(), name.begin(), toupper);
+
+			if(target == name){
+				return enemies.at(i);
+			}
+		}	
+
+		return NULL;
+	}
+
+	Character* World::get_next_character(){
+
+		std::vector<Character*> enemies = get_local_enemies();
+
+		//If the current character is the main character
+		if (get_current_character() == get_main_character()) {
+			for (int i = 0; i < enemies.size(); ++i) {
+				if (enemies[i]->get_health() > 0) {
+					return enemies[i];
+				}
+			}	
+		} 
+
+		//If we have the enemy
+		else {
+
+			//Gets the index of the current enemy
+			int pos = find(enemies.begin(), enemies.end(), get_current_character()) - enemies.begin();
+
+			//If we can iterate to the next enemy
+			if(pos + 1 < enemies.size()){
+				return enemies.at(pos + 1);
+			} 
+
+			//Otherwise, it's the main characters turn
+			else {
+				return get_main_character();
+			}
+		}
+	}
 
 	bool World::in_combat(){
 		return in_combat_;
