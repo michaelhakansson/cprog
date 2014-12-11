@@ -6,6 +6,7 @@
 #include "environment.hpp"
 #include "character.hpp"
 #include "directions.hpp"
+#include "inventory.hpp"
 
 namespace jonsson_league {
 

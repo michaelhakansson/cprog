@@ -4,6 +4,7 @@
 #include <string>
 #include "item.hpp"
 #include "environment.hpp"
+#include "inventory.hpp"
 #include <iostream>
 
 namespace jonsson_league {
@@ -18,6 +19,7 @@ namespace jonsson_league {
 		int strength_;
 		bool aggression_;
 		Environment * current_environment_;
+		Inventory* inventory_;
 	public:
 		Character();
 
@@ -52,6 +54,7 @@ namespace jonsson_league {
 		bool get_aggression();
 		void set_aggression(bool);
 		bool is_dead() const;
+		void add_inventory(Inventory* inventory);
 	};
 
 }

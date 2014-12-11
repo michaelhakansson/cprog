@@ -12,6 +12,10 @@ namespace jonsson_league {
 		// Declare all the items in the world
 		Item * sword = new Item("Svärdet Sivert", "A legendary sword, forged by blacksmith Yggrimmar.", 1, 1);
 		Item * pants = new Item("Byxan Bosse", "A legendary pair of pants, forged by children in Indonesia.", 1, 1);
+		Item * toffel_of_silence = new Item("Toffel of silence", "A unisex toffel that makes it's wearer move extremely silent.", 1, 1);
+
+		Inventory* main_character_inventory = new Inventory();
+		main_character_inventory->add_item(toffel_of_silence);
 
 		// TODO: More items
 		// TODO: Put items in vectors per room
@@ -29,6 +33,7 @@ namespace jonsson_league {
 		// Place characters inside maps
 	    main_character_ = new Character("Robot", "TestBot", 10, 10, "SEGFAULT", starting_environment_);
 	    current_character_ = main_character_;
+	    main_character_->add_inventory(main_character_inventory);
 
 		Environment * boss_room = new Environment("A room filled with spider webs, you hear crawling in the corner", "Boss room");
 		Character * spider = new Character("Spider", "Imse Vimse", 20, 1, "bites", boss_room);

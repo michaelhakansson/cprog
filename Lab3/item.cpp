@@ -25,11 +25,11 @@ namespace jonsson_league {
 		return description_;
 	}
 
-	int Item::weight() const {
+	int Item::get_weight() const {
 		return weight_;
 	}
 
-	int Item::value() const {
+	int Item::get_value() const {
 		return value_;
 	}
 

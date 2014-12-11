@@ -88,4 +88,8 @@ namespace jonsson_league {
     bool Character::is_dead() const {
         return health_ <= 0;
     }
+
+    void Character::add_inventory(Inventory* inventory) {
+        inventory_ = inventory;
+    }
 }
