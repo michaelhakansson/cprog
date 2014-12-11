@@ -104,6 +104,40 @@ namespace jonsson_league {
 		return true;
 	}
 
+	bool World::attack(std::string args){
+		return true;
+	}
+
+	bool World::in_combat(){
+		return in_combat_;
+	}
+
+	bool World::set_combat_flag(bool combat){
+		in_combat_ = combat;
+
+		//Sets the main characters turn when we both enter and leave combat
+		main_character_turn_ = true;
+
+		return true;
+	}
+
+	//Checks whether combat will occurr
+	//If the aggressive flag is set, combat will always be
+	bool World::resolve_combat(bool aggressive){
+
+		bool combat_initated = false;
+
+		for(int i = 0; i < enemies_.size(); i++){
+
+			if(enemies_.at(i).get_environment() == main_character_->get_environment() && (aggressive || enemies_.at(i).get_aggression())){
+				set_combat(true);
+				combat_initated = true;
+			}
+		}
+
+		return combat_initated;
+	}
+
 	std::string World::get_string_from_enum(int num) {
 		switch (num) {
 			case 0: return "north";
@@ -113,9 +147,4 @@ namespace jonsson_league {
 			default: return "nowhere";
 		}
 	}
-
-	bool World::in_combat(){
-		return in_combat_;
-	}
-
 }

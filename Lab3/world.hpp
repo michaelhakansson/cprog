@@ -16,14 +16,19 @@ namespace jonsson_league {
 	    std::vector<Character *> enemies_;
 	    Character * main_character_;
 	    bool in_combat_;
+	    bool main_character_turn_;
 	public:
 		void init();
 		void describe_room();
 	    bool description(std::string);
 	    bool move_character(std::string);
 	    bool directions(std::string args);
-	    std::string get_string_from_enum(int num);
+	    bool attack(std::string args);
 	    bool in_combat();
+	    bool set_combat_flag(bool);
+	    bool resolve_combat(bool aggressive);
+
+	    std::string get_string_from_enum(int num);
 	};
 
 }
