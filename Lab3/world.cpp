@@ -14,9 +14,6 @@ namespace jonsson_league {
 		Item * pants = new Item("Byxan Bosse", "A legendary pair of pants, forged by children in Indonesia.", 1, 1);
 		Item * toffel_of_silence = new Item("Toffel of silence", "A unisex toffel that makes it's wearer move extremely silent.", 1, 1);
 
-		Inventory* main_character_inventory = new Inventory();
-		main_character_inventory->add_item(toffel_of_silence);
-
 		// TODO: More items
 		// TODO: Put items in vectors per room
 		entrance->set_item(sword);
@@ -33,7 +30,9 @@ namespace jonsson_league {
 		// Place characters inside maps
 	    main_character_ = new Character("Robot", "TestBot", 10, 10, "SEGFAULTS", starting_environment_);
 	    current_character_ = main_character_;
-	    main_character_->add_inventory(main_character_inventory);
+
+	    // Add inventory
+		get_main_character()->get_inventory()->add_item(toffel_of_silence);
 
 		Environment * boss_room = new Environment("A room filled with spider webs... Icky!", "Boss room");
 		Character * spider = new Character("Spider", "Imse Vimse", 20, 1, "bites", boss_room);
@@ -78,17 +77,28 @@ namespace jonsson_league {
 		trophy_room->set_neighbour(NORTH, throne_room);
 	}
 
-	void World::describe_room() {
+	void World::print_items(std::vector<Item*> * vec) const {
+		if ((*vec)[0] == NULL) { 
+			std::cout << "NULL!" << std::endl;
+		}
+		for(int i = 0; i < (int) vec->size(); ++i) {
+			std::cout << (*vec)[i]->get_name() << ", \"" << (*vec)[i]->get_description() << "\"" << std::endl;
+		}
+	}
+
+	void World::describe_room() const {
 		Environment * current_environment = main_character_->get_environment();
 	    std::cout << current_environment->get_description() << std::endl;
 
 	    if (current_environment->get_items()->size()) {
 	    	std::cout << "In this room you see the following item(s): " << std::endl;
-
-			for(int i = 0; i < (int) current_environment->get_items()->size(); ++i){
-				std::cout << (* (current_environment->get_items()))[i]->get_name() << ", \"" << (* (current_environment->get_items()))[i]->get_description() << "\"" << std::endl;
-			}
+	    	print_items(current_environment->get_items());
 	    }
+	}
+
+	bool World::describe_inventory(std::string args) {
+		print_items(get_current_character()->get_inventory()->get_items());
+		return true;
 	}
 
 	bool World::description(std::string args){

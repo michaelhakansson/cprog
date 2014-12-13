@@ -5,13 +5,13 @@ namespace jonsson_league {
 	Inventory::Inventory() {
 		slot_limit_ = 1;
 		weight_limit_ = 1;
-		items_ = new std::vector<Item*>(1);
+		items_ = new std::vector<Item*>;
 	}
 
 	Inventory::Inventory(int num_slots, int max_weight) {
 		slot_limit_ = num_slots;
 		weight_limit_ = max_weight;
-		items_ = new std::vector<Item*>(num_slots);
+		items_ = new std::vector<Item*>;
 	}
 
 	int Inventory::get_slot_limit() const {
@@ -23,8 +23,8 @@ namespace jonsson_league {
 	}
 
 	bool Inventory::add_item(Item* item) {
-		if (get_number_of_items() < get_slot_limit() && get_weight_limit() <= get_weight()+item->get_weight()) {
-			items_->push_back(item);
+		if (get_number_of_items() < get_slot_limit() && get_weight_limit() >= get_weight()+item->get_weight()) {
+			items_->push_back(item);			
 			return true;
 		}
 		return false;

@@ -1,6 +1,7 @@
 #ifndef INVENTORY_H
 #define INVENTORY_H
 
+#include <iostream>
 #include <vector>
 #include <string>
 #include <algorithm>

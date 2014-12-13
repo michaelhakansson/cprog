@@ -32,6 +32,7 @@ int main(int argc, char* argv[]) {
 	functions["DIRECTIONS"] = &jonsson_league::World::directions;
 	
 	functions["SUICIDE"] = &jonsson_league::World::suicide;
+	functions["INVENTORY"] = &jonsson_league::World::describe_inventory;
 	//functions["INVESTIGATE"] = &jonsson_league::World::investigate;
 	//TODO attack?
 

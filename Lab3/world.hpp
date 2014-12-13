@@ -21,7 +21,9 @@ namespace jonsson_league {
 	    bool in_combat_;
 	public:
 		void init();
-		void describe_room();
+		void print_items(std::vector<Item*> * vec) const;
+		void describe_room() const;
+		bool describe_inventory(std::string);
 	    bool description(std::string);
 	    bool move_character(std::string);
 	    bool directions(std::string args);
@@ -33,6 +35,7 @@ namespace jonsson_league {
 	    bool resolve_combat(bool aggressive);
 	    std::vector<Character * > get_local_enemies() const;
 	    void set_local_enemies(std::vector<Character *> *);
+
 
 	    std::string get_string_from_enum(int num);
 

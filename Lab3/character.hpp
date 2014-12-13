@@ -19,7 +19,7 @@ namespace jonsson_league {
 		int strength_;
 		bool aggression_;
 		Environment * current_environment_;
-		Inventory* inventory_;
+		Inventory inventory_;
 	public:
 		Character();
 
@@ -55,6 +55,7 @@ namespace jonsson_league {
 		void set_aggression(bool);
 		bool is_dead() const;
 		void add_inventory(Inventory* inventory);
+		Inventory* get_inventory();
 	};
 
 }

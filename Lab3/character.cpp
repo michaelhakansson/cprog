@@ -89,7 +89,7 @@ namespace jonsson_league {
         return health_ <= 0;
     }
 
-    void Character::add_inventory(Inventory* inventory) {
-        inventory_ = inventory;
+    Inventory* Character::get_inventory() {
+        return &inventory_;
     }
 }
