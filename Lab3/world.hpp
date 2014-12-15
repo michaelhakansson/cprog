@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <algorithm>
+#include <map>
 #include "environment.hpp"
 #include "character.hpp"
 #include "directions.hpp"
@@ -19,6 +20,8 @@ namespace jonsson_league {
 	    Character * main_character_;
 	    Character * current_character_;
 	    bool in_combat_;
+
+		std::map<std::string, Character *> character_map_;
 	public:
 		void init();
 		void print_items(std::vector<Item*> * vec) const;
@@ -47,7 +50,8 @@ namespace jonsson_league {
 	    void set_current_character(Character * character);
 
 	    Character* get_target(std::string target);
-	    Character* get_target_by_name(std::string target) const;
+		Character* get_character_by_name(std::string target);
+	    Character* get_target_by_name(std::string target);
 	    Character* get_next_character() const;
 	};
 

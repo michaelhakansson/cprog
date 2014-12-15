@@ -39,9 +39,13 @@ namespace jonsson_league {
 		 */
 
 		Environment * boss_room = new Environment("A room filled with spider webs... Icky!", "Boss room");
-		Character * spider = new Character("Spider", "Imse Vimse", 20, 1, "bites", boss_room);
+		Character * spider = new Character("Spider", "☠ Imse Vimse", 20, 1, "bites", boss_room);
 		spider->set_aggression(true);
 		enemies_.push_back(spider);
+
+		Character * spider2 = new Character("Spider", "Vimse Imse", 20, 1, "bites", boss_room);
+		spider2->set_aggression(true);
+		enemies_.push_back(spider2);
 
 		boss_room->set_neighbour(SOUTH, entrance);
 		entrance->set_neighbour(NORTH, boss_room);
@@ -79,6 +83,10 @@ namespace jonsson_league {
 		
 		throne_room->set_neighbour(SOUTH, trophy_room);
 		trophy_room->set_neighbour(NORTH, throne_room);
+
+		character_map_["MAIN"] = main_character_;
+		character_map_["IMSE VIMSE"] = spider;
+		character_map_["VIMSE IMSE"] = spider2;
 	}
 
 	void World::print_items(std::vector<Item*> * vec) const {
@@ -194,6 +202,10 @@ namespace jonsson_league {
 
 		// Update HP of target
 		target->set_health(target->get_health() - attacker->get_strength());
+	
+		if(target->is_dead()){
+			std::cout << target->get_name() << " was defeated!" << std::endl;
+		}
 
 		set_current_character(get_next_character());
 
@@ -226,8 +238,14 @@ namespace jonsson_league {
 
 	//Gets target in combat
 	Character* World::get_target(std::string target) {
-		// Main characters turn
-		// TODO: get target by name
+		
+		Character * result = get_target_by_name(target);
+
+		//If we get a proper result, return
+		if(result != NULL){
+			return result;
+		}
+
 		if (get_current_character() == get_main_character()) {
 			std::vector<Character*> enemies = get_local_enemies();
 			for (int i = 0; i < (int) enemies.size(); ++i) {
@@ -241,26 +259,23 @@ namespace jonsson_league {
 		return NULL;
 	}
 
+	Character * World::get_character_by_name(std::string target) {
+		return character_map_[target];
+	}
+
 	//Gets specific target in combat
-	Character* World::get_target_by_name(std::string target) const {
+	Character* World::get_target_by_name(std::string target) {
+		
+		Character * result = get_character_by_name(target);
 		
 		//If we have empty string
-		if(target == ""){
+		if(result == NULL){
 			return NULL;
 		}
 
-		std::string name;
-		std::vector<Character*> enemies = get_local_enemies();
-
-		for (int i = 0; i < (int) enemies.size(); ++i) {
-			
-			name = enemies.at(i)->get_name();
-			transform(name.begin(), name.end(), name.begin(), toupper);
-
-			if(target == name){
-				return enemies.at(i);
-			}
-		}	
+		if(std::find(get_local_enemies().begin(), get_local_enemies().end(), result) != get_local_enemies().end()) {
+			return result;
+		}
 
 		return NULL;
 	}
@@ -285,14 +300,14 @@ namespace jonsson_league {
 			int pos = find(enemies.begin(), enemies.end(), get_current_character()) - enemies.begin();
 
 			//If we can iterate to the next enemy
-			if(pos + 1 < (int) enemies.size()){
-				return enemies.at(pos + 1);
+			for(int i = pos + 1; i < (int) enemies.size(); i++){
+				if(!enemies[i]->is_dead()){
+					return enemies[i];
+				}
 			} 
 
 			//Otherwise, it's the main characters turn
-			else {
-				return get_main_character();
-			}
+			return get_main_character();
 		}
 		return NULL;
 	}
