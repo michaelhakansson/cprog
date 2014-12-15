@@ -5,6 +5,7 @@
 #include "item.hpp"
 #include "environment.hpp"
 #include "inventory.hpp"
+#include "directions.hpp"
 #include <iostream>
 
 namespace jonsson_league {
@@ -15,6 +16,7 @@ namespace jonsson_league {
 		std::string type_;
 		std::string name_;
 		std::string name_of_attack_;
+		int weight_;
 		int health_;
 		int max_health_;
 		int strength_;
@@ -24,13 +26,19 @@ namespace jonsson_league {
 	public:
 		Character();
 
-		Character(std::string type, std::string name, int health, int strength, std::string name_of_attack, Environment * current_environment);
+		Character(std::string type, std::string name, int weight, int health, int strength, std::string name_of_attack, Environment * current_environment);
 
 		// Returns what type the character is eg Ogre
 		std::string get_type() const;
 
 		// Returns the name of the character eg Gandalf
 		std::string get_name() const;
+
+		/**
+		 * Returns the total weight of the character, including the 
+		 * weight of the inventory. 
+		 */
+		int get_weight() const;
 
 		// Returns the HP of the character
 		int get_health() const;

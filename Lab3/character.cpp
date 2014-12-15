@@ -1,5 +1,4 @@
 #include "character.hpp"
-#include "directions.hpp"
 
 namespace jonsson_league {
 
@@ -7,6 +6,7 @@ namespace jonsson_league {
         type_ = "unknown";
         name_ = "unknown";
         name_of_attack_ = "attacks";
+        weight_ = 1;
         health_ = 1;
 		max_health_ = 1;
         strength_ = 1;
@@ -14,9 +14,10 @@ namespace jonsson_league {
         current_environment_ = NULL;
     }
 
-    Character::Character(std::string type, std::string name, int health, int strength, std::string name_of_attack, Environment * current_environment) {
+    Character::Character(std::string type, std::string name, int weight, int health, int strength, std::string name_of_attack, Environment * current_environment) {
         type_ = type;
         name_ = name;
+        weight_ = weight;
         name_of_attack_ = name_of_attack;
         health_ = health;
 		max_health_ = health;
@@ -31,6 +32,10 @@ namespace jonsson_league {
 
     std::string Character::get_name() const {
     	return name_;
+    }
+
+    int Character::get_weight() const {
+        return weight_ + inventory_.get_weight();
     }
 
     int Character::get_health() const {
@@ -51,7 +56,7 @@ namespace jonsson_league {
     }
 
     void Character::set_max_health(int new_max_health) {
-        health_ = new_max_health;
+        max_health_ = new_max_health;
     }
     int Character::get_strength() const {
         //Count item strength
