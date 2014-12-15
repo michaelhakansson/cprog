@@ -56,7 +56,7 @@ namespace jonsson_league {
     }
 
     void Character::set_max_health(int new_max_health) {
-        health_ = new_max_health;
+        max_health_ = new_max_health;
     }
     int Character::get_strength() const {
         //Count item strength
