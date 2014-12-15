@@ -6,8 +6,9 @@ namespace jonsson_league {
 	void World::init() {
 		
 		// Declare all the environments in the world
-		Environment * entrance = new Environment("A very dark room, you hear the faint sounds of nerds typing.", "Starting area");
-		// TODO: More environments
+		Environment * entrance = new Environment("A very dark room, you hear the faint sounds of nerds typing.", "Entrance");
+		starting_environment_ = entrance;
+		environment_map_["Entrance"] = entrance;
 
 		// Declare all the items in the world
 		Item * sword = new Item("Svärdet Sivert", "A legendary sword, forged by blacksmith Yggrimmar.", 1, 1);
@@ -19,16 +20,8 @@ namespace jonsson_league {
 		entrance->set_item(sword);
 		entrance->set_item(pants);
 
-		// TODO: Put all environments in vector
-	    environments_.push_back(starting_environment_);
-	    // TODO: Push more elements
-		
-		// Generate map
-	    starting_environment_ = entrance;
-	    // TODO: Link environments		
-
 		// Place characters inside maps
-	    main_character_ = new Character("Robot", "TestBot", 75, 10, 10, "SEGFAULTS", starting_environment_);
+	    main_character_ = new Character("Thief", "Jonsson", 75, 10, 10, "slaps", starting_environment_);
 	    current_character_ = main_character_;
 
 	    // Add inventory
@@ -38,46 +31,55 @@ namespace jonsson_league {
 		 * Add all the environments
 		 */
 
-		Environment * boss_room = new Environment("A room filled with spider webs... Icky!", "Boss room");
-		Character * spider = new Character("Spider", "Imse Vimse", 1, 20, 1, "bites", boss_room);
+		Environment * spider_room = new Environment("A room filled with spider webs... Icky!", "Spider room");
+		Character * spider = new Character("Spider", "Imse Vimse", 1, 20, 1, "bites", spider_room);
 		spider->set_aggression(true);
 		enemies_.push_back(spider);
+		environment_map_["Spider room"] = spider_room;
 
-		//Character * spider2 = new Character("Spider", "Vimse Imse", 1, 20, 1, "bites", boss_room);
+		//Character * spider2 = new Character("Spider", "Vimse Imse", 1, 20, 1, "bites", spider_room);
 		//spider2->set_aggression(true);
 		//enemies_.push_back(spider2);
 
-		boss_room->set_neighbour(SOUTH, entrance);
-		entrance->set_neighbour(NORTH, boss_room);
+		spider_room->set_neighbour(SOUTH, entrance);
+		entrance->set_neighbour(NORTH, spider_room);
 
 		Environment * dining_room = new Environment("A dining room filled with delicious food! Maybe you should EAT some?", "Dining room");
-		dining_room->set_neighbour(SOUTH, boss_room);
-		boss_room->set_neighbour(NORTH, dining_room);
+		environment_map_["Dining room"] = dining_room;
+		
+		dining_room->set_neighbour(SOUTH, spider_room);
+		spider_room->set_neighbour(NORTH, dining_room);
 		
 		Environment * kandelaber_room = new Environment("A room with a terribly unfashionable kandelaber. It's so unfashionable it makes you want to KICK it...", "Kandelaber room");
+		environment_map_["Kandelaber room"] = kandelaber_room;
 		kandelaber_room->set_neighbour(WEST, dining_room);
 		dining_room->set_neighbour(EAST, kandelaber_room);
 
 		//TODO catacombs
 
 		Environment * fuskbygge = new Environment("A fuskbygge that is almost falling apart! Damn polish immigrants!", "Fuskbygge");
+		environment_map_["Fuskbygge"] = fuskbygge;
 		fuskbygge->set_neighbour(NORTH, kandelaber_room);
 		kandelaber_room->set_neighbour(SOUTH, fuskbygge);
 
 		Environment * princess_room = new Environment("A room with the faint glow of glow of computer screens. Victoria and Madeleine are LANing rock paper scissors!", "Princess room");
+		environment_map_["Princess room"] = princess_room;
 		princess_room->set_neighbour(NORTH, fuskbygge);
 		fuskbygge->set_neighbour(SOUTH, princess_room);
 
-		Environment * bedroom = new Environment("The royal bedrooom, with a sleeping queen Silvia!", "Bedroom");
+		Environment * bedroom = new Environment("The royal bedrooom, with a sleeping queen Silvia!", "Bedroom");	
+		environment_map_["Bedroom"] = bedroom;
 		bedroom->set_neighbour(WEST, princess_room);
 		princess_room->set_neighbour(EAST, bedroom);
 
 		Environment * trophy_room = new Environment("A trophy room. Filled with the skulls of thieves who have tried to steal from the one true monarch...", "Trophy room");
+		environment_map_["Trophy room"] = trophy_room;
 		trophy_room->set_neighbour(SOUTH, bedroom);
 		bedroom->set_neighbour(NORTH, trophy_room);
 
 		//TODO restrict access to throne room
 		Environment * throne_room = new Environment("The throne room... full with all kinds of treasures and jewels! And a sleeping monarch...", "Throne room");
+		environment_map_["Throne room"] = throne_room;
 		throne_room->set_neighbour(WEST, kandelaber_room);
 		kandelaber_room->set_neighbour(EAST, throne_room);
 		
@@ -87,6 +89,7 @@ namespace jonsson_league {
 		character_map_["MAIN"] = main_character_;
 		character_map_["IMSE VIMSE"] = spider;
 		//character_map_["VIMSE IMSE"] = spider2;
+		
 	}
 
 	void World::print_items(std::vector<Item*> * vec) const {
@@ -170,21 +173,20 @@ namespace jonsson_league {
 
 					std::cout << "Due to yoru weight sdfakj" << std::endl;
 
-					Environment * fuskbygge = get_main_character()->get_environment()->get_neighbour(direction);
-
-					Environment * kandelaber_room = starting_environment_->get_neighbour(NORTH)->get_neighbour(NORTH)->get_neighbour(EAST);
-					Environment * lan_room = kandelaber_room->get_neighbour(SOUTH)->get_neighbour(SOUTH);
+					Environment * fuskbygge = environment_map_["Fuskbygge"];
 
 					Environment * catacomb = new Environment("A dark and moist catacomb", "Catacomb");
-					catacomb->set_neighbour(NORTH, kandelaber_room);
-					catacomb->set_neighbour(SOUTH, lan_room);
-					kandelaber_room->set_neighbour(SOUTH, catacomb);
-					lan_room->set_neighbour(NORTH, catacomb);
+					catacomb->set_neighbour(NORTH, environment_map_["Kandelaber room"]);
+					catacomb->set_neighbour(SOUTH, environment_map_["Princess room"]);
+					
+					environment_map_["Kandelaber room"]->set_neighbour(SOUTH, catacomb);
+					environment_map_["Princess room"]->set_neighbour(NORTH, catacomb);
 
 					//TODO place spy somewhere
 
 					
-					//TODO proper destructors
+					//TODO proper destructorsi
+					environment_map_["Fuskbygge"] = NULL;
 					delete fuskbygge;
 				}
 			
@@ -245,11 +247,8 @@ namespace jonsson_league {
 			
 			std::cout << "You kick the kandelaber, it falls down and a hidden door is revealed!" << std::endl;
 
-			Environment * kandelaber_room = starting_environment_->get_neighbour(NORTH)->get_neighbour(NORTH)->get_neighbour(EAST);
-			Environment * throne_room = kandelaber_room->get_neighbour(SOUTH)->get_neighbour(SOUTH)->get_neighbour(EAST)->get_neighbour(NORTH)->get_neighbour(NORTH);
-
-			kandelaber_room->set_neighbour(EAST, throne_room);
-			throne_room->set_neighbour(WEST, kandelaber_room);
+			environment_map_["Kandelaber room"]->set_neighbour(EAST, environment_map_["Throne room"]);
+			environment_map_["Throne room"]->set_neighbour(WEST, environment_map_["Kandelaber room"]);
 
 			return true;
 		}

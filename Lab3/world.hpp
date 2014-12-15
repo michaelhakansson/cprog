@@ -22,6 +22,7 @@ namespace jonsson_league {
 	    bool in_combat_;
 
 		std::map<std::string, Character *> character_map_;
+		std::map<std::string, Environment *> environment_map_;
 	public:
 		void init();
 		void print_items(std::vector<Item*> * vec) const;
