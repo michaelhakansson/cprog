@@ -28,7 +28,7 @@ namespace jonsson_league {
 	    // TODO: Link environments		
 
 		// Place characters inside maps
-	    main_character_ = new Character("Robot", "TestBot", 10, 10, "SEGFAULTS", starting_environment_);
+	    main_character_ = new Character("Robot", "TestBot", 1000, 10, 10, "SEGFAULTS", starting_environment_);
 	    current_character_ = main_character_;
 
 	    // Add inventory
@@ -39,7 +39,7 @@ namespace jonsson_league {
 		 */
 
 		Environment * boss_room = new Environment("A room filled with spider webs... Icky!", "Boss room");
-		Character * spider = new Character("Spider", "Imse Vimse", 20, 1, "bites", boss_room);
+		Character * spider = new Character("Spider", "Imse Vimse", 1, 20, 1, "bites", boss_room);
 		spider->set_aggression(true);
 		enemies_.push_back(spider);
 

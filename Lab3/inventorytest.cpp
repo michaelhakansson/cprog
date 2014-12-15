@@ -48,8 +48,11 @@ std::cout << "Initiating tests" << std::endl;
 
 {
     std::cout << "Testing get_weight" << std::endl;
-    Inventory inventory;
+    Inventory inventory(1000, 1000);
     assert(inventory.get_weight() == 0);
+    Item* item = new Item("a", "b", 10, 1);
+    inventory.add_item(item);
+    assert(inventory.get_weight() == 10);
 }
 
 {
