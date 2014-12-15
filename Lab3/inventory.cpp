@@ -22,6 +22,14 @@ namespace jonsson_league {
 		return weight_limit_;
 	}
 
+	int Inventory::get_weight() const {
+		int total_weight = 0;
+		for (Item const* item : *get_items()) {
+			total_weight += item->get_weight();
+		}
+		return total_weight;
+	}
+
 	bool Inventory::add_item(Item* item) {
 		if (get_number_of_items() < get_slot_limit() && get_weight_limit() >= get_weight()+item->get_weight()) {
 			items_->push_back(item);			
@@ -30,20 +38,18 @@ namespace jonsson_league {
 		return false;
 	}
 
+	bool Inventory::remove_item(Item* item) {
+		std::vector<Item*>::iterator it = std::find(items_->begin(), items_->end(), item);
+		if ( it != items_->end() ) {
+			items_->erase(it);
+			return true;
+		}
+		// items_->erase(std::find(items_->begin(), items_->end(), item));
+		return false;
+	}
+
 	std::vector<Item*> * Inventory::get_items() const { 
 		return items_;
-	}
-
-	void Inventory::remove_item(Item* item) {
-		items_->erase(std::find(items_->begin(), items_->end(), item));
-	}
-
-	int Inventory::get_weight() const {
-		int total_weight = 0;
-		for (Item const* item : *get_items()) {
-			total_weight += item->get_weight();
-		}
-		return total_weight;
 	}
 
 	int Inventory::get_number_of_items() const {

@@ -35,12 +35,6 @@ std::cout << "Initiating tests" << std::endl;
 }
 
 {
-    std::cout << "Testing get_weight" << std::endl;
-    Inventory inventory;
-    assert(inventory.get_weight() == 0);
-}
-
-{
     std::cout << "Testing get_slot_limit" << std::endl;
     Inventory inventory;
     assert(inventory.get_slot_limit() == 1);
@@ -50,6 +44,12 @@ std::cout << "Initiating tests" << std::endl;
     std::cout << "Testing get_weight_limit" << std::endl;
     Inventory inventory;
     assert(inventory.get_weight_limit() == 1);
+}
+
+{
+    std::cout << "Testing get_weight" << std::endl;
+    Inventory inventory;
+    assert(inventory.get_weight() == 0);
 }
 
 {
@@ -66,6 +66,30 @@ std::cout << "Initiating tests" << std::endl;
     // Inventory full - should not add new item
     assert(inventory.add_item(item3) == false);
     assert(inventory.get_number_of_items() == 2);
+}
+
+{
+    std::cout << "Testing remove_item" << std::endl;
+    Inventory inventory(2,2);
+    Item* item1 = new Item("It1", "An item1", 1, 1);
+    Item* item2 = new Item("It2", "An item2", 1, 1);
+    Item* item3 = new Item("It3", "An item3", 1, 1);
+    assert(inventory.get_number_of_items() == 0);
+    assert(inventory.add_item(item1) == true);
+    assert(inventory.get_number_of_items() == 1);
+    assert(inventory.remove_item(item1) == true);
+    // Item 3 not added, should hence not work to remove.
+    assert(inventory.remove_item(item3) == false);
+    assert(inventory.get_number_of_items() == 0);
+    assert(inventory.add_item(item2) == true);
+    assert(inventory.get_number_of_items() == 1);
+    assert(inventory.add_item(item3) == true);
+    assert(inventory.get_number_of_items() == 2);
+    assert(inventory.remove_item(item2) == true);
+    assert(inventory.remove_item(item3) == true);
+    assert(inventory.remove_item(item1) == false);
+    assert(inventory.remove_item(item2) == false);
+    assert(inventory.remove_item(item3) == false);
 }
 
 {
