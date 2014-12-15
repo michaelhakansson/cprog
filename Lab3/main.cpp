@@ -18,7 +18,7 @@ int main(int argc, char* argv[]) {
 	jonsson_league::World * world = new jonsson_league::World();
 	world->init();
 
-	//Maps commands to functions
+	//General commands
 	std::map<std::string, bool (jonsson_league::World::*)(std::string)> functions;
 	functions["DESCRIPTION"] = &jonsson_league::World::description;
 	functions["DESCRIPTIONS"] = &jonsson_league::World::description;
@@ -37,8 +37,9 @@ int main(int argc, char* argv[]) {
 
 	//Situational commands 
 	functions["EAT"] = &jonsson_league::World::eat;
+	functions["KICK"] = &jonsson_league::World::kick;
 
-	//For combat, we restrict the player to a different set of functions
+	//Combat commands
 	std::map<std::string, bool (jonsson_league::World::*)(std::string)> combat_functions;
 	combat_functions["ATTACK"] = &jonsson_league::World::attack;
 	//TODO special?

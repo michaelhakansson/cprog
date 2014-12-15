@@ -38,6 +38,14 @@ namespace jonsson_league {
         return weight_ + inventory_.get_weight();
     }
 
+	int Character::get_base_weight() const {
+		return weight_;
+	}
+
+	void Character::set_base_weight(int base_weight) {
+		weight_ = base_weight;
+	}
+
     int Character::get_health() const {
     	return health_ + get_inventory()->get_stats_health();
     }

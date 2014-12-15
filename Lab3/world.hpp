@@ -22,6 +22,7 @@ namespace jonsson_league {
 	    bool in_combat_;
 
 		std::map<std::string, Character *> character_map_;
+		std::map<std::string, Environment *> environment_map_;
 	public:
 		void init();
 		void print_items(std::vector<Item*> * vec) const;
@@ -32,6 +33,7 @@ namespace jonsson_league {
 	    bool move_character(std::string);
 	    bool directions(std::string args);
 		bool eat(std::string args);
+		bool kick(std::string args);
 	    bool attack(std::string args);
 		bool suicide(std::string);
 	    void check_status();

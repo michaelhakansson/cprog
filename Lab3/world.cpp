@@ -6,8 +6,9 @@ namespace jonsson_league {
 	void World::init() {
 		
 		// Declare all the environments in the world
-		Environment * entrance = new Environment("A very dark room, you hear the faint sounds of nerds typing.", "Starting area");
-		// TODO: More environments
+		Environment * entrance = new Environment("A very dark room, you hear the faint sounds of nerds typing.", "Entrance");
+		starting_environment_ = entrance;
+		environment_map_["Entrance"] = entrance;
 
 		// Declare all the items in the world
 		Item * sword = new Item("Svärdet Sivert", "A legendary sword, forged by blacksmith Yggrimmar.", 1, 1, 0, 2);
@@ -19,16 +20,8 @@ namespace jonsson_league {
 		entrance->set_item(sword);
 		entrance->set_item(pants);
 
-		// TODO: Put all environments in vector
-	    environments_.push_back(starting_environment_);
-	    // TODO: Push more elements
-		
-		// Generate map
-	    starting_environment_ = entrance;
-	    // TODO: Link environments		
-
 		// Place characters inside maps
-	    main_character_ = new Character("Robot", "TestBot", 1000, 10, 10, "SEGFAULTS", starting_environment_);
+	    main_character_ = new Character("Thief", "Jonsson", 75, 10, 10, "slaps", starting_environment_);
 	    current_character_ = main_character_;
 
 	    // Add inventory
@@ -38,46 +31,55 @@ namespace jonsson_league {
 		 * Add all the environments
 		 */
 
-		Environment * boss_room = new Environment("A room filled with spider webs... Icky!", "Boss room");
-		Character * spider = new Character("Spider", "Imse Vimse", 1, 20, 1, "bites", boss_room);
+		Environment * spider_room = new Environment("A room filled with spider webs... Icky!", "Spider room");
+		Character * spider = new Character("Spider", "Imse Vimse", 1, 20, 1, "bites", spider_room);
 		spider->set_aggression(true);
 		enemies_.push_back(spider);
+		environment_map_["Spider room"] = spider_room;
 
-		Character * spider2 = new Character("Spider", "Vimse Imse", 1, 20, 1, "bites", boss_room);
-		spider2->set_aggression(true);
-		enemies_.push_back(spider2);
+		//Character * spider2 = new Character("Spider", "Vimse Imse", 1, 20, 1, "bites", spider_room);
+		//spider2->set_aggression(true);
+		//enemies_.push_back(spider2);
 
-		boss_room->set_neighbour(SOUTH, entrance);
-		entrance->set_neighbour(NORTH, boss_room);
+		spider_room->set_neighbour(SOUTH, entrance);
+		entrance->set_neighbour(NORTH, spider_room);
 
 		Environment * dining_room = new Environment("A dining room filled with delicious food! Maybe you should EAT some?", "Dining room");
-		dining_room->set_neighbour(SOUTH, boss_room);
-		boss_room->set_neighbour(NORTH, dining_room);
+		environment_map_["Dining room"] = dining_room;
 		
-		Environment * kandelaber_room = new Environment("A room with a very mysticious kandelaber...", "Kandelaber room");
+		dining_room->set_neighbour(SOUTH, spider_room);
+		spider_room->set_neighbour(NORTH, dining_room);
+		
+		Environment * kandelaber_room = new Environment("A room with a terribly unfashionable kandelaber. It's so unfashionable it makes you want to KICK it...", "Kandelaber room");
+		environment_map_["Kandelaber room"] = kandelaber_room;
 		kandelaber_room->set_neighbour(WEST, dining_room);
 		dining_room->set_neighbour(EAST, kandelaber_room);
 
 		//TODO catacombs
 
 		Environment * fuskbygge = new Environment("A fuskbygge that is almost falling apart! Damn polish immigrants!", "Fuskbygge");
+		environment_map_["Fuskbygge"] = fuskbygge;
 		fuskbygge->set_neighbour(NORTH, kandelaber_room);
 		kandelaber_room->set_neighbour(SOUTH, fuskbygge);
 
 		Environment * princess_room = new Environment("A room with the faint glow of glow of computer screens. Victoria and Madeleine are LANing rock paper scissors!", "Princess room");
+		environment_map_["Princess room"] = princess_room;
 		princess_room->set_neighbour(NORTH, fuskbygge);
 		fuskbygge->set_neighbour(SOUTH, princess_room);
 
-		Environment * bedroom = new Environment("The royal bedrooom, with a sleeping queen Silvia!", "Bedroom");
+		Environment * bedroom = new Environment("The royal bedrooom, with a sleeping queen Silvia!", "Bedroom");	
+		environment_map_["Bedroom"] = bedroom;
 		bedroom->set_neighbour(WEST, princess_room);
 		princess_room->set_neighbour(EAST, bedroom);
 
 		Environment * trophy_room = new Environment("A trophy room. Filled with the skulls of thieves who have tried to steal from the one true monarch...", "Trophy room");
+		environment_map_["Trophy room"] = trophy_room;
 		trophy_room->set_neighbour(SOUTH, bedroom);
 		bedroom->set_neighbour(NORTH, trophy_room);
 
 		//TODO restrict access to throne room
 		Environment * throne_room = new Environment("The throne room... full with all kinds of treasures and jewels! And a sleeping monarch...", "Throne room");
+		environment_map_["Throne room"] = throne_room;
 		throne_room->set_neighbour(WEST, kandelaber_room);
 		kandelaber_room->set_neighbour(EAST, throne_room);
 		
@@ -86,7 +88,8 @@ namespace jonsson_league {
 
 		character_map_["MAIN"] = main_character_;
 		character_map_["IMSE VIMSE"] = spider;
-		character_map_["VIMSE IMSE"] = spider2;
+		//character_map_["VIMSE IMSE"] = spider2;
+		
 	}
 
 	void World::print_items(std::vector<Item*> * vec) const {
@@ -151,27 +154,52 @@ namespace jonsson_league {
 			direction = EAST;
 		} else {
 			direction = INVALID;
-		}
-		if (direction == INVALID) {
 			std::cout << "invalid direction" << std::endl;
 			return false;
-		} else {
+		}
+		
+		std::cout << "Character " << main_character_->get_name() << " goes " << get_string_from_enum(direction) << "." << std::endl;
 
-			//If it's possible to enter in that direction
-			if(main_character_->get_environment()->get_neighbour(direction)){
-				main_character_ -> go(direction);
-				std::cout << "Character " << main_character_->get_name() << " goes " << get_string_from_enum(direction) << "." << std::endl;
-				describe_room();
-				resolve_combat(false);
+		//If it's possible to enter in that direction
+		if(main_character_->get_environment()->get_neighbour(direction)){
 
-				return true;
-			} else {
-				std::cout << "didn't find any direction" << std::endl;
-				return false;
+			std::string next_environment_type = get_main_character()->get_environment()->get_neighbour(direction)->get_type();
+
+			//If the character tries to enter the fuskbygge
+			if(next_environment_type == "Fuskbygge"){
+				
+				//If the main character weighs more than a specified amount
+				if(get_main_character()->get_weight() >= 80){
+
+					std::cout << "Due to yoru weight sdfakj" << std::endl;
+
+					Environment * fuskbygge = environment_map_["Fuskbygge"];
+
+					Environment * catacomb = new Environment("A dark and moist catacomb", "Catacomb");
+					catacomb->set_neighbour(NORTH, environment_map_["Kandelaber room"]);
+					catacomb->set_neighbour(SOUTH, environment_map_["Princess room"]);
+					
+					environment_map_["Kandelaber room"]->set_neighbour(SOUTH, catacomb);
+					environment_map_["Princess room"]->set_neighbour(NORTH, catacomb);
+
+					//TODO place spy somewhere
+
+					
+					//TODO proper destructorsi
+					environment_map_["Fuskbygge"] = NULL;
+					delete fuskbygge;
+				}
+			
 			}
+
+			main_character_ -> go(direction);
+			describe_room();
+			resolve_combat(false);
+
+			return true;
 		}
 
-		return true;
+		return false;
 	}
 
 	//Prints the directions the character can go
@@ -185,20 +213,48 @@ namespace jonsson_league {
 		return true;
 	}
 
+	//Eats food, only available in the dining room
 	bool World::eat(std::string args){
 		
 		if(get_main_character()->get_environment()->get_type() == "Dining room"){
 
 			std::cout << "You eat from the delicious food on the tables." << std::endl;
+			
+			int health_diff = get_main_character()->get_health() - get_main_character()->get_max_health();
+			
+			if(health_diff != 0){
+				std::cout << "You gain 1 HP." << std::endl;
+			}
 
 			get_main_character()->set_health(get_main_character()->get_health() + 1);
-	
-			//TODO increase weight of character
+
+			get_main_character()->set_base_weight(get_main_character()->get_base_weight() + 1);
+
+			if(get_main_character()->get_weight() >= 80){
+				std::cout << "You feel full. Maybe you shouldn't eat any more..." << std::endl;
+			}
 
 			return true;
 		}
 
 		return false;
+	}
+
+	//If you kick the kandelaber, opens a secret room
+	bool World::kick(std::string args){
+	
+		if(get_main_character()->get_environment()->get_type() == "Kandelaber room"){
+			
+			std::cout << "You kick the kandelaber, it falls down and a hidden door is revealed!" << std::endl;
+
+			environment_map_["Kandelaber room"]->set_neighbour(EAST, environment_map_["Throne room"]);
+			environment_map_["Throne room"]->set_neighbour(WEST, environment_map_["Kandelaber room"]);
+
+			return true;
+		}
+
+		return false;
+		
 	}
 
 	//Attacks an enemy (must be in combat)
@@ -211,11 +267,13 @@ namespace jonsson_league {
 		// The attack
 		Character * attacker = get_current_character();
 		Character * target = get_target(args);
-		std::cout << attacker->get_name() << " " << attacker->get_name_of_attack() << " " << target->get_name() << " for " << attacker->get_strength() << " damage" << std::endl;
 
 		// Update HP of target
 		target->set_health(target->get_health() - attacker->get_strength());
 	
+		std::cout << attacker->get_name() << " " << attacker->get_name_of_attack() << " " << target->get_name() << " for " << attacker->get_strength() << " damage" 
+			<< " (" << target->get_health() << " remaining)" << std::endl;
+		
 		if(target->is_dead()){
 			std::cout << target->get_name() << " was defeated!" << std::endl;
 		}
