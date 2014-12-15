@@ -7,13 +7,17 @@ namespace jonsson_league {
 		description_ = "An unknown item";
 		weight_ = 0;
 		value_ = 0;
+		health_ = 0;
+		strength_ = 0;
 	}
 
-	Item::Item(std::string name, std::string description, int weight, int value) {
+	Item::Item(std::string name, std::string description, int weight, int value, int health, int strength) {
 		name_ = name;
 		description_ = description;
 		weight_ = weight;
-		value_ = value; 
+		value_ = value;
+		health_ = health;
+		strength_ = strength;
 	}
 
 
@@ -31,6 +35,14 @@ namespace jonsson_league {
 
 	int Item::get_value() const {
 		return value_;
+	}
+
+	int Item::get_health() const {
+		return health_;
+	}
+
+	int Item::get_strength() const {
+		return strength_;
 	}
 
 }

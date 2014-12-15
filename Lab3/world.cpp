@@ -10,9 +10,9 @@ namespace jonsson_league {
 		// TODO: More environments
 
 		// Declare all the items in the world
-		Item * sword = new Item("Svärdet Sivert", "A legendary sword, forged by blacksmith Yggrimmar.", 1, 1);
-		Item * pants = new Item("Byxan Bosse", "A legendary pair of pants, forged by children in Indonesia.", 1, 1);
-		Item * toffel_of_silence = new Item("Toffel of silence", "A unisex toffel that makes it's wearer move extremely silent.", 1, 1);
+		Item * sword = new Item("Svärdet Sivert", "A legendary sword, forged by blacksmith Yggrimmar.", 1, 1, 0, 2);
+		Item * pants = new Item("Byxan Bosse", "A legendary pair of pants, forged by children in Indonesia.", 1, 1, 2, 0);
+		Item * toffel_of_silence = new Item("Toffel of silence", "A unisex toffel that makes it's wearer move extremely silent.", 1, 1, 2, 0);
 
 		// TODO: More items
 		// TODO: Put items in vectors per room
@@ -32,7 +32,7 @@ namespace jonsson_league {
 	    current_character_ = main_character_;
 
 	    // Add inventory
-		get_main_character()->get_inventory()->add_item(toffel_of_silence);
+		get_main_character()->pick_up(toffel_of_silence);
 
 		/*
 		 * Add all the environments

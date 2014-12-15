@@ -2,60 +2,28 @@
 
 namespace jonsson_league {
 
-	Inventory::Inventory() {
-		slot_limit_ = 1;
-		weight_limit_ = 1;
-		items_ = new std::vector<Item*>;
+	Inventory::Inventory() : Container() {
+		
 	}
 
-	Inventory::Inventory(int num_slots, int max_weight) {
-		slot_limit_ = num_slots;
-		weight_limit_ = max_weight;
-		items_ = new std::vector<Item*>;
+	Inventory::Inventory(int num_slots, int max_weight) : Container(num_slots, max_weight) {
+		
 	}
 
-	int Inventory::get_slot_limit() const {
-		return slot_limit_;
-	}
-
-	int Inventory::get_weight_limit() const {
-		return weight_limit_;
-	}
-
-	int Inventory::get_weight() const {
-		int total_weight = 0;
-		for (Item const* item : *get_items()) {
-			total_weight += item->get_weight();
+	int Inventory::get_stats_health() const {
+		int health_increase = 0;
+		for ( Item* item : *get_items() ) {
+			health_increase += item->get_health();
 		}
-		return total_weight;
+		return health_increase;
 	}
 
-	bool Inventory::add_item(Item* item) {
-		if (get_number_of_items() < get_slot_limit() && get_weight_limit() >= get_weight()+item->get_weight()) {
-			items_->push_back(item);			
-			return true;
+	int Inventory::get_stats_strength() const {
+		int strength_increase = 0;
+		for ( Item* item : *get_items() ) {
+			strength_increase += item->get_strength();
 		}
-		return false;
-	}
-
-	// TODO: Only removes the item from the inventory item list. Does NOT destroy
-	// the item itself. Maybe implement functionality to move item to other inventory
-	// or something for characters to be able to drop items in an environment.
-	bool Inventory::remove_item(Item* item) {
-		std::vector<Item*>::iterator it = std::find(items_->begin(), items_->end(), item);
-		if ( it != items_->end() ) {
-			items_->erase(it);
-			return true;
-		}
-		return false;
-	}
-
-	std::vector<Item*> * Inventory::get_items() const { 
-		return items_;
-	}
-
-	int Inventory::get_number_of_items() const {
-		return get_items()->size();
+		return strength_increase;
 	}
 
 }

@@ -39,7 +39,7 @@ namespace jonsson_league {
     }
 
     int Character::get_health() const {
-    	return health_;
+    	return health_ + get_inventory()->get_stats_health();
     }
 
     void Character::set_health(int new_health) {
@@ -59,9 +59,8 @@ namespace jonsson_league {
         max_health_ = new_max_health;
     }
     int Character::get_strength() const {
-        //Count item strength
-        //Count buff/debuff strength
-    	return strength_;
+        // TODO: Count buff/debuff strength
+    	return strength_ + get_inventory()->get_stats_strength();
     }
 
     std::string Character::get_name_of_attack() const {
@@ -88,15 +87,19 @@ namespace jonsson_league {
     void Character::fight(Character) {}
 
     // The character picks up an Item
-    void Character::pick_up(Item) {}
+    void Character::pick_up(Item* item) {
+        inventory_.add_item(item);
+    }
 
     // The character drops an Item
-    void Character::drop(Item) {}
+    void Character::drop(Item* item) {
+        // TODO
+    }
 
     // The character talks to another character
     void Character::talk_to(Character) {}
 
-    bool Character::get_aggression(){
+    bool Character::get_aggression() const {
         return aggression_;
     }
 
@@ -108,7 +111,7 @@ namespace jonsson_league {
         return health_ <= 0;
     }
 
-    Inventory* Character::get_inventory() {
+    Inventory const* Character::get_inventory() const {
         return &inventory_;
     }
 }

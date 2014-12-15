@@ -12,13 +12,17 @@ namespace jonsson_league {
 		std::string description_;
 		int weight_;
 		int value_;
+		int health_;
+		int strength_;
 	public:
 		Item();
-		Item(std::string name, std::string description, int weight, int value);
+		Item(std::string name, std::string description, int weight, int value, int health, int strength);
 		std::string get_name() const;
 		std::string get_description() const;
 		int get_weight() const;
 		int get_value() const;
+		int get_health() const;
+		int get_strength() const;
 	};
 
 }

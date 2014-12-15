@@ -63,14 +63,14 @@ namespace jonsson_league {
 		Environment * get_environment();
 		void enter(Environment *);
 		void fight(Character);
-		void pick_up(Item);
-		void drop(Item);
+		void pick_up(Item*);
+		void drop(Item*);
 		void talk_to(Character);
-		bool get_aggression();
+		bool get_aggression() const;
 		void set_aggression(bool);
 		bool is_dead() const;
 		void add_inventory(Inventory* inventory);
-		Inventory* get_inventory();
+		Inventory const* get_inventory() const;
 	};
 
 }

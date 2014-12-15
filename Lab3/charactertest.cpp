@@ -66,11 +66,11 @@ std::cout << "Initiating tests" << std::endl;
     // Weight 10
     Character character("a", "b", 10, 1, 1, "c", entrance);
     // Weight 1
-    Item* sword = new Item("Svärdet Sivert", "A legendary sword, forged by blacksmith Yggrimmar.", 1, 100);
+    Item* sword = new Item("Svärdet Sivert", "A legendary sword, forged by blacksmith Yggrimmar.", 1, 100, 10, 0);
     // Before carrying sword in inventory
     assert(character.get_weight() == 10);
     // Adding sword to inventory
-    character.get_inventory()->add_item(sword);
+    character.pick_up(sword);
     // When carrying sword in inventory should be 10+1 = 11
     assert(character.get_weight() == 11);
 }

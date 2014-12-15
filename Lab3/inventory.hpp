@@ -6,25 +6,18 @@
 #include <string>
 #include <algorithm>
 #include "item.hpp"
+#include "container.hpp"
 
 namespace jonsson_league {
 
 	// Contains one single tile of the map
-	class Inventory{
+	class Inventory : public Container {
 	private:
-		int slot_limit_;
-		int weight_limit_;
-		std::vector<Item*> * items_;
 	public:
 		Inventory();
 		Inventory(int num_slots, int max_weight);
-		int get_slot_limit() const;
-		int get_weight_limit() const;
-		bool add_item(Item* item);
-		std::vector<Item*> * get_items() const;
-		bool remove_item(Item* item);
-		int get_weight() const;
-		int get_number_of_items() const;
+		int get_stats_health() const;
+		int get_stats_strength() const;
 	};
 
 }
