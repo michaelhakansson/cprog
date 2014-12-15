@@ -34,6 +34,10 @@ namespace jonsson_league {
 	    // Add inventory
 		get_main_character()->get_inventory()->add_item(toffel_of_silence);
 
+		/*
+		 * Add all the environments
+		 */
+
 		Environment * boss_room = new Environment("A room filled with spider webs... Icky!", "Boss room");
 		Character * spider = new Character("Spider", "Imse Vimse", 20, 1, "bites", boss_room);
 		spider->set_aggression(true);
@@ -86,6 +90,7 @@ namespace jonsson_league {
 		}
 	}
 
+	//Describes the room, and the items in it
 	void World::describe_room() const {
 		Environment * current_environment = main_character_->get_environment();
 	    std::cout << current_environment->get_description() << std::endl;
@@ -96,8 +101,9 @@ namespace jonsson_league {
 	    }
 	}
 
+	//Prints the inventory of the current character
 	bool World::describe_inventory(std::string args) {
-		print_items(get_current_character()->get_inventory()->get_items());
+		print_items(get_main_character()->get_inventory()->get_items());
 		return true;
 	}
 
@@ -106,6 +112,7 @@ namespace jonsson_league {
 		return true;
 	}
 
+	//Moves the main character in a direction
 	bool World::move_character(std::string input_direction){
 		direction_t direction;
 
@@ -146,6 +153,7 @@ namespace jonsson_league {
 		return true;
 	}
 
+	//Prints the directions the character can go
 	bool World::directions(std::string args){
 		std::cout << "You can go:" << std::endl;
 		for (int i = 0; i < 4; ++i) {
@@ -156,6 +164,23 @@ namespace jonsson_league {
 		return true;
 	}
 
+	bool World::eat(std::string args){
+		
+		if(get_main_character()->get_environment()->get_type() == "Dining room"){
+
+			std::cout << "You eat from the delicious food on the tables." << std::endl;
+
+			get_main_character()->set_health(get_main_character()->get_health() + 1);
+	
+			//TODO increase weight of character
+
+			return true;
+		}
+
+		return false;
+	}
+
+	//Attacks an enemy (must be in combat)
 	bool World::attack(std::string args){
 		// check_status (hälsa etc.)
 		// resolve next character
@@ -184,6 +209,7 @@ namespace jonsson_league {
 		return true;
 	}
 
+	//Checks whether combat ends
 	void World::check_status() {
 	
 		std::vector<Character*> enemies = get_local_enemies();
@@ -198,6 +224,7 @@ namespace jonsson_league {
 		set_combat_flag(false);
 	}
 
+	//Gets target in combat
 	Character* World::get_target(std::string target) {
 		// Main characters turn
 		// TODO: get target by name
@@ -214,6 +241,7 @@ namespace jonsson_league {
 		return NULL;
 	}
 
+	//Gets specific target in combat
 	Character* World::get_target_by_name(std::string target) const {
 		
 		//If we have empty string
@@ -237,6 +265,7 @@ namespace jonsson_league {
 		return NULL;
 	}
 
+	//Resolves the next character in combat
 	Character* World::get_next_character() const {
 
 		std::vector<Character*> enemies = get_local_enemies();

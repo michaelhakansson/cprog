@@ -16,6 +16,7 @@ namespace jonsson_league {
 		std::string name_;
 		std::string name_of_attack_;
 		int health_;
+		int max_health_;
 		int strength_;
 		bool aggression_;
 		Environment * current_environment_;
@@ -37,6 +38,12 @@ namespace jonsson_league {
 		// Sets the HP of the character
 		void set_health(int new_health);
 
+		// Returns the max HP of the character
+		int get_max_health() const;
+
+		// Sets the max HP of the character
+		void set_max_health(int new_health);
+		
 		// Returns the strength of the 
 		int get_strength() const;
 

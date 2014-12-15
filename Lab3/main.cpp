@@ -33,8 +33,9 @@ int main(int argc, char* argv[]) {
 	
 	functions["SUICIDE"] = &jonsson_league::World::suicide;
 	functions["INVENTORY"] = &jonsson_league::World::describe_inventory;
-	//functions["INVESTIGATE"] = &jonsson_league::World::investigate;
-	//TODO attack?
+
+	//Situational commands 
+	functions["EAT"] = &jonsson_league::World::eat;
 
 	//For combat, we restrict the player to a different set of functions
 	std::map<std::string, bool (jonsson_league::World::*)(std::string)> combat_functions;

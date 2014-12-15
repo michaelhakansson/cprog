@@ -27,6 +27,7 @@ namespace jonsson_league {
 	    bool description(std::string);
 	    bool move_character(std::string);
 	    bool directions(std::string args);
+		bool eat(std::string args);
 	    bool attack(std::string args);
 		bool suicide(std::string);
 	    void check_status();

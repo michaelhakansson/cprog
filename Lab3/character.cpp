@@ -8,6 +8,7 @@ namespace jonsson_league {
         name_ = "unknown";
         name_of_attack_ = "attacks";
         health_ = 1;
+		max_health_ = 1;
         strength_ = 1;
         aggression_ = false;
         current_environment_ = NULL;
@@ -18,6 +19,7 @@ namespace jonsson_league {
         name_ = name;
         name_of_attack_ = name_of_attack;
         health_ = health;
+		max_health_ = health;
         strength_ = strength;
         aggression_ = false; //TODO NOT AN ARGUMENT
         current_environment_ = current_environment;
@@ -36,9 +38,21 @@ namespace jonsson_league {
     }
 
     void Character::set_health(int new_health) {
-        health_ = new_health;
+
+		if(new_health <= max_health_){
+	        health_ = new_health;
+		} else {
+			health_ = max_health_;
+		}
     }
 
+    int Character::get_max_health() const {
+    	return max_health_;
+    }
+
+    void Character::set_max_health(int new_max_health) {
+        health_ = new_max_health;
+    }
     int Character::get_strength() const {
         //Count item strength
         //Count buff/debuff strength
