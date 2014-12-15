@@ -268,11 +268,13 @@ namespace jonsson_league {
 		// The attack
 		Character * attacker = get_current_character();
 		Character * target = get_target(args);
-		std::cout << attacker->get_name() << " " << attacker->get_name_of_attack() << " " << target->get_name() << " for " << attacker->get_strength() << " damage" << std::endl;
 
 		// Update HP of target
 		target->set_health(target->get_health() - attacker->get_strength());
 	
+		std::cout << attacker->get_name() << " " << attacker->get_name_of_attack() << " " << target->get_name() << " for " << attacker->get_strength() << " damage" 
+			<< " (" << target->get_health() << " remaining)" << std::endl;
+		
 		if(target->is_dead()){
 			std::cout << target->get_name() << " was defeated!" << std::endl;
 		}
