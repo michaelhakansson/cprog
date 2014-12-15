@@ -28,7 +28,7 @@ namespace jonsson_league {
 	    // TODO: Link environments		
 
 		// Place characters inside maps
-	    main_character_ = new Character("Robot", "TestBot", 1000, 10, 10, "SEGFAULTS", starting_environment_);
+	    main_character_ = new Character("Robot", "TestBot", 75, 10, 10, "SEGFAULTS", starting_environment_);
 	    current_character_ = main_character_;
 
 	    // Add inventory
@@ -43,9 +43,9 @@ namespace jonsson_league {
 		spider->set_aggression(true);
 		enemies_.push_back(spider);
 
-		Character * spider2 = new Character("Spider", "Vimse Imse", 1, 20, 1, "bites", boss_room);
-		spider2->set_aggression(true);
-		enemies_.push_back(spider2);
+		//Character * spider2 = new Character("Spider", "Vimse Imse", 1, 20, 1, "bites", boss_room);
+		//spider2->set_aggression(true);
+		//enemies_.push_back(spider2);
 
 		boss_room->set_neighbour(SOUTH, entrance);
 		entrance->set_neighbour(NORTH, boss_room);
@@ -86,7 +86,7 @@ namespace jonsson_league {
 
 		character_map_["MAIN"] = main_character_;
 		character_map_["IMSE VIMSE"] = spider;
-		character_map_["VIMSE IMSE"] = spider2;
+		//character_map_["VIMSE IMSE"] = spider2;
 	}
 
 	void World::print_items(std::vector<Item*> * vec) const {
@@ -138,27 +138,53 @@ namespace jonsson_league {
 			direction = EAST;
 		} else {
 			direction = INVALID;
-		}
-		if (direction == INVALID) {
 			std::cout << "invalid direction" << std::endl;
 			return false;
-		} else {
+		}
+		
+		std::cout << "Character " << main_character_->get_name() << " goes " << get_string_from_enum(direction) << "." << std::endl;
 
-			//If it's possible to enter in that direction
-			if(main_character_->get_environment()->get_neighbour(direction)){
-				main_character_ -> go(direction);
-				std::cout << "Character " << main_character_->get_name() << " goes " << get_string_from_enum(direction) << "." << std::endl;
-				describe_room();
-				resolve_combat(false);
+		//If it's possible to enter in that direction
+		if(main_character_->get_environment()->get_neighbour(direction)){
 
-				return true;
-			} else {
-				std::cout << "didn't find any direction" << std::endl;
-				return false;
+			std::string next_environment_type = get_main_character()->get_environment()->get_neighbour(direction)->get_type();
+
+			//If the character tries to enter the fuskbygge
+			if(next_environment_type == "Fuskbygge"){
+				
+				//If the main character weighs more than a specified amount
+				if(get_main_character()->get_weight() >= 80){
+
+					std::cout << "Due to yoru weight sdfakj" << std::endl;
+
+					Environment * fuskbygge = get_main_character()->get_environment()->get_neighbour(direction);
+
+					Environment * kandelaber_room = starting_environment_->get_neighbour(NORTH)->get_neighbour(NORTH)->get_neighbour(EAST);
+					Environment * lan_room = kandelaber_room->get_neighbour(SOUTH)->get_neighbour(SOUTH);
+
+					Environment * catacomb = new Environment("A dark and moist catacomb", "Catacomb");
+					catacomb->set_neighbour(NORTH, kandelaber_room);
+					catacomb->set_neighbour(SOUTH, lan_room);
+					kandelaber_room->set_neighbour(SOUTH, catacomb);
+					lan_room->set_neighbour(NORTH, catacomb);
+
+					//TODO place spy somewhere
+
+					
+					//TODO proper destructors
+					delete fuskbygge;
+				}
+			
 			}
+
+			main_character_ -> go(direction);
+			describe_room();
+			resolve_combat(false);
+
+			return true;
 		}
 
-		return true;
+		return false;
 	}
 
 	//Prints the directions the character can go
@@ -178,10 +204,20 @@ namespace jonsson_league {
 		if(get_main_character()->get_environment()->get_type() == "Dining room"){
 
 			std::cout << "You eat from the delicious food on the tables." << std::endl;
+			
+			int health_diff = get_main_character()->get_health() - get_main_character()->get_max_health();
+			
+			if(health_diff != 0){
+				std::cout << "You gain 1 HP." << std::endl;
+			}
 
 			get_main_character()->set_health(get_main_character()->get_health() + 1);
-	
+
 			get_main_character()->set_base_weight(get_main_character()->get_base_weight() + 1);
+
+			if(get_main_character()->get_weight() >= 80){
+				std::cout << "You feel full. Maybe you shouldn't eat any more..." << std::endl;
+			}
 
 			return true;
 		}
