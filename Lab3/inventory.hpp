@@ -22,7 +22,7 @@ namespace jonsson_league {
 		int get_weight_limit() const;
 		bool add_item(Item* item);
 		std::vector<Item*> * get_items() const;
-		void remove_item(Item* item);
+		bool remove_item(Item* item);
 		int get_weight() const;
 		int get_number_of_items() const;
 	};
