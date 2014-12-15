@@ -54,7 +54,7 @@ namespace jonsson_league {
 		dining_room->set_neighbour(SOUTH, boss_room);
 		boss_room->set_neighbour(NORTH, dining_room);
 		
-		Environment * kandelaber_room = new Environment("A room with a very mysticious kandelaber...", "Kandelaber room");
+		Environment * kandelaber_room = new Environment("A room with a terribly unfashionable kandelaber. It's so unfashionable it makes you want to KICK it...", "Kandelaber room");
 		kandelaber_room->set_neighbour(WEST, dining_room);
 		dining_room->set_neighbour(EAST, kandelaber_room);
 
@@ -172,6 +172,7 @@ namespace jonsson_league {
 		return true;
 	}
 
+	//Eats food, only available in the dining room
 	bool World::eat(std::string args){
 		
 		if(get_main_character()->get_environment()->get_type() == "Dining room"){
@@ -180,12 +181,32 @@ namespace jonsson_league {
 
 			get_main_character()->set_health(get_main_character()->get_health() + 1);
 	
-			//TODO increase weight of character
+			get_main_character()->set_base_weight(get_main_character()->get_base_weight() + 1);
 
 			return true;
 		}
 
 		return false;
+	}
+
+	//If you kick the kandelaber, opens a secret room
+	bool World::kick(std::string args){
+	
+		if(get_main_character()->get_environment()->get_type() == "Kandelaber room"){
+			
+			std::cout << "You kick the kandelaber, it falls down and a hidden door is revealed!" << std::endl;
+
+			Environment * kandelaber_room = starting_environment_->get_neighbour(NORTH)->get_neighbour(NORTH)->get_neighbour(EAST);
+			Environment * throne_room = kandelaber_room->get_neighbour(SOUTH)->get_neighbour(SOUTH)->get_neighbour(EAST)->get_neighbour(NORTH)->get_neighbour(NORTH);
+
+			kandelaber_room->set_neighbour(EAST, throne_room);
+			throne_room->set_neighbour(WEST, kandelaber_room);
+
+			return true;
+		}
+
+		return false;
+		
 	}
 
 	//Attacks an enemy (must be in combat)

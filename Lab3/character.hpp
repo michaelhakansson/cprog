@@ -40,6 +40,10 @@ namespace jonsson_league {
 		 */
 		int get_weight() const;
 
+		int get_base_weight() const;
+
+		void set_base_weight(int);
+
 		// Returns the HP of the character
 		int get_health() const;
 
