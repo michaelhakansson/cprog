@@ -33,6 +33,7 @@ int main(int argc, char* argv[]) {
 	
 	functions["SUICIDE"] = &jonsson_league::World::suicide;
 	functions["INVENTORY"] = &jonsson_league::World::describe_inventory;
+	functions["STATUS"] = &jonsson_league::World::player_status;
 
 	//Situational commands 
 	functions["EAT"] = &jonsson_league::World::eat;

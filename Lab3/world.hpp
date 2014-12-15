@@ -27,6 +27,7 @@ namespace jonsson_league {
 		void print_items(std::vector<Item*> * vec) const;
 		void describe_room() const;
 		bool describe_inventory(std::string);
+		bool player_status(std::string);
 	    bool description(std::string);
 	    bool move_character(std::string);
 	    bool directions(std::string args);

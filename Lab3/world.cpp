@@ -94,7 +94,7 @@ namespace jonsson_league {
 			std::cout << "NULL!" << std::endl;
 		}
 		for(int i = 0; i < (int) vec->size(); ++i) {
-			std::cout << (*vec)[i]->get_name() << ", \"" << (*vec)[i]->get_description() << "\"" << std::endl;
+			std::cout << "* " << (*vec)[i]->get_name() << ", \"" << (*vec)[i]->get_description() << "\"" << std::endl;
 		}
 	}
 
@@ -112,6 +112,19 @@ namespace jonsson_league {
 	//Prints the inventory of the current character
 	bool World::describe_inventory(std::string args) {
 		print_items(get_main_character()->get_inventory()->get_items());
+		return true;
+	}
+
+	//Prints status for current character
+	bool World::player_status(std::string args) {
+		Character* character = get_current_character();
+		std::cout << "Status for " << character->get_name() << std::endl;
+		std::cout << "Health: " << character->get_health() << "/" << character->get_max_health() << std::endl;
+		std::cout << "Strength: " << character->get_strength() << std::endl;
+		std::cout << "Weight: " << character->get_weight() <<std::endl;
+		std::cout << "Inventory:" << std::endl;
+		print_items(character->get_inventory()->get_items());
+
 		return true;
 	}
 
