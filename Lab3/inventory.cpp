@@ -38,13 +38,15 @@ namespace jonsson_league {
 		return false;
 	}
 
+	// TODO: Only removes the item from the inventory item list. Does NOT destroy
+	// the item itself. Maybe implement functionality to move item to other inventory
+	// or something for characters to be able to drop items in an environment.
 	bool Inventory::remove_item(Item* item) {
 		std::vector<Item*>::iterator it = std::find(items_->begin(), items_->end(), item);
 		if ( it != items_->end() ) {
 			items_->erase(it);
 			return true;
 		}
-		// items_->erase(std::find(items_->begin(), items_->end(), item));
 		return false;
 	}
 
