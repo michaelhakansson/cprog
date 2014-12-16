@@ -34,6 +34,7 @@ namespace jonsson_league {
 	    bool move_character(std::string);
 	    bool directions(std::string args);
 		bool take(std::string args);
+		bool drop(std::string args);
 
 		bool eat(std::string args);
 		bool kick(std::string args);

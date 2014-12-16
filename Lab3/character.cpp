@@ -96,24 +96,20 @@ namespace jonsson_league {
 
     // The character picks up an Item. Not able to take items if
     // enemy is in the same environment.
-    void Character::take(Item* item) {
-        if ( get_environment()->get_container()->contains(item) ) {
+    bool Character::take(Item* item) {
+        const Inventory* inventory = get_inventory();
+        if ( inventory->get_number_of_items() < inventory->get_slot_limit() && inventory->get_weight() + item->get_weight() <= inventory->get_weight_limit() ) {
             inventory_.add_item(item);
             get_environment()->get_container()->remove_item(item);
-        } else {
-            std::cerr << "Item " << item->get_name() << " not in this environment, it can not be taken." << std::endl;
+            return true;
         }
+        return false;
     }
 
     // The character drops an Item
     void Character::drop(Item* item) {
-        // Item exists in the characters inventory, so drop it.
-        if ( get_inventory()->contains(item) ) {
-            get_environment()->add_item(item);
-            inventory_.remove_item(item);
-        } else { // Item not in characters inventory, can not drop it.
-            std::cerr << "Do not hold item " << item->get_name() << ", it can not be dropped." << std::endl;
-        }
+        get_environment()->add_item(item);
+        inventory_.remove_item(item);
     }
 
     // The character talks to another character

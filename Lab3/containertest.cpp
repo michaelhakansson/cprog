@@ -17,8 +17,8 @@ std::cout << "Initiating tests" << std::endl;
 {
     std::cout << "Testing default constructor" << std::endl;
     Container container;
-    assert(container.get_slot_limit() == 1);
-    assert(container.get_weight_limit() == 1);
+    assert(container.get_slot_limit() == 10);
+    assert(container.get_weight_limit() == 10);
 }
 
 {
@@ -52,13 +52,13 @@ std::cout << "Initiating tests" << std::endl;
 {
     std::cout << "Testing get_slot_limit" << std::endl;
     Container container;
-    assert(container.get_slot_limit() == 1);
+    assert(container.get_slot_limit() == 10);
 }
 
 {
     std::cout << "Testing set_slot_limit" << std::endl;
     Container container;
-    assert(container.get_slot_limit() == 1);
+    assert(container.get_slot_limit() == 10);
     container.set_slot_limit(30);
     assert(container.get_slot_limit() == 30);
 }
@@ -66,13 +66,13 @@ std::cout << "Initiating tests" << std::endl;
 {
     std::cout << "Testing get_weight_limit" << std::endl;
     Container container;
-    assert(container.get_weight_limit() == 1);
+    assert(container.get_weight_limit() == 10);
 }
 
 {
     std::cout << "Testing set_weight_limit" << std::endl;
     Container container;
-    assert(container.get_weight_limit() == 1);
+    assert(container.get_weight_limit() == 10);
     container.set_weight_limit(30);
     assert(container.get_weight_limit() == 30);
 }
@@ -140,6 +140,16 @@ std::cout << "Initiating tests" << std::endl;
     std::vector<Item*> * items = container.get_items();
     assert(items->at(0)->get_name() == "It1");
     assert(items->at(1)->get_name() == "It2");
+}
+
+{
+    std::cout << "Testing get_item_by_name" << std::endl;
+    Container container(2,2);
+    Item* item = new Item("It1", "An item1", 1, 1, 0, 0);
+    assert(container.add_item(item) == true);
+    // MUST BE UPPER CASE
+    assert(container.get_item_by_name("IT1") != NULL);
+    assert(container.get_item_by_name("IT2") == NULL);
 }
 
 std::cout << "All tests passed!" << std::endl;

@@ -3,8 +3,8 @@
 namespace jonsson_league {
 
 	Container::Container() {
-		slot_limit_ = 1;
-		weight_limit_ = 1;
+		slot_limit_ = 10;
+		weight_limit_ = 10;
 		items_ = new std::vector<Item*>;
 	}
 
@@ -66,6 +66,17 @@ namespace jonsson_league {
 
 	std::vector<Item*> * Container::get_items() const { 
 		return items_;
+	}
+
+	Item* Container::get_item_by_name(std::string name) const {
+		for ( Item* item : *get_items() ) {
+			std::string str = item->get_name();
+			transform(str.begin(), str.end(), str.begin(), toupper);
+			if (str == name) {
+				return item;
+			}
+		}
+		return NULL;
 	}
 
 	int Container::get_number_of_items() const {

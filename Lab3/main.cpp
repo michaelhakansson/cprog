@@ -32,6 +32,7 @@ int main(int argc, char* argv[]) {
 	functions["DIRECTIONS"] = &jonsson_league::World::directions;
 
 	functions["TAKE"] = &jonsson_league::World::take;
+	functions["DROP"] = &jonsson_league::World::drop;
 	
 	functions["SUICIDE"] = &jonsson_league::World::suicide;
 	functions["INVENTORY"] = &jonsson_league::World::describe_inventory;

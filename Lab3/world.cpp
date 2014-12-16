@@ -220,16 +220,10 @@ namespace jonsson_league {
 	}
 
 	bool World::take(std::string args){
-		
-		//TODO get item by name
-		//TODO else get first item
-		//if item not found
-		//return false
-	
-		std::cout << "You took X" << std::endl;
+		Character* character = get_main_character();
 
 		//If you are in the throne room
-		if(get_main_character()->get_environment()->get_type() == "Throne room"){
+		if(character->get_environment()->get_type() == "Throne room"){
 			float r = (rand()) / (float) (RAND_MAX);
 
 			//If you are unlucky
@@ -240,6 +234,46 @@ namespace jonsson_league {
 			}
 		}
 
+		Item* item;
+		if (args == "TAKE") { // No name specified
+			if (character->get_environment()->get_container()->get_number_of_items() <= 0) {
+				return false;
+			}
+			// Take first element
+			item = character->get_environment()->get_container()->get_items()->at(0);
+			character->take(item);
+			character->get_environment()->get_container()->remove_item(item);
+		} else { // Take item by name
+			item = character->get_environment()->get_container()->get_item_by_name(args);
+			if (item == NULL) {
+				std::cout << "Could not find item " << "\"" << args << "\"" << std::endl;
+				return false;
+			} else {
+				if (!character->take(item)) {
+					std::cout << "Could not take up item" << std::endl;
+					return false;
+				}
+			}	
+		}
+		std::cout << "You took " << item->get_name() << std::endl;
+		return true;
+	}
+
+	bool World::drop(std::string args) {
+		Character* character = get_main_character();
+
+		Item* item = character->get_inventory()->get_item_by_name(args);
+		if (args == "DROP") {
+			std::cout << "You must specify what you want to drop." << std::endl;
+			return false;
+		}
+		
+		if (item == NULL) {
+			std::cout << "Could not find item " << "\"" << args << "\"" << std::endl;
+			return false;
+		} 
+		character->drop(item);
+		std::cout << "You dropped " << item->get_name() << std::endl;
 		return true;
 	}
 

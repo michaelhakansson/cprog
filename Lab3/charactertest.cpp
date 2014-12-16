@@ -30,7 +30,7 @@ std::cout << "Initiating tests" << std::endl;
 {
     std::cout << "Testing custom constructor" << std::endl;
     Environment* environment = new Environment();
-    Character character("Type", "Name", 10, 20, 30, "Attack", environment);
+    Character character("Type", "Name", 20, 30, "Attack", environment);
     assert(character.get_type() == "Type");
     assert(character.get_name() == "Name");
     assert(character.get_name_of_attack() == "Attack");
@@ -64,7 +64,7 @@ std::cout << "Initiating tests" << std::endl;
     std::cout << "Testing get_weight" << std::endl;
     Environment * entrance = new Environment("A very dark room, you hear the faint sounds of nerds typing.", "Starting area");
     // Weight 10
-    Character character("a", "b", 10, 1, 1, "c", entrance);
+    Character character("a", "b", 1, 1, "c", entrance);
     // Weight 1
     Item* sword = new Item("Svärdet Sivert", "A legendary sword, forged by blacksmith Yggrimmar.", 1, 100, 10, 0);
     entrance->add_item(sword);
@@ -81,7 +81,7 @@ std::cout << "Initiating tests" << std::endl;
     Environment * entrance = new Environment("A very dark room, you hear the faint sounds of nerds typing.", "Starting area");
     entrance->get_container()->set_slot_limit(2);
     entrance->get_container()->set_weight_limit(2);
-    Character character("a", "b", 10, 1, 1, "c", entrance);
+    Character character("a", "b", 1, 1, "c", entrance);
     Item* sword = new Item("Svärdet Sivert", "A legendary sword, forged by blacksmith Yggrimmar.", 1, 100, 10, 0);
     Item* knife = new Item("Kniven Ken", "A legendary knife, forged by blacksmith Hjalmar.", 1, 10, 1, 0);
     entrance->add_item(sword);
