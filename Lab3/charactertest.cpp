@@ -67,12 +67,34 @@ std::cout << "Initiating tests" << std::endl;
     Character character("a", "b", 10, 1, 1, "c", entrance);
     // Weight 1
     Item* sword = new Item("Svärdet Sivert", "A legendary sword, forged by blacksmith Yggrimmar.", 1, 100, 10, 0);
+    entrance->add_item(sword);
     // Before carrying sword in inventory
     assert(character.get_weight() == 10);
     // Adding sword to inventory
-    character.pick_up(sword);
+    character.take(sword);
     // When carrying sword in inventory should be 10+1 = 11
     assert(character.get_weight() == 11);
+}
+
+{
+    std::cout << "Testing take and drop item" << std::endl;
+    Environment * entrance = new Environment("A very dark room, you hear the faint sounds of nerds typing.", "Starting area");
+    entrance->get_container()->set_slot_limit(2);
+    entrance->get_container()->set_weight_limit(2);
+    Character character("a", "b", 10, 1, 1, "c", entrance);
+    Item* sword = new Item("Svärdet Sivert", "A legendary sword, forged by blacksmith Yggrimmar.", 1, 100, 10, 0);
+    Item* knife = new Item("Kniven Ken", "A legendary knife, forged by blacksmith Hjalmar.", 1, 10, 1, 0);
+    entrance->add_item(sword);
+    entrance->add_item(knife);
+
+    assert(entrance->get_container()->get_number_of_items() == 2);
+    assert(character.get_inventory()->get_number_of_items() == 0);
+
+    character.take(sword);
+
+    assert(entrance->get_container()->get_number_of_items() == 1);
+    assert(character.get_inventory()->get_number_of_items() == 1);
+    assert(character.get_inventory()->get_items()->at(0)->get_name() == "Svärdet Sivert");
 }
 
 

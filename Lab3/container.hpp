@@ -18,9 +18,11 @@ namespace jonsson_league {
 	public:
 		Container();
 		Container(int num_slots, int max_weight);
-		bool contains(Item* item);
+		bool contains(Item* item) const;
 		int get_slot_limit() const;
+		int set_slot_limit(int);
 		int get_weight_limit() const;
+		int set_weight_limit(int);
 		bool add_item(Item* item);
 		std::vector<Item*> * get_items() const;
 		bool remove_item(Item* item);

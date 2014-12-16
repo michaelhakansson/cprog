@@ -39,8 +39,14 @@ std::cout << "Initiating tests" << std::endl;
 
 {
     std::cout << "Testing get_number_of_items" << std::endl;
-    Container container;
+    Container container(2,2);
     assert(container.get_number_of_items() == 0);
+    Item* a = new Item();
+    Item* b = new Item();
+    container.add_item(a);
+    assert(container.get_number_of_items() == 1);
+    container.add_item(b);
+    assert(container.get_number_of_items() == 2);
 }
 
 {
@@ -50,9 +56,25 @@ std::cout << "Initiating tests" << std::endl;
 }
 
 {
+    std::cout << "Testing set_slot_limit" << std::endl;
+    Container container;
+    assert(container.get_slot_limit() == 1);
+    container.set_slot_limit(30);
+    assert(container.get_slot_limit() == 30);
+}
+
+{
     std::cout << "Testing get_weight_limit" << std::endl;
     Container container;
     assert(container.get_weight_limit() == 1);
+}
+
+{
+    std::cout << "Testing set_weight_limit" << std::endl;
+    Container container;
+    assert(container.get_weight_limit() == 1);
+    container.set_weight_limit(30);
+    assert(container.get_weight_limit() == 30);
 }
 
 {
