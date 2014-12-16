@@ -73,6 +73,10 @@ namespace jonsson_league {
 		bedroom->set_neighbour(WEST, princess_room);
 		princess_room->set_neighbour(EAST, bedroom);
 
+		Character * silvia = new Character("Queen", "Silvia", 20, 3, "shrieks", bedroom);
+		silvia->set_aggression(false);
+		enemies_.push_back(silvia);
+
 		Environment * trophy_room = new Environment("A trophy room. Filled with the skulls of thieves who have tried to steal from the one true monarch...", "Trophy room");
 		environment_map_["Trophy room"] = trophy_room;
 		trophy_room->set_neighbour(SOUTH, bedroom);
@@ -84,7 +88,7 @@ namespace jonsson_league {
 		throne_room->set_neighbour(WEST, kandelaber_room);
 		kandelaber_room->set_neighbour(EAST, throne_room);
 		
-		Character * kungen = new Character("King", "Carl XVI Gustav", 50, 5, "fires älgbössa at", throne_room);
+		Character * kungen = new Character("King", "Carl XVI Gustav", 50, 5, "fires the royal älgbössa at", throne_room);
 		kungen->set_aggression(false);
 		enemies_.push_back(kungen);
 		
@@ -93,6 +97,7 @@ namespace jonsson_league {
 
 		character_map_["MAIN"] = main_character_;
 		character_map_["IMSE VIMSE"] = spider;
+		character_map_["SILVIA"] = silvia;
 		character_map_["KUNGEN"] = kungen;
 		//character_map_["VIMSE IMSE"] = spider2;
 		
@@ -176,7 +181,8 @@ namespace jonsson_league {
 				
 				//If the main character weighs more than a specified amount
 				if(get_main_character()->get_weight() >= 80){
-
+					
+					//TODO
 					std::cout << "Due to yoru weight sdfakj" << std::endl;
 
 					Environment * fuskbygge = environment_map_["Fuskbygge"];
@@ -195,7 +201,13 @@ namespace jonsson_league {
 					environment_map_["Fuskbygge"] = NULL;
 					delete fuskbygge;
 				}
-			
+			}
+
+			else if(next_environment_type == "Bedroom"){
+				
+				//TODO check if you have slippers of silence
+				character_map_["SILVIA"]->set_aggression(true);
+				resolve_combat(true);
 			}
 
 			main_character_ -> go(direction);
