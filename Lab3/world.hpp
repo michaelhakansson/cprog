@@ -4,6 +4,7 @@
 #include <iostream>
 #include <algorithm>
 #include <map>
+#include <cstdlib>
 #include "environment.hpp"
 #include "character.hpp"
 #include "directions.hpp"
@@ -32,6 +33,8 @@ namespace jonsson_league {
 	    bool description(std::string);
 	    bool move_character(std::string);
 	    bool directions(std::string args);
+		bool take(std::string args);
+
 		bool eat(std::string args);
 		bool kick(std::string args);
 	    bool attack(std::string args);

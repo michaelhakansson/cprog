@@ -26,7 +26,7 @@ namespace jonsson_league {
 	public:
 		Character();
 
-		Character(std::string type, std::string name, int weight, int health, int strength, std::string name_of_attack, Environment * current_environment);
+		Character(std::string type, std::string name, int health, int strength, std::string name_of_attack, Environment * current_environment);
 
 		// Returns what type the character is eg Ogre
 		std::string get_type() const;

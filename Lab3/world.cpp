@@ -21,7 +21,8 @@ namespace jonsson_league {
 		entrance->set_item(pants);
 
 		// Place characters inside maps
-	    main_character_ = new Character("Thief", "Jonsson", 75, 10, 10, "slaps", starting_environment_);
+	    main_character_ = new Character("Thief", "Jonsson", 10, 10, "slaps", starting_environment_);
+		main_character_->set_base_weight(75);
 	    current_character_ = main_character_;
 
 	    // Add inventory
@@ -32,7 +33,7 @@ namespace jonsson_league {
 		 */
 
 		Environment * spider_room = new Environment("A room filled with spider webs... Icky!", "Spider room");
-		Character * spider = new Character("Spider", "Imse Vimse", 1, 20, 1, "bites", spider_room);
+		Character * spider = new Character("Spider", "Imse Vimse", 20, 1, "bites", spider_room);
 		spider->set_aggression(true);
 		enemies_.push_back(spider);
 		environment_map_["Spider room"] = spider_room;
@@ -83,11 +84,16 @@ namespace jonsson_league {
 		throne_room->set_neighbour(WEST, kandelaber_room);
 		kandelaber_room->set_neighbour(EAST, throne_room);
 		
+		Character * kungen = new Character("King", "Carl XVI Gustav", 50, 5, "fires älgbössa at", throne_room);
+		kungen->set_aggression(false);
+		enemies_.push_back(kungen);
+		
 		throne_room->set_neighbour(SOUTH, trophy_room);
 		trophy_room->set_neighbour(NORTH, throne_room);
 
 		character_map_["MAIN"] = main_character_;
 		character_map_["IMSE VIMSE"] = spider;
+		character_map_["KUNGEN"] = kungen;
 		//character_map_["VIMSE IMSE"] = spider2;
 		
 	}
@@ -210,6 +216,30 @@ namespace jonsson_league {
 				std::cout << get_string_from_enum(i) << std::endl;
 			}
 		}
+		return true;
+	}
+
+	bool World::take(std::string args){
+		
+		//TODO get item by name
+		//TODO else get first item
+		//if item not found
+		//return false
+	
+		std::cout << "You took X" << std::endl;
+
+		//If you are in the throne room
+		if(get_main_character()->get_environment()->get_type() == "Throne room"){
+			float r = (rand()) / (float) (RAND_MAX);
+
+			//If you are unlucky
+			if(r <= 0.2){
+				std::cout << "The monarch has awoken!" << std::endl;
+				character_map_["KUNGEN"]->set_aggression(true);
+				resolve_combat(true);
+			}
+		}
+
 		return true;
 	}
 
@@ -412,7 +442,6 @@ namespace jonsson_league {
 			if(local_enemies_.at(i)->get_environment() == main_character_->get_environment() && (aggressive || local_enemies_.at(i)->get_aggression())){
 				set_combat_flag(true);
 				combat_initated = true;
-
 				std::cout << "You enter combat with " << local_enemies_.at(i)->get_name() << std::endl;
 			}
 		}

@@ -14,10 +14,10 @@ namespace jonsson_league {
         current_environment_ = NULL;
     }
 
-    Character::Character(std::string type, std::string name, int weight, int health, int strength, std::string name_of_attack, Environment * current_environment) {
+    Character::Character(std::string type, std::string name, int health, int strength, std::string name_of_attack, Environment * current_environment) {
         type_ = type;
         name_ = name;
-        weight_ = weight;
+        weight_ = 10;
         name_of_attack_ = name_of_attack;
         health_ = health;
 		max_health_ = health;

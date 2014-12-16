@@ -30,6 +30,8 @@ int main(int argc, char* argv[]) {
 	
 	functions["DIRECTION"] = &jonsson_league::World::directions;
 	functions["DIRECTIONS"] = &jonsson_league::World::directions;
+
+	functions["TAKE"] = &jonsson_league::World::take;
 	
 	functions["SUICIDE"] = &jonsson_league::World::suicide;
 	functions["INVENTORY"] = &jonsson_league::World::describe_inventory;
@@ -48,6 +50,12 @@ int main(int argc, char* argv[]) {
 	while(true) {
 
 		std::string input;
+
+		//Display a skull if in combat
+		if(world->in_combat()){
+			std::cout << "☠ ";
+		}
+
 		std::cout << world->get_current_character()->get_name() << "> ";
 		std::getline(std::cin, input);
 
