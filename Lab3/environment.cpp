@@ -6,31 +6,31 @@ namespace jonsson_league {
         description_ = "unknown";
         type_ = "unknown";
 		neighbours_ = new std::vector<Environment * >(4, NULL);
-		items_ = new std::vector<Item*>;
+		container_ = new Container();
     }
 
 	Environment::Environment(std::string description, std::string type){
 		description_ = description;
 		type_ = type;
 		neighbours_ = new std::vector<Environment * >(4, NULL);
-		items_ = new std::vector<Item*>;
+		container_ = new Container();
 	}
 
-    Environment::Environment(std::vector<Item*> * items, std::vector<Environment*> * neighbours, std::string description, std::string type){
+    Environment::Environment(Container* container, std::vector<Environment*> * neighbours, std::string description, std::string type){
 
         //OBS! Shared pointers?
-        items_ = items;
         neighbours_ = neighbours;
         description_ = description;
         type_ = type;
+        container_ = container;
     }
 
-    std::vector<Item*> * Environment::get_items() const {
-    	return items_;
+    Container * Environment::get_container() const {
+    	return container_;
     }
 
-	void Environment::set_item(Item * item){
-		items_->push_back(item);
+	void Environment::add_item(Item * item){
+		container_->add_item(item);
 	}
     
 	std::string Environment::get_type() const {

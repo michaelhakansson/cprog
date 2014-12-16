@@ -67,7 +67,7 @@ namespace jonsson_league {
 		Environment * get_environment();
 		void enter(Environment *);
 		void fight(Character);
-		void pick_up(Item*);
+		void take(Item*);
 		void drop(Item*);
 		void talk_to(Character);
 		bool get_aggression() const;

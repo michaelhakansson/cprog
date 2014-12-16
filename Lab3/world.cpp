@@ -17,15 +17,15 @@ namespace jonsson_league {
 
 		// TODO: More items
 		// TODO: Put items in vectors per room
-		entrance->set_item(sword);
-		entrance->set_item(pants);
+		entrance->add_item(sword);
+		entrance->add_item(pants);
 
 		// Place characters inside maps
 	    main_character_ = new Character("Thief", "Jonsson", 75, 10, 10, "slaps", starting_environment_);
 	    current_character_ = main_character_;
 
 	    // Add inventory
-		get_main_character()->pick_up(toffel_of_silence);
+		get_main_character()->take(toffel_of_silence);
 
 		/*
 		 * Add all the environments
@@ -106,9 +106,9 @@ namespace jonsson_league {
 		Environment * current_environment = main_character_->get_environment();
 	    std::cout << current_environment->get_description() << std::endl;
 
-	    if (current_environment->get_items()->size()) {
+	    if (current_environment->get_container()->get_number_of_items()) {
 	    	std::cout << "In this room you see the following item(s): " << std::endl;
-	    	print_items(current_environment->get_items());
+	    	print_items(current_environment->get_container()->get_items());
 	    }
 	}
 

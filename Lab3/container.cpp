@@ -14,7 +14,7 @@ namespace jonsson_league {
 		items_ = new std::vector<Item*>;
 	}
 
-	bool Container::contains(Item* item) {
+	bool Container::contains(Item* item) const {
 		if ( std::find(items_->begin(), items_->end(), item)  != items_->end() ) {
 			return true;
 		}
@@ -25,8 +25,16 @@ namespace jonsson_league {
 		return slot_limit_;
 	}
 
+	int Container::set_slot_limit(int slot_limit) {
+		return slot_limit_ = slot_limit;
+	}
+
 	int Container::get_weight_limit() const {
 		return weight_limit_;
+	}
+
+	int Container::set_weight_limit(int weight_limit) {
+		return weight_limit_ = weight_limit;
 	}
 
 	int Container::get_weight() const {
