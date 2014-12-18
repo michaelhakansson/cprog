@@ -69,6 +69,8 @@ namespace jonsson_league {
 	}
 
 	Item* Container::get_item_by_name(std::string name) const {
+		transform(name.begin(), name.end(), name.begin(), toupper);
+		
 		for ( Item* item : *get_items() ) {
 			std::string str = item->get_name();
 			transform(str.begin(), str.end(), str.begin(), toupper);

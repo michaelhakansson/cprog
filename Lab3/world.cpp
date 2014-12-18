@@ -79,7 +79,7 @@ namespace jonsson_league {
 		Environment * throne_room = new Environment("The throne room... full with all kinds of treasures and jewels! And a sleeping monarch...", "Throne room");
 		environment_map_["Throne room"] = throne_room;
 		throne_room->set_neighbour(WEST, kandelaber_room);
-		kandelaber_room->set_neighbour(EAST, throne_room);
+		//kandelaber_room->set_neighbour(EAST, throne_room);
 		
 		Character * kungen = new Character("King", "Carl XVI Gustav", 50, 5, "fires the royal älgbössa at", throne_room);
 		kungen->set_aggression(false);
@@ -95,7 +95,7 @@ namespace jonsson_league {
 		//character_map_["VIMSE IMSE"] = spider2;
 		
 		// Declare all the items in the world
-		Item * toffel_of_silence = new Item("Toffel of silence", "A unisex toffel that makes it's wearer move extremely silent.", 1, 10, 2, 0);
+		Item * toffel_of_silence = new Item("Toffel of silence", "A unisex toffel that makes it's wearer move extremely silently.", 1, 10, 2, 0);
 
 		// TODO: More items
 		spider_room->add_item(toffel_of_silence);
@@ -168,11 +168,10 @@ namespace jonsson_league {
 			return false;
 		}
 		
-		std::cout << "Character " << main_character_->get_name() << " goes " << get_string_from_enum(direction) << "." << std::endl;
-
 		//If it's possible to enter in that direction
 		if(main_character_->get_environment()->get_neighbour(direction)){
-
+		
+			std::cout << "Character " << main_character_->get_name() << " goes " << get_string_from_enum(direction) << "." << std::endl;
 			std::string next_environment_type = get_main_character()->get_environment()->get_neighbour(direction)->get_type();
 
 			//If the character tries to enter the fuskbygge
@@ -204,9 +203,15 @@ namespace jonsson_league {
 
 			else if(next_environment_type == "Bedroom"){
 				
-				//TODO check if you have slippers of silence
-				character_map_["SILVIA"]->set_aggression(true);
-				resolve_combat(true);
+				//Initiate combat with silvia if you don't have the slippers of silence
+				if(get_main_character()->get_inventory()->get_item_by_name("Toffel of silence") == NULL){
+
+					//If silvia is still alive
+					if(character_map_["SILVIA"] != NULL){
+						character_map_["SILVIA"]->set_aggression(true);
+						resolve_combat(true);
+					}
+				}
 			}
 
 			main_character_ -> go(direction);
