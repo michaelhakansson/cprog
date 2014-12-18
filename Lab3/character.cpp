@@ -26,6 +26,8 @@ namespace jonsson_league {
         current_environment_ = current_environment;
     }
 
+    void Character::say() const {}
+
     std::string Character::get_type() const {
     	return type_;
     }

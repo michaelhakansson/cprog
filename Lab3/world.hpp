@@ -7,6 +7,7 @@
 #include <cstdlib>
 #include "environment.hpp"
 #include "character.hpp"
+#include "king.hpp"
 #include "directions.hpp"
 #include "inventory.hpp"
 
