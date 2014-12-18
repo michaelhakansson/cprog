@@ -25,6 +25,11 @@ namespace jonsson_league {
         container_ = container;
     }
 
+    Environment::~Environment() {
+    	delete neighbours_;
+    	delete container_;
+    }
+
     Container * Environment::get_container() const {
     	return container_;
     }

@@ -14,6 +14,15 @@ namespace jonsson_league {
 		items_ = new std::vector<Item*>;
 	}
 
+	Container::~Container() {
+		for (Item* item : *items_) {
+			delete item;
+		}
+		delete items_;
+		slot_limit_ = 0;
+		weight_limit_ = 0;
+	}
+
 	bool Container::contains(Item* item) const {
 		if ( std::find(items_->begin(), items_->end(), item)  != items_->end() ) {
 			return true;

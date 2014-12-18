@@ -1,6 +1,22 @@
-spel.out: character.cpp environment.cpp world.cpp main.cpp item.cpp
-	g++ -std=c++11 -g -Wall character.cpp environment.cpp world.cpp main.cpp item.cpp container.cpp inventory.cpp king.cpp
+CC=g++
+CDFLAGS= -std=c++11 -g -c -Wall
+LDFLAGS=
+SOURCES=character.cpp king.cpp world.cpp inventory.cpp container.cpp environment.cpp item.cpp main.cpp
+OBJECTS=$(SOURCES:.cpp=.o) # Substitution variable that turns a list of *.cpp to *.o
+EXECUTABLE=jonsson_league
+
+all: $(SOURCES) $(EXECUTABLE)
+
+# $@ expands to the file name of the target
+$(EXECUTABLE): $(OBJECTS)
+	$(CC) $(LDFLAGS) $(OBJECTS) -o $@
+
+.cpp.o:
+	$(CC) $(CDFLAGS) $< -o $@
 
 clean:
-	rm *.gch
-	rm *.out
+	-rm -f $(OBJECTS)
+	-rm -f $(EXECUTABLE)
+
+run: all
+	./$(EXECUTABLE)
