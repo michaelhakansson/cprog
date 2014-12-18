@@ -23,6 +23,7 @@ namespace jonsson_league {
 		// Declare all the environments in the world
 		
 		Environment * end_state = new Environment("Congratulations!", "End state");
+		environment_map_["End state"] = end_state;
 
 		Environment * entrance = new Environment("A very elegant room, there is a painting showing the monarch covered in expensive jewelry.", "Entrance");
 		starting_environment_ = entrance;
@@ -199,6 +200,8 @@ namespace jonsson_league {
 					Environment * fuskbygge = environment_map_["Fuskbygge"];
 
 					Environment * catacomb = new Environment("A dark and moist catacomb", "Catacomb");
+					environment_map_["Catacomb"] = catacomb;
+
 					catacomb->set_neighbour(NORTH, environment_map_["Kandelaber room"]);
 					catacomb->set_neighbour(SOUTH, environment_map_["Princess room"]);
 					
