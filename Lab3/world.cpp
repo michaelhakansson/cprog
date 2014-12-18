@@ -4,29 +4,22 @@ namespace jonsson_league {
 
 	// Generates a collection of environments and characters etc
 	void World::init() {
-		
+
 		// Declare all the environments in the world
-		Environment * entrance = new Environment("A very dark room, you hear the faint sounds of nerds typing.", "Entrance");
+		
+		Environment * end_state = new Environment("Congratulations!", "End state");
+
+		Environment * entrance = new Environment("A very elegant room, there is a painting showing the monarch covered in expensive jewelry.", "Entrance");
 		starting_environment_ = entrance;
 		environment_map_["Entrance"] = entrance;
 
-		// Declare all the items in the world
-		Item * sword = new Item("Svärdet Sivert", "A legendary sword, forged by blacksmith Yggrimmar.", 1, 1, 0, 2);
-		Item * pants = new Item("Byxan Bosse", "A legendary pair of pants, forged by children in Indonesia.", 1, 1, 2, 0);
-		Item * toffel_of_silence = new Item("Toffel of silence", "A unisex toffel that makes it's wearer move extremely silent.", 1, 1, 2, 0);
-
-		// TODO: More items
-		// TODO: Put items in vectors per room
-		entrance->add_item(sword);
-		entrance->add_item(pants);
+		//Go here to end the game
+		entrance->set_neighbour(SOUTH, end_state);
 
 		// Place characters inside maps
 	    main_character_ = new Character("Thief", "Jonsson", 10, 10, "slaps", starting_environment_);
 		main_character_->set_base_weight(75);
 	    current_character_ = main_character_;
-
-	    // Add inventory
-		get_main_character()->take(toffel_of_silence);
 
 		/*
 		 * Add all the environments
@@ -101,6 +94,12 @@ namespace jonsson_league {
 		character_map_["KUNGEN"] = kungen;
 		//character_map_["VIMSE IMSE"] = spider2;
 		
+		// Declare all the items in the world
+		Item * toffel_of_silence = new Item("Toffel of silence", "A unisex toffel that makes it's wearer move extremely silent.", 1, 10, 2, 0);
+
+		// TODO: More items
+		spider_room->add_item(toffel_of_silence);
+
 	}
 
 	void World::print_items(std::vector<Item*> * vec) const {

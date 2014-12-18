@@ -130,4 +130,8 @@ namespace jonsson_league {
     Inventory const* Character::get_inventory() const {
         return &inventory_;
     }
+
+	int Character::get_value() const {
+		return get_inventory()->get_value();
+	}
 }

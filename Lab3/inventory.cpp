@@ -3,7 +3,6 @@
 namespace jonsson_league {
 
 	Inventory::Inventory() : Container() {
-		
 	}
 
 	Inventory::Inventory(int num_slots, int max_weight) : Container(num_slots, max_weight) {

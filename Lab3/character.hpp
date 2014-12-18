@@ -75,6 +75,7 @@ namespace jonsson_league {
 		bool is_dead() const;
 		void add_inventory(Inventory* inventory);
 		Inventory const* get_inventory() const;
+		int get_value() const;
 	};
 
 }

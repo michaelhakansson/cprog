@@ -28,6 +28,7 @@ namespace jonsson_league {
 		Item* get_item_by_name(std::string) const;
 		bool remove_item(Item* item);
 		int get_weight() const;
+		int get_value() const;
 		int get_number_of_items() const;
 	};
 

@@ -104,6 +104,13 @@ int main(int argc, char* argv[]) {
 
 			return 1;
 		}
+
+		if(world->get_main_character()->get_environment()->get_type() == "End state"){
+
+			std::cout << "You escaped the castle with your life and " << world->get_main_character()->get_value() << " coins worth of loot." << std::endl;
+
+			return 1;
+		}
 	}
 
     return 1;

@@ -79,6 +79,19 @@ namespace jonsson_league {
 		return NULL;
 	}
 
+	//Gets the monetary value of everything in the container
+	int Container::get_value() const{
+		
+		int value = 0;
+
+		for(Item* item : *get_items()){
+
+			value += item->get_value();
+		}
+
+		return value;
+	}
+
 	int Container::get_number_of_items() const {
 		return get_items()->size();
 	}
