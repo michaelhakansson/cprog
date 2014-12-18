@@ -28,6 +28,8 @@ namespace jonsson_league {
 
 		Character(std::string type, std::string name, int health, int strength, std::string name_of_attack, Environment * current_environment);
 
+		~Character();
+
 		virtual void say() const;
 
 		// Returns what type the character is eg Ogre

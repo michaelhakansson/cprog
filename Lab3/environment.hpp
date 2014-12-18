@@ -21,6 +21,7 @@ namespace jonsson_league {
 	    Environment();
 		Environment(std::string, std::string);
 	    Environment(Container* container, std::vector<Environment*> * neighbours, std::string description, std::string type);
+	    virtual ~Environment();
 		Container * get_container() const;
 		void add_item(Item *);
 		std::string get_type() const;
