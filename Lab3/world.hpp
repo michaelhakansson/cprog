@@ -15,7 +15,6 @@ namespace jonsson_league {
 
 	class World {
 	private:
-	    std::vector<Environment *> environments_;
 	    Environment * starting_environment_;
 	    std::vector<Character *> enemies_;
 	    std::vector<Character *> local_enemies_;
@@ -26,6 +25,8 @@ namespace jonsson_league {
 		std::map<std::string, Character *> character_map_;
 		std::map<std::string, Environment *> environment_map_;
 	public:
+		World();
+		~World();
 		void init();
 		void print_items(std::vector<Item*> * vec) const;
 		void describe_room() const;

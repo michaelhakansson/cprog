@@ -2,6 +2,21 @@
 
 namespace jonsson_league {
 
+	World::World() {
+
+	}
+
+	World::~World() {
+		for (auto & character : character_map_) {
+			delete character.second;
+		}
+
+		for (auto & environment : environment_map_) {
+			delete environment.second;
+		}
+
+	}
+
 	// Generates a collection of environments and characters etc
 	void World::init() {
 
