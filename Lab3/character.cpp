@@ -93,8 +93,26 @@ namespace jonsson_league {
     	current_environment_ = new_environment;
     }
 
-    // The character enters a fight with another character
-    void Character::fight(Character) {}
+    // The character attacks an enemy
+    void Character::attack(Character * enemy) {
+
+		int damage = get_environment()->get_effect(get_strength());
+
+		std::cout << get_name() << " " << get_name_of_attack() << " " << enemy->get_name() << " for " << damage << " damage" << std::endl;
+
+		int retaliation = enemy->defend(this, damage);
+		set_health(get_health() - retaliation);
+		return;
+	}
+
+	//Character takes damage and potentially retaliates
+	int Character::defend(Character * from, int damage){
+		set_health(get_health() - damage);
+
+		std::cout << get_name() << " has " << get_health() << " health left" << std::endl;
+
+		return 0;
+	}
 
     // The character picks up an Item. Not able to take items if
     // enemy is in the same environment.

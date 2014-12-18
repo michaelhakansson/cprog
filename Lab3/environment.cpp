@@ -66,4 +66,8 @@ namespace jonsson_league {
 
 		return true;
 	}
+
+	int Environment::get_effect(int damage){
+		return damage;
+	}
 }

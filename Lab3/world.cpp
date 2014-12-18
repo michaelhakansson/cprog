@@ -48,8 +48,8 @@ namespace jonsson_league {
 		environment_map_["Kandelaber room"] = kandelaber_room;
 		kandelaber_room->set_neighbour(WEST, dining_room);
 		dining_room->set_neighbour(EAST, kandelaber_room);
-
-		//TODO catacombs
+		Item * kandelaber = new Item("Kandelaber", "A kandelaber. It's hideous...", 10, 5, 0, 5);
+		kandelaber_room->add_item(kandelaber);
 
 		Environment * fuskbygge = new Environment("A fuskbygge that is almost falling apart! Damn polish immigrants!", "Fuskbygge");
 		environment_map_["Fuskbygge"] = fuskbygge;
@@ -96,8 +96,6 @@ namespace jonsson_league {
 		
 		// Declare all the items in the world
 		Item * toffel_of_silence = new Item("Toffel of silence", "A unisex toffel that makes it's wearer move extremely silently.", 1, 10, 2, 0);
-
-		// TODO: More items
 		spider_room->add_item(toffel_of_silence);
 
 	}
@@ -324,13 +322,20 @@ namespace jonsson_league {
 	bool World::kick(std::string args){
 	
 		if(get_main_character()->get_environment()->get_type() == "Kandelaber room"){
-			
-			std::cout << "You kick the kandelaber, it falls down and a hidden door is revealed!" << std::endl;
 
-			environment_map_["Kandelaber room"]->set_neighbour(EAST, environment_map_["Throne room"]);
-			environment_map_["Throne room"]->set_neighbour(WEST, environment_map_["Kandelaber room"]);
+			Item * kandelaber = environment_map_["Kandelaber room"]->get_container()->get_item_by_name("Kandelaber");
 
-			return true;
+			//If the kandelaber even exists
+			if(kandelaber != NULL){
+				std::cout << "You kick the kandelaber, it shatters into a million pieces and a hidden door is revealed!" << std::endl;
+				environment_map_["Kandelaber room"]->get_container()->remove_item(kandelaber);
+				delete kandelaber;
+
+				environment_map_["Kandelaber room"]->set_neighbour(EAST, environment_map_["Throne room"]);
+				environment_map_["Throne room"]->set_neighbour(WEST, environment_map_["Kandelaber room"]);
+
+				return true;
+			}
 		}
 
 		return false;
@@ -349,11 +354,8 @@ namespace jonsson_league {
 		Character * target = get_target(args);
 
 		// Update HP of target
-		target->set_health(target->get_health() - attacker->get_strength());
+		attacker->attack(target);
 	
-		std::cout << attacker->get_name() << " " << attacker->get_name_of_attack() << " " << target->get_name() << " for " << attacker->get_strength() << " damage" 
-			<< " (" << target->get_health() << " remaining)" << std::endl;
-		
 		if(target->is_dead()){
 			std::cout << target->get_name() << " was defeated!" << std::endl;
 		}
