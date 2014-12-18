@@ -18,6 +18,7 @@ namespace jonsson_league {
 	public:
 		Container();
 		Container(int num_slots, int max_weight);
+		virtual ~Container();
 		bool contains(Item* item) const;
 		int get_slot_limit() const;
 		int set_slot_limit(int);
