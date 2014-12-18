@@ -273,20 +273,18 @@ namespace jonsson_league {
 			}
 			// Take first element
 			item = character->get_environment()->get_container()->get_items()->at(0);
-			character->take(item);
-			character->get_environment()->get_container()->remove_item(item);
 		} else { // Take item by name
 			item = character->get_environment()->get_container()->get_item_by_name(args);
 			if (item == NULL) {
 				std::cout << "Could not find item " << "\"" << args << "\"" << std::endl;
 				return false;
-			} else {
-				if (!character->take(item)) {
-					std::cout << "Could not take up item" << std::endl;
-					return false;
-				}
-			}	
+			}
 		}
+		if (!character->take(item)) {
+			std::cout << "Could not take up item" << std::endl;
+			return false;
+		}
+		character->get_environment()->get_container()->remove_item(item);
 		std::cout << "You took " << item->get_name() << std::endl;
 		return true;
 	}
