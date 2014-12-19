@@ -12,7 +12,7 @@ namespace jonsson_league {
 	public:
 		Spiderroom();
 		Spiderroom(std::string, std::string);
-		virtual int get_effect(int damage, std::string character_type);
+		virtual int get_effect(int damage, std::string character_type) const;
 	};
 
 }
