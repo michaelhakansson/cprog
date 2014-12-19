@@ -46,6 +46,10 @@ namespace jonsson_league {
     std::string Environment::get_description() const {
     	return description_;
     }
+	
+	void Environment::set_description(std::string description){
+		description_ = description;
+	}
 
 	//Returns a vector of environment pointers which are the neighbours at specified directions
     std::vector<Environment *> * Environment::get_neighbours() const {

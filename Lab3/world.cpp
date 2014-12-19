@@ -33,7 +33,7 @@ namespace jonsson_league {
 		entrance->set_neighbour(SOUTH, end_state);
 
 		// Place characters inside maps
-	    main_character_ = new Character("Thief", "Jonsson", 10, 10, "slaps", starting_environment_);
+	    main_character_ = new Character("Thief", "Jonsson", 10, 5, "slaps", starting_environment_);
 		main_character_->set_base_weight(75);
 	    current_character_ = main_character_;
 
@@ -93,9 +93,13 @@ namespace jonsson_league {
 		Environment * throne_room = new Environment("The throne room... full with all kinds of treasures and jewels! And a sleeping monarch...", "Throne room");
 		environment_map_["Throne room"] = throne_room;
 		throne_room->set_neighbour(WEST, kandelaber_room);
-		//kandelaber_room->set_neighbour(EAST, throne_room);
-		
-		Character * kungen = new Character("King", "Carl XVI Gustav", 50, 5, "fires the royal älgbössa at", throne_room);
+	
+		for(int i = 0; i < 10; i++){
+			Item * bag_of_coins = new Item("Bag of coins", "A massive bag of coins, marked 'Property of the monarch'", 2, 5, 0, 0);
+			throne_room->add_item(bag_of_coins);
+		}
+
+		Character * kungen = new King("King", "Carl XVI Gustav", 50, 5, "fires the royal älgbössa at", throne_room);
 		kungen->set_aggression(false);
 		enemies_.push_back(kungen);
 		
@@ -112,7 +116,7 @@ namespace jonsson_league {
 		Item * toffel_of_silence = new Item("Toffel of silence", "A unisex toffel that makes it's wearer move extremely silently.", 1, 10, 2, 0);
 		spider_room->add_item(toffel_of_silence);
 
-		Item * kandelaber = new Item("Kandelaber", "A kandelaber. It's hideous...", 10, 5, 0, 5);
+		Item * kandelaber = new Item("Kandelaber", "A kandelaber. It's hideous...", 10, 5, 0, 3);
 		kandelaber_room->add_item(kandelaber);
 		
 	}
@@ -203,6 +207,17 @@ namespace jonsson_league {
 					Environment * catacomb = new Environment("A dark and moist catacomb", "Catacomb");
 					environment_map_["Catacomb"] = catacomb;
 
+					Character * rat_1 = new Character("Rat", "Michael Mouse", 20, 1, "gnaws", catacomb);
+					Character * rat_2 = new Character("Rat", "Mindy Mouse", 20, 1, "gnaws", catacomb);
+
+					rat_1->set_aggression(true);
+					rat_2->set_aggression(true);
+
+					enemies_.push_back(rat_1);
+					enemies_.push_back(rat_2);
+					character_map_["MICHAEL MOUSE"] = rat_1;
+					character_map_["MINDY MOUSE"] = rat_2;
+			
 					catacomb->set_neighbour(NORTH, environment_map_["Kandelaber room"]);
 					catacomb->set_neighbour(SOUTH, environment_map_["Princess room"]);
 					
@@ -347,6 +362,7 @@ namespace jonsson_league {
 				environment_map_["Kandelaber room"]->get_container()->remove_item(kandelaber);
 				delete kandelaber;
 
+				environment_map_["Kandelaber room"]->set_description("A room without a terribly fashionable kandelaber.");
 				environment_map_["Kandelaber room"]->set_neighbour(EAST, environment_map_["Throne room"]);
 				environment_map_["Throne room"]->set_neighbour(WEST, environment_map_["Kandelaber room"]);
 
@@ -511,6 +527,7 @@ namespace jonsson_league {
 				set_combat_flag(true);
 				combat_initated = true;
 				std::cout << "You enter combat with " << local_enemies_.at(i)->get_name() << std::endl;
+				local_enemies_.at(i)->say();
 			}
 		}
 

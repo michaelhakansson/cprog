@@ -145,7 +145,7 @@ namespace jonsson_league {
     }
 
     bool Character::is_dead() const {
-        return health_ <= 0;
+        return get_health() <= 0;
     }
 
     Inventory const* Character::get_inventory() const {
