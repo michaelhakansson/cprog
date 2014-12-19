@@ -42,7 +42,7 @@ namespace jonsson_league {
 		 */
 
 		Environment * spider_room = new Spiderroom("A room filled with spider webs... Icky!", "Spider room");
-		Character * spider = new Spider("Spider", "Imse Vimse", 20, 1, "bites", spider_room);
+		Character * spider = new Spider("Spider", "Imse Vimse", 15, 1, "bites", spider_room);
 		spider->set_aggression(true);
 		enemies_.push_back(spider);
 		environment_map_["Spider room"] = spider_room;
@@ -90,7 +90,7 @@ namespace jonsson_league {
 		bedroom->set_neighbour(NORTH, trophy_room);
 
 		//TODO restrict access to throne room
-		Environment * throne_room = new Environment("The throne room... full with all kinds of treasures and jewels! And a sleeping monarch...", "Throne room");
+		Environment * throne_room = new Throneroom("The throne room... full with all kinds of treasures and jewels! And a sleeping monarch...", "Throne room");
 		environment_map_["Throne room"] = throne_room;
 		throne_room->set_neighbour(WEST, kandelaber_room);
 	
@@ -99,7 +99,7 @@ namespace jonsson_league {
 			throne_room->add_item(bag_of_coins);
 		}
 
-		Character * kungen = new King("King", "Carl XVI Gustav", 50, 5, "fires the royal älgbössa at", throne_room);
+		Character * kungen = new King("King", "Carl XVI Gustav", 30, 5, "fires the royal älgbössa at", throne_room);
 		kungen->set_aggression(false);
 		enemies_.push_back(kungen);
 		
@@ -274,7 +274,7 @@ namespace jonsson_league {
 			float r = (rand()) / (float) (RAND_MAX);
 
 			//If you are unlucky
-			if(r <= 0.2){
+			if(r <= 0.35){
 				std::cout << "The monarch has awoken!" << std::endl;
 				character_map_["KUNGEN"]->set_aggression(true);
 				resolve_combat(true);
