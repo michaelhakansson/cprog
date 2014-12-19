@@ -13,7 +13,7 @@ void print_file(std::string);
 int main(int argc, char* argv[]) {
 
 	print_file("intro.txt");
-	//print_file("tutorial.txt");
+	print_file("tutorial.txt");
     
 	jonsson_league::World * world = new jonsson_league::World();
 	world->init();
