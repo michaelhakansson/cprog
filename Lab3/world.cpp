@@ -33,7 +33,7 @@ namespace jonsson_league {
 		entrance->set_neighbour(SOUTH, end_state);
 
 		// Place characters inside maps
-	    main_character_ = new Character("Thief", "Jonsson", 10, 10, "slaps", starting_environment_);
+	    main_character_ = new Character("Thief", "Jonsson", 10, 5, "slaps", starting_environment_);
 		main_character_->set_base_weight(75);
 	    current_character_ = main_character_;
 
@@ -116,7 +116,7 @@ namespace jonsson_league {
 		Item * toffel_of_silence = new Item("Toffel of silence", "A unisex toffel that makes it's wearer move extremely silently.", 1, 10, 2, 0);
 		spider_room->add_item(toffel_of_silence);
 
-		Item * kandelaber = new Item("Kandelaber", "A kandelaber. It's hideous...", 10, 5, 0, 5);
+		Item * kandelaber = new Item("Kandelaber", "A kandelaber. It's hideous...", 10, 5, 0, 3);
 		kandelaber_room->add_item(kandelaber);
 		
 	}
@@ -362,6 +362,7 @@ namespace jonsson_league {
 				environment_map_["Kandelaber room"]->get_container()->remove_item(kandelaber);
 				delete kandelaber;
 
+				environment_map_["Kandelaber room"]->set_description("A room without a terribly fashionable kandelaber.");
 				environment_map_["Kandelaber room"]->set_neighbour(EAST, environment_map_["Throne room"]);
 				environment_map_["Throne room"]->set_neighbour(WEST, environment_map_["Kandelaber room"]);
 
