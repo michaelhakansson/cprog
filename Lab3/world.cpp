@@ -42,7 +42,7 @@ namespace jonsson_league {
 		 */
 
 		Environment * spider_room = new Spiderroom("A room filled with spider webs... Icky!", "Spider room");
-		Character * spider = new Character("Spider", "Imse Vimse", 20, 1, "bites", spider_room);
+		Character * spider = new Spider("Spider", "Imse Vimse", 20, 1, "bites", spider_room);
 		spider->set_aggression(true);
 		enemies_.push_back(spider);
 		environment_map_["Spider room"] = spider_room;
@@ -207,8 +207,8 @@ namespace jonsson_league {
 					Environment * catacomb = new Environment("A dark and moist catacomb", "Catacomb");
 					environment_map_["Catacomb"] = catacomb;
 
-					Character * rat_1 = new Character("Rat", "Michael Mouse", 20, 1, "gnaws", catacomb);
-					Character * rat_2 = new Character("Rat", "Mindy Mouse", 20, 1, "gnaws", catacomb);
+					Character * rat_1 = new Character("Rat", "Michael Mouse", 15, 1, "gnaws", catacomb);
+					Character * rat_2 = new Character("Rat", "Mindy Mouse", 15, 1, "gnaws", catacomb);
 
 					rat_1->set_aggression(true);
 					rat_2->set_aggression(true);

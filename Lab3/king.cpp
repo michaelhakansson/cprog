@@ -16,14 +16,12 @@ namespace jonsson_league {
 		
 		float damage_factor = 1.0;
 
-		std::cout << "king test" << std::endl;
-
 		if(get_health() < get_max_health()){
 			std::cout << get_name() << ": How dare you wound ME?!" << std::endl;
 			std::cout << get_name() << " has gone berserk!" << std::endl;
-			damage_factor = 1.5;
+			damage_factor = 1.7;
 		}
-		int damage = get_environment()->get_effect(get_strength() * damage_factor);
+		int damage = get_environment()->get_effect(get_strength() * damage_factor, get_type());
 		std::cout << get_name() << " " << get_name_of_attack() << " " << enemy->get_name() << " for " << damage << " damage" << std::endl;
 		int retaliation = enemy->defend(this, damage);
 		set_health(get_health() - retaliation);
