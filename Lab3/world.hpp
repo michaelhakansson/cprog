@@ -9,6 +9,7 @@
 #include "spiderroom.hpp"
 #include "character.hpp"
 #include "king.hpp"
+#include "spider.hpp"
 #include "directions.hpp"
 #include "inventory.hpp"
 

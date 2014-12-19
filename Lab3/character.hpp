@@ -70,8 +70,10 @@ namespace jonsson_league {
 		void go(int);
 		Environment * get_environment();
 		void enter(Environment *);
+		
 		virtual void attack(Character *);
 		virtual int defend(Character *, int);
+		
 		bool take(Item*);
 		void drop(Item*);
 		void talk_to(Character);
