@@ -3,7 +3,6 @@
 
 #include <vector>
 #include <string>
-#include <sstream>
 
 #include "item.hpp"
 #include "container.hpp"
@@ -29,7 +28,7 @@ namespace jonsson_league {
 		std::vector<Environment *> * get_neighbours() const;
 		Environment * get_neighbour(int) const;
 		bool set_neighbour(int, Environment *);
-		virtual int get_effect(int);
+		virtual int get_effect(int, std::string character_type);
 	};
 }
 

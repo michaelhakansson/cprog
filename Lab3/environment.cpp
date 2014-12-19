@@ -72,7 +72,7 @@ namespace jonsson_league {
 		return true;
 	}
 
-	int Environment::get_effect(int damage){
+	int Environment::get_effect(int damage, std::string character_type){
 		return damage;
 	}
 }
