@@ -26,6 +26,7 @@ namespace jonsson_league {
 		void add_item(Item *);
 		std::string get_type() const;
 		std::string get_description() const;
+		void set_description(std::string);
 		std::vector<Environment *> * get_neighbours() const;
 		Environment * get_neighbour(int) const;
 		bool set_neighbour(int, Environment *);

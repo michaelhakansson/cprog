@@ -207,6 +207,17 @@ namespace jonsson_league {
 					Environment * catacomb = new Environment("A dark and moist catacomb", "Catacomb");
 					environment_map_["Catacomb"] = catacomb;
 
+					Character * rat_1 = new Character("Rat", "Michael Mouse", 20, 1, "gnaws", catacomb);
+					Character * rat_2 = new Character("Rat", "Mindy Mouse", 20, 1, "gnaws", catacomb);
+
+					rat_1->set_aggression(true);
+					rat_2->set_aggression(true);
+
+					enemies_.push_back(rat_1);
+					enemies_.push_back(rat_2);
+					character_map_["MICHAEL MOUSE"] = rat_1;
+					character_map_["MINDY MOUSE"] = rat_2;
+			
 					catacomb->set_neighbour(NORTH, environment_map_["Kandelaber room"]);
 					catacomb->set_neighbour(SOUTH, environment_map_["Princess room"]);
 					
