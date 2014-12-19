@@ -93,9 +93,13 @@ namespace jonsson_league {
 		Environment * throne_room = new Environment("The throne room... full with all kinds of treasures and jewels! And a sleeping monarch...", "Throne room");
 		environment_map_["Throne room"] = throne_room;
 		throne_room->set_neighbour(WEST, kandelaber_room);
-		//kandelaber_room->set_neighbour(EAST, throne_room);
-		
-		Character * kungen = new Character("King", "Carl XVI Gustav", 50, 5, "fires the royal älgbössa at", throne_room);
+	
+		for(int i = 0; i < 10; i++){
+			Item * bag_of_coins = new Item("Bag of coins", "A massive bag of coins, marked 'Property of the monarch'", 2, 5, 0, 0);
+			throne_room->add_item(bag_of_coins);
+		}
+
+		Character * kungen = new King("King", "Carl XVI Gustav", 50, 5, "fires the royal älgbössa at", throne_room);
 		kungen->set_aggression(false);
 		enemies_.push_back(kungen);
 		
@@ -511,6 +515,7 @@ namespace jonsson_league {
 				set_combat_flag(true);
 				combat_initated = true;
 				std::cout << "You enter combat with " << local_enemies_.at(i)->get_name() << std::endl;
+				local_enemies_.at(i)->say();
 			}
 		}
 
