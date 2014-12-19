@@ -6,6 +6,7 @@
 #include <map>
 #include <cstdlib>
 #include "environment.hpp"
+#include "spiderroom.hpp"
 #include "character.hpp"
 #include "king.hpp"
 #include "directions.hpp"

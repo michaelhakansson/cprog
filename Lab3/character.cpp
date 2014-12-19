@@ -98,13 +98,12 @@ namespace jonsson_league {
     // The character attacks an enemy
     void Character::attack(Character * enemy) {
 
-		int damage = get_environment()->get_effect(get_strength());
+		int damage = get_environment()->get_effect(get_strength(), get_type());
 
 		std::cout << get_name() << " " << get_name_of_attack() << " " << enemy->get_name() << " for " << damage << " damage" << std::endl;
 
 		int retaliation = enemy->defend(this, damage);
 		set_health(get_health() - retaliation);
-		return;
 	}
 
 	//Character takes damage and potentially retaliates

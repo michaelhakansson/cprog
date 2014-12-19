@@ -41,7 +41,7 @@ namespace jonsson_league {
 		 * Add all the environments
 		 */
 
-		Environment * spider_room = new Environment("A room filled with spider webs... Icky!", "Spider room");
+		Environment * spider_room = new Spiderroom("A room filled with spider webs... Icky!", "Spider room");
 		Character * spider = new Character("Spider", "Imse Vimse", 20, 1, "bites", spider_room);
 		spider->set_aggression(true);
 		enemies_.push_back(spider);
