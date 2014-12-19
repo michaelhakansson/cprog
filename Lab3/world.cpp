@@ -23,6 +23,7 @@ namespace jonsson_league {
 		// Declare all the environments in the world
 		
 		Environment * end_state = new Environment("Congratulations!", "End state");
+		environment_map_["End state"] = end_state;
 
 		Environment * entrance = new Environment("A very elegant room, there is a painting showing the monarch covered in expensive jewelry.", "Entrance");
 		starting_environment_ = entrance;
@@ -63,15 +64,13 @@ namespace jonsson_league {
 		environment_map_["Kandelaber room"] = kandelaber_room;
 		kandelaber_room->set_neighbour(WEST, dining_room);
 		dining_room->set_neighbour(EAST, kandelaber_room);
-		Item * kandelaber = new Item("Kandelaber", "A kandelaber. It's hideous...", 10, 5, 0, 5);
-		kandelaber_room->add_item(kandelaber);
 
 		Environment * fuskbygge = new Environment("A fuskbygge that is almost falling apart! Damn polish immigrants!", "Fuskbygge");
 		environment_map_["Fuskbygge"] = fuskbygge;
 		fuskbygge->set_neighbour(NORTH, kandelaber_room);
 		kandelaber_room->set_neighbour(SOUTH, fuskbygge);
 
-		Environment * princess_room = new Environment("A room with the faint glow of glow of computer screens. Victoria and Madeleine are LANing rock paper scissors!", "Princess room");
+		Environment * princess_room = new Environment("A room of no special significance.", "Princess room");
 		environment_map_["Princess room"] = princess_room;
 		princess_room->set_neighbour(NORTH, fuskbygge);
 		fuskbygge->set_neighbour(SOUTH, princess_room);
@@ -113,6 +112,9 @@ namespace jonsson_league {
 		Item * toffel_of_silence = new Item("Toffel of silence", "A unisex toffel that makes it's wearer move extremely silently.", 1, 10, 2, 0);
 		spider_room->add_item(toffel_of_silence);
 
+		Item * kandelaber = new Item("Kandelaber", "A kandelaber. It's hideous...", 10, 5, 0, 5);
+		kandelaber_room->add_item(kandelaber);
+		
 	}
 
 	void World::print_items(std::vector<Item*> * vec) const {
@@ -188,17 +190,19 @@ namespace jonsson_league {
 			std::string next_environment_type = get_main_character()->get_environment()->get_neighbour(direction)->get_type();
 
 			//If the character tries to enter the fuskbygge
-			if(next_environment_type == "Fuskbygge"){
+			if(next_environment_type == "Fuskbygge" && environment_map_["Catacomb"] == NULL){
 				
 				//If the main character weighs more than a specified amount
 				if(get_main_character()->get_weight() >= 80){
 					
 					//TODO
-					std::cout << "Due to yoru weight sdfakj" << std::endl;
+					std::cout << "Due to your weight, the whole room falls apart and you end up in the royal catacombs!" << std::endl;
 
 					Environment * fuskbygge = environment_map_["Fuskbygge"];
 
 					Environment * catacomb = new Environment("A dark and moist catacomb", "Catacomb");
+					environment_map_["Catacomb"] = catacomb;
+
 					catacomb->set_neighbour(NORTH, environment_map_["Kandelaber room"]);
 					catacomb->set_neighbour(SOUTH, environment_map_["Princess room"]);
 					
@@ -207,8 +211,7 @@ namespace jonsson_league {
 
 					//TODO place spy somewhere
 
-					
-					//TODO proper destructorsi
+					//TODO proper destructors
 					environment_map_["Fuskbygge"] = NULL;
 					delete fuskbygge;
 				}

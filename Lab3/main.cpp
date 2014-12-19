@@ -94,6 +94,7 @@ int main(int argc, char* argv[]) {
 					std::cout << "Invalid arguments!" << std::endl;
 				}
 			} else {
+				
 				std::cout << "Invalid command!" << std::endl;
 			}
 		}
@@ -101,6 +102,7 @@ int main(int argc, char* argv[]) {
 		//If the player has died
 		if(world->get_main_character()->get_health() <= 0){
 			print_file("game_over.txt");
+			delete world;
 
 			return 1;
 		}
@@ -108,6 +110,7 @@ int main(int argc, char* argv[]) {
 		if(world->get_main_character()->get_environment()->get_type() == "End state"){
 
 			std::cout << "You escaped the castle with your life and " << world->get_main_character()->get_value() << " coins worth of loot." << std::endl;
+			delete world;
 
 			return 1;
 		}

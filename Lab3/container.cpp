@@ -4,7 +4,7 @@ namespace jonsson_league {
 
 	Container::Container() {
 		slot_limit_ = 10;
-		weight_limit_ = 10;
+		weight_limit_ = 40;
 		items_ = new std::vector<Item*>;
 	}
 
