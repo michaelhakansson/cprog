@@ -15,9 +15,9 @@ namespace jonsson_league {
 	}
 
 	Container::~Container() {
-		for (Item* item : *items_) {
+		for_each(items_->begin(), items_->end(), [](Item* item) {
 			delete item;
-		}
+		});
 		delete items_;
 		slot_limit_ = 0;
 		weight_limit_ = 0;
