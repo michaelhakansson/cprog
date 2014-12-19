@@ -33,7 +33,7 @@ namespace jonsson_league {
 		entrance->set_neighbour(SOUTH, end_state);
 
 		// Place characters inside maps
-	    main_character_ = new Character("Thief", "Jonsson", 10, 5, "slaps", starting_environment_);
+	    main_character_ = new Jonsson("Thief", "Jonsson", 10, 5, "slaps", starting_environment_);
 		main_character_->set_base_weight(75);
 	    current_character_ = main_character_;
 
@@ -207,8 +207,8 @@ namespace jonsson_league {
 					Environment * catacomb = new Environment("A dark and moist catacomb", "Catacomb");
 					environment_map_["Catacomb"] = catacomb;
 
-					Character * rat_1 = new Character("Rat", "Michael Mouse", 15, 1, "gnaws", catacomb);
-					Character * rat_2 = new Character("Rat", "Mindy Mouse", 15, 1, "gnaws", catacomb);
+					Character * rat_1 = new Character("Rat", "Michael Mouse", 10, 1, "gnaws", catacomb);
+					Character * rat_2 = new Character("Rat", "Mindy Mouse", 10, 1, "gnaws", catacomb);
 
 					rat_1->set_aggression(true);
 					rat_2->set_aggression(true);
@@ -332,10 +332,10 @@ namespace jonsson_league {
 			int health_diff = get_main_character()->get_health() - get_main_character()->get_max_health();
 			
 			if(health_diff != 0){
-				std::cout << "You gain 1 HP." << std::endl;
+				std::cout << "You gain 2 HP." << std::endl;
 			}
 
-			get_main_character()->set_health(get_main_character()->get_health() + 1);
+			get_main_character()->set_health(get_main_character()->get_health() + 2);
 
 			get_main_character()->set_base_weight(get_main_character()->get_base_weight() + 1);
 
