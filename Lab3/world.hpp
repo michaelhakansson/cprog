@@ -7,7 +7,9 @@
 #include <cstdlib>
 #include "environment.hpp"
 #include "spiderroom.hpp"
+#include "throneroom.hpp"
 #include "character.hpp"
+#include "jonsson.hpp"
 #include "king.hpp"
 #include "spider.hpp"
 #include "directions.hpp"

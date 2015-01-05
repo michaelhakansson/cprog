@@ -1,7 +1,7 @@
 CC=g++
 CDFLAGS= -std=c++11 -g -c -Wall
 LDFLAGS=
-SOURCES=character.cpp king.cpp spider.cpp world.cpp inventory.cpp container.cpp environment.cpp spiderroom.cpp item.cpp main.cpp
+SOURCES=character.cpp jonsson.cpp king.cpp spider.cpp world.cpp inventory.cpp container.cpp environment.cpp spiderroom.cpp throneroom.cpp item.cpp main.cpp
 OBJECTS=$(SOURCES:.cpp=.o) # Substitution variable that turns a list of *.cpp to *.o
 EXECUTABLE=jonsson_league
 

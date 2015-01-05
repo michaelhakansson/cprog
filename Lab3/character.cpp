@@ -51,24 +51,25 @@ namespace jonsson_league {
 	}
 
     int Character::get_health() const {
-    	return health_ + get_inventory()->get_stats_health();
+    	return health_;
     }
 
     void Character::set_health(int new_health) {
 
-		if(new_health <= max_health_){
+		if(new_health <= get_max_health()){
 	        health_ = new_health;
 		} else {
-			health_ = max_health_;
+			health_ = get_max_health();
 		}
     }
 
     int Character::get_max_health() const {
-    	return max_health_;
+    	return max_health_ + get_inventory()->get_stats_health();
     }
 
     void Character::set_max_health(int new_max_health) {
-        max_health_ = new_max_health;
+        //Unsafe?
+		max_health_ = new_max_health;
     }
     int Character::get_strength() const {
         // TODO: Count buff/debuff strength

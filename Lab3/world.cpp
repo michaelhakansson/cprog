@@ -33,7 +33,7 @@ namespace jonsson_league {
 		entrance->set_neighbour(SOUTH, end_state);
 
 		// Place characters inside maps
-	    main_character_ = new Character("Thief", "Jonsson", 10, 5, "slaps", starting_environment_);
+	    main_character_ = new Jonsson("Thief", "Jonsson", 10, 5, "slaps", starting_environment_);
 		main_character_->set_base_weight(75);
 	    current_character_ = main_character_;
 
@@ -42,7 +42,7 @@ namespace jonsson_league {
 		 */
 
 		Environment * spider_room = new Spiderroom("A room filled with spider webs... Icky!", "Spider room");
-		Character * spider = new Spider("Spider", "Imse Vimse", 20, 1, "bites", spider_room);
+		Character * spider = new Spider("Spider", "Imse Vimse", 15, 1, "bites", spider_room);
 		spider->set_aggression(true);
 		enemies_.push_back(spider);
 		environment_map_["Spider room"] = spider_room;
@@ -90,7 +90,7 @@ namespace jonsson_league {
 		bedroom->set_neighbour(NORTH, trophy_room);
 
 		//TODO restrict access to throne room
-		Environment * throne_room = new Environment("The throne room... full with all kinds of treasures and jewels! And a sleeping monarch...", "Throne room");
+		Environment * throne_room = new Throneroom("The throne room... full with all kinds of treasures and jewels! And a sleeping monarch...", "Throne room");
 		environment_map_["Throne room"] = throne_room;
 		throne_room->set_neighbour(WEST, kandelaber_room);
 	
@@ -99,7 +99,7 @@ namespace jonsson_league {
 			throne_room->add_item(bag_of_coins);
 		}
 
-		Character * kungen = new King("King", "Carl XVI Gustav", 50, 5, "fires the royal älgbössa at", throne_room);
+		Character * kungen = new King("King", "Carl XVI Gustav", 30, 5, "fires the royal älgbössa at", throne_room);
 		kungen->set_aggression(false);
 		enemies_.push_back(kungen);
 		
@@ -207,8 +207,8 @@ namespace jonsson_league {
 					Environment * catacomb = new Environment("A dark and moist catacomb", "Catacomb");
 					environment_map_["Catacomb"] = catacomb;
 
-					Character * rat_1 = new Character("Rat", "Michael Mouse", 15, 1, "gnaws", catacomb);
-					Character * rat_2 = new Character("Rat", "Mindy Mouse", 15, 1, "gnaws", catacomb);
+					Character * rat_1 = new Character("Rat", "Michael Mouse", 10, 1, "gnaws", catacomb);
+					Character * rat_2 = new Character("Rat", "Mindy Mouse", 10, 1, "gnaws", catacomb);
 
 					rat_1->set_aggression(true);
 					rat_2->set_aggression(true);
@@ -274,7 +274,7 @@ namespace jonsson_league {
 			float r = (rand()) / (float) (RAND_MAX);
 
 			//If you are unlucky
-			if(r <= 0.2){
+			if(r <= 0.35){
 				std::cout << "The monarch has awoken!" << std::endl;
 				character_map_["KUNGEN"]->set_aggression(true);
 				resolve_combat(true);
@@ -332,10 +332,10 @@ namespace jonsson_league {
 			int health_diff = get_main_character()->get_health() - get_main_character()->get_max_health();
 			
 			if(health_diff != 0){
-				std::cout << "You gain 1 HP." << std::endl;
+				std::cout << "You gain 2 HP." << std::endl;
 			}
 
-			get_main_character()->set_health(get_main_character()->get_health() + 1);
+			get_main_character()->set_health(get_main_character()->get_health() + 2);
 
 			get_main_character()->set_base_weight(get_main_character()->get_base_weight() + 1);
 
