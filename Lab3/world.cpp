@@ -3,7 +3,11 @@
 namespace jonsson_league {
 
 	World::World() {
+		default_savestate(&savestate_);
+	}
 
+	World::World(std::vector<std::string> savestate) {
+		savestate_ = savestate;
 	}
 
 	World::~World() {
@@ -119,6 +123,15 @@ namespace jonsson_league {
 		Item * kandelaber = new Item("Kandelaber", "A kandelaber. It's hideous...", 10, 5, 0, 3);
 		kandelaber_room->add_item(kandelaber);
 		
+	}
+
+	void World::load(){
+		ss_place_character(get_main_character(), environment_map_["Entrance"]);
+	}
+
+	//TODO
+	bool World::save(std::string){
+		return true;
 	}
 
 	void World::print_items(std::vector<Item*> * vec) const {
@@ -575,5 +588,36 @@ namespace jonsson_league {
 
 	void World::set_current_character(Character * character) {
 		current_character_ = character;
+	}
+
+	/* SAVESTATE */
+
+	//Places the default savestate in the vector
+	void World::default_savestate(std::vector<std::string> * savestate){
+
+		//0-8 are the regular rooms in order, 9 is the catacomb
+		savestate->push_back("Entrance");
+	}
+
+	std::vector<std::string> World::get_savestate(){
+		return savestate_;
+	}
+
+	void World::set_savestate(std::vector<std::string> savestate){
+		savestate_ = savestate;
+	}
+
+	void World::set_savestate(int index, std::string state){
+		savestate_.insert(savestate_.begin() + index, state);
+	}
+
+	void World::ss_place_character(Character * c, Environment * e){
+
+		//Both the character and the environment need to be valid
+		if(c && e){
+			return;
+		}
+
+		c->enter(e);
 	}
 }

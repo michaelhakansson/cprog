@@ -19,6 +19,7 @@ namespace jonsson_league {
 
 	class World {
 	private:
+		std::vector<std::string> savestate_;
 	    Environment * starting_environment_;
 	    std::vector<Character *> enemies_;
 	    std::vector<Character *> local_enemies_;
@@ -30,8 +31,12 @@ namespace jonsson_league {
 		std::map<std::string, Environment *> environment_map_;
 	public:
 		World();
+		World(std::vector<std::string>);
 		~World();
 		void init();
+		void load();
+		bool save(std::string);
+
 		void print_items(std::vector<Item*> * vec) const;
 		void describe_room() const;
 		bool describe_inventory(std::string);
@@ -66,6 +71,12 @@ namespace jonsson_league {
 		Character* get_character_by_name(std::string target);
 	    Character* get_target_by_name(std::string target);
 	    Character* get_next_character() const;
+
+		void default_savestate(std::vector<std::string> *);
+		std::vector<std::string> get_savestate();
+		void set_savestate(std::vector<std::string>);
+		void set_savestate(int, std::string);
+		void ss_place_character(Character *, Environment *);
 	};
 
 }

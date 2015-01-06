@@ -38,6 +38,8 @@ int main(int argc, char* argv[]) {
 	functions["INVENTORY"] = &jonsson_league::World::describe_inventory;
 	functions["STATUS"] = &jonsson_league::World::player_status;
 
+	functions["SAVE"] = &jonsson_league::World::save;
+
 	//Situational commands 
 	functions["EAT"] = &jonsson_league::World::eat;
 	functions["KICK"] = &jonsson_league::World::kick;
@@ -45,7 +47,6 @@ int main(int argc, char* argv[]) {
 	//Combat commands
 	std::map<std::string, bool (jonsson_league::World::*)(std::string)> combat_functions;
 	combat_functions["ATTACK"] = &jonsson_league::World::attack;
-	//TODO special?
 
     // This is the main loop of the game, it handles everything
 	while(true) {
@@ -78,6 +79,8 @@ int main(int argc, char* argv[]) {
 				if(!(world->*(functions[splice_function(input)]))(splice_arguments(input))){
 					std::cout << "Invalid arguments!" << std::endl;
 				}
+			} else if(splice_function(input) == "LOAD"){
+				std::cout << "Loading new save file..." << std::endl;
 			} else {
 				std::cout << "Invalid command!" << std::endl;
 			}
