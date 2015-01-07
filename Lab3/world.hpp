@@ -27,6 +27,8 @@ namespace jonsson_league {
 	    Character * main_character_;
 	    Character * current_character_;
 	    bool in_combat_;
+	    bool kandelaber_kicked;
+	    std::string room_names_ [10] = {"Entrance", "Spider room", "Dining room", "Kandelaber room", "Fuskbygge", "Catacomb", "Princess room", "Bedroom", "Trophy room", "Throne room"};
 
 		std::map<std::string, Character *> character_map_;
 		std::map<std::string, Environment *> environment_map_;
@@ -37,6 +39,7 @@ namespace jonsson_league {
 		void init();
 		void load();
 		bool save(std::string);
+		void save_item(std::string, std::ofstream *);
 
 		void print_items(std::vector<Item*> * vec) const;
 		void describe_room() const;
@@ -52,7 +55,6 @@ namespace jonsson_league {
 		bool eat(std::string args);
 		bool kick(std::string args);
 		void kick_kandelaber();
-		bool kandelaber_kicked;
 	    bool attack(std::string args);
 		bool suicide(std::string);
 	    void check_status();

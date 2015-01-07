@@ -138,7 +138,76 @@ namespace jonsson_league {
 			kick_kandelaber();
 		}
 
+		//Set status
 		ss_place_character(get_main_character(), environment_map_[savestate_[i++]]);
+		get_main_character()->set_health(std::stoi(savestate_[i++]));
+		get_main_character()->set_base_weight(std::stoi(savestate_[i++]));
+
+		//Set if enemies are alive
+		if(savestate_[i++] == "false"){
+			character_map_["IMSE VIMSE"]->set_health(0);
+		}
+
+		if(savestate_[i++] == "false"){
+			character_map_["SILVIA"]->set_health(0);
+		}
+		
+		if(savestate_[i++] == "false"){
+			character_map_["KUNGEN"]->set_health(0);
+		}
+
+		
+
+		//If we have items
+		//Search where they belong and then move them
+
+		std::string location = savestate_[i++];
+		Item * item;
+
+		if(location != "Spider room"){
+			item = environment_map_["Spider room"]->get_container()->get_item_by_name("Toffel of silence");
+
+			if(location == "Inventory"){
+				get_main_character()->take(item);
+				environment_map_["Spider room"]->get_container()->remove_item(item);
+			} else if(environment_map_[location] != NULL){
+				environment_map_[location]->get_container()->add_item(item);
+				environment_map_["Spider room"]->get_container()->remove_item(item);
+			}
+		}
+
+		location = savestate_[i++];
+
+		if(location != "Kandelaber room"){
+			item = environment_map_["Kandelaber room"]->get_container()->get_item_by_name("Kandelaber");
+
+			if(location == "Inventory"){
+				get_main_character()->take(item);
+				environment_map_["Kandelaber room"]->get_container()->remove_item(item);
+			} else if(environment_map_[location] != NULL){
+				environment_map_[location]->get_container()->add_item(item);
+				environment_map_["Kandelaber room"]->get_container()->remove_item(item);
+			}
+		}
+
+		//Bags of coins
+		for (int i = 0; i < 10; ++i){
+			
+			location = savestate_[i++];
+
+			if(location != "Throne room"){
+				item = environment_map_["Throne room"]->get_container()->get_item_by_name("Bag of coins");
+
+				if(location == "Inventory"){
+					get_main_character()->take(item);
+					environment_map_["Throne room"]->get_container()->remove_item(item);
+				} else if(environment_map_[location] != NULL){
+					environment_map_[location]->get_container()->add_item(item);
+					environment_map_["Throne room"]->get_container()->remove_item(item);
+				}
+			}
+		}
+
 	}
 
 	//Places the default savestate in the vector
@@ -161,9 +230,13 @@ namespace jonsson_league {
 		savestate->push_back("true");
 
 		//If we have any items
-		savestate->push_back("false");
-		savestate->push_back("false");
-		savestate->push_back("0");
+		savestate->push_back("Spider room");
+		savestate->push_back("Kandelaber room");
+
+		//Bags of coins
+		for (int i = 0; i < 10; ++i){
+			savestate->push_back("Throne room");
+		}
 
 	}
 
@@ -193,9 +266,9 @@ namespace jonsson_league {
 			}
 
 			//Status
-  			file << main_character_->get_environment()->get_type() << std::endl;
-  			file << main_character_->get_environment()->get_health() << std::endl;
-  			file << main_character_->get_environment()->get_base_weight() << std::endl;
+  			file << main_character_->get_type() << std::endl;
+  			file << main_character_->get_health() << std::endl;
+  			file << main_character_->get_base_weight() << std::endl;
 
   			//Enemies
   			if(character_map_["IMSE VIMSE"] && !character_map_["IMSE VIMSE"]->is_dead()){
@@ -217,29 +290,9 @@ namespace jonsson_league {
 			}
 
 			//Items
-			if(main_character_->get_inventory()->get_item_by_name("Toffel of silence")){
-				file << "true" << std::endl;
-			} else {
-				file << "false" << std::endl;
-			}
-
-			if(main_character_->get_inventory()->get_item_by_name("Kandelaber")){
-				file << "true" << std::endl;
-			} else {
-				file << "false" << std::endl;
-			}
-
-			//Amount of bags of gold we have
-			std::vector<Item *> * items = main_character_->get_inventory()->get_items();
-			int counter = 0;
-
-			for (int i = 0; i < items->size(); ++i){
-				if((*items)[i]->get_name() == "Bag of coins"){
-					counter++;
-				}
-			}
-
-			file << counter << std::endl;
+			save_item("Toffel of silence", &file);
+			save_item("Kandelaber", &file);
+			save_item("Bag of coins", &file);
 
 	  		file.close();
 	  		return true;
@@ -247,6 +300,46 @@ namespace jonsson_league {
 
   		std::cout << "Something went wrong when saving!" << std::endl;
 		return false;
+	}
+
+	//Goes through every environment for a specific item
+	//Writes all the locations where it appears
+	void save_item(std::string itemname, std::ofstream * file){
+
+		std::vector<Item *> * items = get_main_character()->get_inventory()->get_items();
+		bool found = false;
+
+		//Checks main character
+		for (unsigned int i = 0; i < items->size(); ++i){
+			//If the names are equal
+			if((*items)[i]->get_name().compare(itemname) == 0){
+				(*file) << "Inventory" << std::endl;
+				found = true;
+			}
+		}
+
+		//Checks all the environments
+		for (int i = 0; i < room_names_.size(); ++i){
+			Environment * env = environment_map_[room_names[i]];
+
+			if(env != NULL){
+
+				//Gets all the items from the environment
+				std::vector<Item *> * items = env->get_container()->get_items();
+
+				for (int i = 0; i < items->size(); ++i){
+					//If the names are equal
+					if((*items)[i]->get_name().compare(itemname) == 0){
+						(*file) << [room_names[i]] << std::endl;
+						found = true;
+					}
+				}
+			}
+		}
+
+		if(!found){
+			(*file) << std::endl;
+		}
 	}
 
 	void World::print_items(std::vector<Item*> * vec) const {
