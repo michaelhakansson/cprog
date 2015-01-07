@@ -126,42 +126,48 @@ namespace jonsson_league {
 	}
 
 	void World::load(){
-		int i = 0;
+		int state = 0;
 
 		//If the fuskbygge has collapsed
-		if(savestate_[i++] == "true"){
+		if(savestate_[state++]== "true"){
 			collapse_fuskbygge();
 		}
 
 		//If the secret room has been discovered
-		if(savestate_[i++] == "true"){
+		if(savestate_[state++] == "true"){
 			kick_kandelaber();
 		}
 
 		//Set status
-		ss_place_character(get_main_character(), environment_map_[savestate_[i++]]);
-		get_main_character()->set_health(std::stoi(savestate_[i++]));
-		get_main_character()->set_base_weight(std::stoi(savestate_[i++]));
+		ss_place_character(get_main_character(), environment_map_[savestate_[state++]]);
+		get_main_character()->set_health(std::stoi(savestate_[state++]));
+		get_main_character()->set_base_weight(std::stoi(savestate_[state++]));
 
 		//Set if enemies are alive
-		if(savestate_[i++] == "false"){
+		if(savestate_[state++] == "dead" && character_map_["IMSE VIMSE"]){
 			character_map_["IMSE VIMSE"]->set_health(0);
 		}
 
-		if(savestate_[i++] == "false"){
+		if(savestate_[state++] == "dead" && character_map_["MICHAEL MOUSE"]){
+			character_map_["MICHAEL MOUSE"]->set_health(0);
+		}
+
+		if(savestate_[state++] == "dead" && character_map_["MINDY MOUSE"]){
+			character_map_["MINDY MOUSE"]->set_health(0);
+		}
+
+		if(savestate_[state++] == "dead" && character_map_["SILVIA"]){
 			character_map_["SILVIA"]->set_health(0);
 		}
 		
-		if(savestate_[i++] == "false"){
+		if(savestate_[state++] == "dead" && character_map_["KUNGEN"]){
 			character_map_["KUNGEN"]->set_health(0);
 		}
-
-		
 
 		//If we have items
 		//Search where they belong and then move them
 
-		std::string location = savestate_[i++];
+		std::string location = savestate_[state++];
 		Item * item;
 
 		if(location != "Spider room"){
@@ -176,7 +182,7 @@ namespace jonsson_league {
 			}
 		}
 
-		location = savestate_[i++];
+		location = savestate_[state++];
 
 		if(location != "Kandelaber room"){
 			item = environment_map_["Kandelaber room"]->get_container()->get_item_by_name("Kandelaber");
@@ -193,7 +199,7 @@ namespace jonsson_league {
 		//Bags of coins
 		for (int i = 0; i < 10; ++i){
 			
-			location = savestate_[i++];
+			location = savestate_[state++];
 
 			if(location != "Throne room"){
 				item = environment_map_["Throne room"]->get_container()->get_item_by_name("Bag of coins");
@@ -225,9 +231,11 @@ namespace jonsson_league {
 		savestate->push_back("75");
 
 		//If enemies are alive
-		savestate->push_back("true");
-		savestate->push_back("true");
-		savestate->push_back("true");
+		savestate->push_back("alive");
+		savestate->push_back("alive");
+		savestate->push_back("alive");
+		savestate->push_back("alive");
+		savestate->push_back("alive");
 
 		//If we have any items
 		savestate->push_back("Spider room");
@@ -242,7 +250,7 @@ namespace jonsson_league {
 
 	bool World::save(std::string filename){
 
-		if(filename == "SAVE" || filename == ""){
+		if(filename == ""){
 			std::cout << "Invalid save file name." << std::endl;
 			return false;
 		}
@@ -253,43 +261,58 @@ namespace jonsson_league {
 		if(file.is_open()) {
 
 			//Activated secrets
+			file << "%Triggers" << std::endl;
 			if(environment_map_["Catacomb"] != NULL){
 				file << "true" << std::endl;
 			} else {
 				file << "false" << std::endl;
 			}
 
-			if(kandelaber_kicked){
+			if(kandelaber_kicked_){
 				file << "true" << std::endl;
 			} else {
 				file << "false" << std::endl;
 			}
 
-			//Status
-  			file << main_character_->get_type() << std::endl;
+			file << "%Status" << std::endl;
+  			file << main_character_->get_environment()->get_type() << std::endl;
   			file << main_character_->get_health() << std::endl;
   			file << main_character_->get_base_weight() << std::endl;
 
   			//Enemies
+  			file << "%Enemies" << std::endl;
   			if(character_map_["IMSE VIMSE"] && !character_map_["IMSE VIMSE"]->is_dead()){
-				file << "true" << std::endl;
+				file << "alive" << std::endl;
 			} else {
-				file << "false" << std::endl;
+				file << "dead" << std::endl;
+			}
+
+			if(character_map_["MICHAEL MOUSE"] && !character_map_["MICHAEL MOUSE"]->is_dead()){
+				file << "alive" << std::endl;
+			} else {
+				file << "dead" << std::endl;
+			}
+
+			if(character_map_["MINDY MOUSE"] && !character_map_["MINDY MOUSE"]->is_dead()){
+				file << "alive" << std::endl;
+			} else {
+				file << "dead" << std::endl;
 			}
 
 			if(character_map_["SILVIA"] && !character_map_["SILVIA"]->is_dead()){
-				file << "true" << std::endl;
+				file << "alive" << std::endl;
 			} else {
-				file << "false" << std::endl;
+				file << "dead" << std::endl;
 			}
 
-			if(character_map_["SILVIA"] && !character_map_["KUNGEN"]->is_dead()){
-				file << "true" << std::endl;
+			if(character_map_["KUNGEN"] && !character_map_["KUNGEN"]->is_dead()){
+				file << "alive" << std::endl;
 			} else {
-				file << "false" << std::endl;
+				file << "dead" << std::endl;
 			}
 
 			//Items
+			file << "%Items" << std::endl;
 			save_item("Toffel of silence", &file);
 			save_item("Kandelaber", &file);
 			save_item("Bag of coins", &file);
@@ -304,7 +327,7 @@ namespace jonsson_league {
 
 	//Goes through every environment for a specific item
 	//Writes all the locations where it appears
-	void save_item(std::string itemname, std::ofstream * file){
+	void World::save_item(std::string itemname, std::ofstream * file){
 
 		std::vector<Item *> * items = get_main_character()->get_inventory()->get_items();
 		bool found = false;
@@ -319,18 +342,19 @@ namespace jonsson_league {
 		}
 
 		//Checks all the environments
-		for (int i = 0; i < room_names_.size(); ++i){
-			Environment * env = environment_map_[room_names[i]];
+		//Hardcoded 10 rooms
+		for (int i = 0; i < 10; ++i){
+			Environment * env = environment_map_[room_names_[i]];
 
 			if(env != NULL){
 
 				//Gets all the items from the environment
 				std::vector<Item *> * items = env->get_container()->get_items();
 
-				for (int i = 0; i < items->size(); ++i){
+				for (unsigned int j = 0; j < items->size(); ++j){
 					//If the names are equal
-					if((*items)[i]->get_name().compare(itemname) == 0){
-						(*file) << [room_names[i]] << std::endl;
+					if((*items)[j]->get_name().compare(itemname) == 0){
+						(*file) << room_names_[i] << std::endl;
 						found = true;
 					}
 				}
@@ -343,11 +367,24 @@ namespace jonsson_league {
 	}
 
 	void World::print_items(std::vector<Item*> * vec) const {
-		if ((*vec)[0] == NULL) { 
+
+		if (vec == NULL) { 
 			std::cout << "NULL!" << std::endl;
+			return;
 		}
+
+		if(vec->size() == 0){
+			std::cout << "Empty!" << std::endl;
+			return;
+		}
+
 		for(int i = 0; i < (int) vec->size(); ++i) {
-			std::cout << "* " << (*vec)[i]->get_name() << ", \"" << (*vec)[i]->get_description() << "\"" << std::endl;
+
+			if ((*vec)[i] == NULL) { 
+				std::cout << "NULL2!" << std::endl;
+			} else {
+				std::cout << "* " << (*vec)[i]->get_name() << ", \"" << (*vec)[i]->get_description() << "\"" << std::endl;
+			}
 		}
 	}
 
@@ -370,13 +407,13 @@ namespace jonsson_league {
 
 	//Prints status for current character
 	bool World::player_status(std::string args) {
-		Character* character = get_current_character();
+		Character* character = get_main_character();
 		std::cout << "Status for " << character->get_name() << std::endl;
 		std::cout << "Health: " << character->get_health() << "/" << character->get_max_health() << std::endl;
 		std::cout << "Strength: " << character->get_strength() << std::endl;
 		std::cout << "Weight: " << character->get_weight() <<std::endl;
 		std::cout << "Inventory:" << std::endl;
-		print_items(character->get_inventory()->get_items());
+		print_items(get_main_character()->get_inventory()->get_items());
 
 		return true;
 	}
@@ -576,8 +613,8 @@ namespace jonsson_league {
 	//If you kick the kandelaber, opens a secret room
 	bool World::kick(std::string args){
 	
-		if(get_main_character()->get_environment()->get_type() == "Kandelaber room"){
-
+		if(get_main_character()->get_environment()->get_type() == "Kandelaber room" && !kandelaber_kicked_){
+			std::cout << "You kick the kandelaber, it shatters into a million pieces and a hidden door is revealed!" << std::endl;
 			kick_kandelaber();
 		}
 
@@ -589,14 +626,13 @@ namespace jonsson_league {
 
 		//If the kandelaber even exists
 		if(kandelaber != NULL){
-			std::cout << "You kick the kandelaber, it shatters into a million pieces and a hidden door is revealed!" << std::endl;
 			environment_map_["Kandelaber room"]->get_container()->remove_item(kandelaber);
 			delete kandelaber;
 
 			environment_map_["Kandelaber room"]->set_description("A room without a terribly fashionable kandelaber.");
 			environment_map_["Kandelaber room"]->set_neighbour(EAST, environment_map_["Throne room"]);
 			environment_map_["Throne room"]->set_neighbour(WEST, environment_map_["Kandelaber room"]);
-			kandelaber_kicked = true;
+			kandelaber_kicked_ = true;
 		}
 	}
 
@@ -749,7 +785,7 @@ namespace jonsson_league {
 
 		for(int i = 0; i < (int) local_enemies_.size(); i++){
 
-			if(local_enemies_.at(i)->get_environment() == main_character_->get_environment() && (aggressive || local_enemies_.at(i)->get_aggression())){
+			if(local_enemies_.at(i)->get_environment() == main_character_->get_environment() && !local_enemies_.at(i)->is_dead() && (aggressive || local_enemies_.at(i)->get_aggression())){
 				set_combat_flag(true);
 				combat_initated = true;
 				std::cout << "You enter combat with " << local_enemies_.at(i)->get_name() << std::endl;

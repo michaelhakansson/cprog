@@ -26,8 +26,8 @@ namespace jonsson_league {
 	    std::vector<Character *> local_enemies_;
 	    Character * main_character_;
 	    Character * current_character_;
-	    bool in_combat_;
-	    bool kandelaber_kicked;
+	    bool in_combat_ = false;
+	    bool kandelaber_kicked_ = false;
 	    std::string room_names_ [10] = {"Entrance", "Spider room", "Dining room", "Kandelaber room", "Fuskbygge", "Catacomb", "Princess room", "Bedroom", "Trophy room", "Throne room"};
 
 		std::map<std::string, Character *> character_map_;

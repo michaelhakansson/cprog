@@ -88,7 +88,10 @@ int main(int argc, char* argv[]) {
 				if (file.is_open()){
 					
 					while(getline(file, line)){
-						savestate.push_back(line);
+						if(line[0] != '%'){
+							//std::cout << line << std::endl;
+							savestate.push_back(line);
+						}
 					}
 
 					delete world;
