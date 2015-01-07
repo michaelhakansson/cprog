@@ -81,8 +81,11 @@ int main(int argc, char* argv[]) {
 			} else if(splice_function(input) == "LOAD"){
 				std::cout << "Loading new save file..." << std::endl;
 
-				std::string line;
+				std::string filename = splice_arguments(input);
+				transform(filename.begin(), filename.end(), filename.begin(), toupper);
+
 				std::ifstream file (splice_arguments(input));
+				std::string line;
 				std::vector<std::string> savestate;
 				
 				if (file.is_open()){
