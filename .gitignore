@@ -82,3 +82,5 @@ Session.vim
 *.gch
 
 *.out*
+
+*.sav

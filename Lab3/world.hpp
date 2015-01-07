@@ -2,6 +2,7 @@
 #define WORLD_H
 
 #include <iostream>
+#include <fstream>
 #include <algorithm>
 #include <map>
 #include <cstdlib>
@@ -43,12 +44,15 @@ namespace jonsson_league {
 		bool player_status(std::string);
 	    bool description(std::string);
 	    bool move_character(std::string);
+	    void collapse_fuskbygge();
 	    bool directions(std::string args);
 		bool take(std::string args);
 		bool drop(std::string args);
 
 		bool eat(std::string args);
 		bool kick(std::string args);
+		void kick_kandelaber();
+		bool kandelaber_kicked;
 	    bool attack(std::string args);
 		bool suicide(std::string);
 	    void check_status();

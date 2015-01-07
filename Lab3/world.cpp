@@ -126,12 +126,127 @@ namespace jonsson_league {
 	}
 
 	void World::load(){
-		ss_place_character(get_main_character(), environment_map_["Entrance"]);
+		int i = 0;
+
+		//If the fuskbygge has collapsed
+		if(savestate_[i++] == "true"){
+			collapse_fuskbygge();
+		}
+
+		//If the secret room has been discovered
+		if(savestate_[i++] == "true"){
+			kick_kandelaber();
+		}
+
+		ss_place_character(get_main_character(), environment_map_[savestate_[i++]]);
 	}
 
-	//TODO
-	bool World::save(std::string){
-		return true;
+	//Places the default savestate in the vector
+	void World::default_savestate(std::vector<std::string> * savestate){
+
+		//Activated secrets
+		savestate->push_back("false");
+		savestate->push_back("false");
+
+		//0-8 are the regular rooms in order, 9 is the catacomb
+		savestate->push_back("Entrance");
+
+		//Health, weight
+		savestate->push_back("10");
+		savestate->push_back("75");
+
+		//If enemies are alive
+		savestate->push_back("true");
+		savestate->push_back("true");
+		savestate->push_back("true");
+
+		//If we have any items
+		savestate->push_back("false");
+		savestate->push_back("false");
+		savestate->push_back("0");
+
+	}
+
+	bool World::save(std::string filename){
+
+		if(filename == "SAVE" || filename == ""){
+			std::cout << "Invalid save file name." << std::endl;
+			return false;
+		}
+
+		std::cout << "Saving file..." << std::endl;
+
+		std::ofstream file (filename);
+		if(file.is_open()) {
+
+			//Activated secrets
+			if(environment_map_["Catacomb"] != NULL){
+				file << "true" << std::endl;
+			} else {
+				file << "false" << std::endl;
+			}
+
+			if(kandelaber_kicked){
+				file << "true" << std::endl;
+			} else {
+				file << "false" << std::endl;
+			}
+
+			//Status
+  			file << main_character_->get_environment()->get_type() << std::endl;
+  			file << main_character_->get_environment()->get_health() << std::endl;
+  			file << main_character_->get_environment()->get_base_weight() << std::endl;
+
+  			//Enemies
+  			if(character_map_["IMSE VIMSE"] && !character_map_["IMSE VIMSE"]->is_dead()){
+				file << "true" << std::endl;
+			} else {
+				file << "false" << std::endl;
+			}
+
+			if(character_map_["SILVIA"] && !character_map_["SILVIA"]->is_dead()){
+				file << "true" << std::endl;
+			} else {
+				file << "false" << std::endl;
+			}
+
+			if(character_map_["SILVIA"] && !character_map_["KUNGEN"]->is_dead()){
+				file << "true" << std::endl;
+			} else {
+				file << "false" << std::endl;
+			}
+
+			//Items
+			if(main_character_->get_inventory()->get_item_by_name("Toffel of silence")){
+				file << "true" << std::endl;
+			} else {
+				file << "false" << std::endl;
+			}
+
+			if(main_character_->get_inventory()->get_item_by_name("Kandelaber")){
+				file << "true" << std::endl;
+			} else {
+				file << "false" << std::endl;
+			}
+
+			//Amount of bags of gold we have
+			std::vector<Item *> * items = main_character_->get_inventory()->get_items();
+			int counter = 0;
+
+			for (int i = 0; i < items->size(); ++i){
+				if((*items)[i]->get_name() == "Bag of coins"){
+					counter++;
+				}
+			}
+
+			file << counter << std::endl;
+
+	  		file.close();
+	  		return true;
+  		}
+
+  		std::cout << "Something went wrong when saving!" << std::endl;
+		return false;
 	}
 
 	void World::print_items(std::vector<Item*> * vec) const {
@@ -211,37 +326,7 @@ namespace jonsson_league {
 				
 				//If the main character weighs more than a specified amount
 				if(get_main_character()->get_weight() >= 80){
-					
-					//TODO
-					std::cout << "Due to your weight, the whole room falls apart and you end up in the royal catacombs!" << std::endl;
-
-					Environment * fuskbygge = environment_map_["Fuskbygge"];
-
-					Environment * catacomb = new Environment("A dark and moist catacomb", "Catacomb");
-					environment_map_["Catacomb"] = catacomb;
-
-					Character * rat_1 = new Character("Rat", "Michael Mouse", 10, 1, "gnaws", catacomb);
-					Character * rat_2 = new Character("Rat", "Mindy Mouse", 10, 1, "gnaws", catacomb);
-
-					rat_1->set_aggression(true);
-					rat_2->set_aggression(true);
-
-					enemies_.push_back(rat_1);
-					enemies_.push_back(rat_2);
-					character_map_["MICHAEL MOUSE"] = rat_1;
-					character_map_["MINDY MOUSE"] = rat_2;
-			
-					catacomb->set_neighbour(NORTH, environment_map_["Kandelaber room"]);
-					catacomb->set_neighbour(SOUTH, environment_map_["Princess room"]);
-					
-					environment_map_["Kandelaber room"]->set_neighbour(SOUTH, catacomb);
-					environment_map_["Princess room"]->set_neighbour(NORTH, catacomb);
-
-					//TODO place spy somewhere
-
-					//TODO proper destructors
-					environment_map_["Fuskbygge"] = NULL;
-					delete fuskbygge;
+					collapse_fuskbygge();
 				}
 			}
 
@@ -266,6 +351,39 @@ namespace jonsson_league {
 		}
 
 		return false;
+	}
+
+	void World::collapse_fuskbygge(){
+		//TODO
+		std::cout << "Due to your weight, the whole room falls apart and you end up in the royal catacombs!" << std::endl;
+
+		Environment * fuskbygge = environment_map_["Fuskbygge"];
+
+		Environment * catacomb = new Environment("A dark and moist catacomb", "Catacomb");
+		environment_map_["Catacomb"] = catacomb;
+
+		Character * rat_1 = new Character("Rat", "Michael Mouse", 10, 1, "gnaws", catacomb);
+		Character * rat_2 = new Character("Rat", "Mindy Mouse", 10, 1, "gnaws", catacomb);
+
+		rat_1->set_aggression(true);
+		rat_2->set_aggression(true);
+
+		enemies_.push_back(rat_1);
+		enemies_.push_back(rat_2);
+		character_map_["MICHAEL MOUSE"] = rat_1;
+		character_map_["MINDY MOUSE"] = rat_2;
+
+		catacomb->set_neighbour(NORTH, environment_map_["Kandelaber room"]);
+		catacomb->set_neighbour(SOUTH, environment_map_["Princess room"]);
+		
+		environment_map_["Kandelaber room"]->set_neighbour(SOUTH, catacomb);
+		environment_map_["Princess room"]->set_neighbour(NORTH, catacomb);
+
+		//TODO place spy somewhere
+
+		//TODO proper destructors
+		environment_map_["Fuskbygge"] = NULL;
+		delete fuskbygge;
 	}
 
 	//Prints the directions the character can go
@@ -367,24 +485,26 @@ namespace jonsson_league {
 	
 		if(get_main_character()->get_environment()->get_type() == "Kandelaber room"){
 
-			Item * kandelaber = environment_map_["Kandelaber room"]->get_container()->get_item_by_name("Kandelaber");
-
-			//If the kandelaber even exists
-			if(kandelaber != NULL){
-				std::cout << "You kick the kandelaber, it shatters into a million pieces and a hidden door is revealed!" << std::endl;
-				environment_map_["Kandelaber room"]->get_container()->remove_item(kandelaber);
-				delete kandelaber;
-
-				environment_map_["Kandelaber room"]->set_description("A room without a terribly fashionable kandelaber.");
-				environment_map_["Kandelaber room"]->set_neighbour(EAST, environment_map_["Throne room"]);
-				environment_map_["Throne room"]->set_neighbour(WEST, environment_map_["Kandelaber room"]);
-
-				return true;
-			}
+			kick_kandelaber();
 		}
 
-		return false;
-		
+		return true;
+	}
+
+	void World::kick_kandelaber(){
+		Item * kandelaber = environment_map_["Kandelaber room"]->get_container()->get_item_by_name("Kandelaber");
+
+		//If the kandelaber even exists
+		if(kandelaber != NULL){
+			std::cout << "You kick the kandelaber, it shatters into a million pieces and a hidden door is revealed!" << std::endl;
+			environment_map_["Kandelaber room"]->get_container()->remove_item(kandelaber);
+			delete kandelaber;
+
+			environment_map_["Kandelaber room"]->set_description("A room without a terribly fashionable kandelaber.");
+			environment_map_["Kandelaber room"]->set_neighbour(EAST, environment_map_["Throne room"]);
+			environment_map_["Throne room"]->set_neighbour(WEST, environment_map_["Kandelaber room"]);
+			kandelaber_kicked = true;
+		}
 	}
 
 	//Attacks an enemy (must be in combat)
@@ -592,29 +712,15 @@ namespace jonsson_league {
 
 	/* SAVESTATE */
 
-	//Places the default savestate in the vector
-	void World::default_savestate(std::vector<std::string> * savestate){
-
-		//0-8 are the regular rooms in order, 9 is the catacomb
-		savestate->push_back("Entrance");
-	}
-
 	std::vector<std::string> World::get_savestate(){
 		return savestate_;
-	}
-
-	void World::set_savestate(std::vector<std::string> savestate){
-		savestate_ = savestate;
-	}
-
-	void World::set_savestate(int index, std::string state){
-		savestate_.insert(savestate_.begin() + index, state);
 	}
 
 	void World::ss_place_character(Character * c, Environment * e){
 
 		//Both the character and the environment need to be valid
-		if(c && e){
+		if(!(c && e)){
+			std::cout << "Couldn't place character!" << std::endl;
 			return;
 		}
 

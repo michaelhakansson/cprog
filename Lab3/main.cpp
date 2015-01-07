@@ -4,7 +4,6 @@
 #include <map>
 #include <algorithm>
 
-
 bool input();
 std::string splice_function(std::string);
 std::string splice_arguments(std::string);
@@ -81,6 +80,28 @@ int main(int argc, char* argv[]) {
 				}
 			} else if(splice_function(input) == "LOAD"){
 				std::cout << "Loading new save file..." << std::endl;
+
+				std::string line;
+				std::ifstream file (splice_arguments(input));
+				std::vector<std::string> savestate;
+				
+				if (file.is_open()){
+					
+					while(getline(file, line)){
+						savestate.push_back(line);
+					}
+
+					delete world;
+					world = new jonsson_league::World(savestate);
+					world->init();
+					world->load();
+
+					file.close();
+
+				} else {
+					std::cout << "Save file not found!" << std::endl;
+				}				
+
 			} else {
 				std::cout << "Invalid command!" << std::endl;
 			}
